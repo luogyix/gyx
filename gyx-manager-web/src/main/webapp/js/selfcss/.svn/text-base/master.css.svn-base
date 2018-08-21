@@ -1,0 +1,66 @@
+@charset "utf-8";
+/* CSS Document */
+body,td,th {font-size: 12px;}
+body {margin: 0px;background-color:#ffffff}
+.top_bg {background-image: url(../images/top_mid.jpg);background-repeat: repeat-x;height: 81px;}
+.top_left {background-image: url(../images/top_left.jpg);background-repeat: no-repeat;height: 81px;}
+.top_right {background-repeat: no-repeat;background-position: right;height: 81px;}
+.msg {float:right; padding-top:10px;}
+.info {color: #FFF; margin-top:-5px;margin-right:10px; text-align:right;height:15px;}
+.tool{ color: #FFF; text-align:right;margin-top: 2px;margin-right: 10px;height:45px;}
+.tool a{color: #FFF;text-decoration: none;}
+.tool a:hover{text-decoration: underline;}
+.wel_bg {background-image: url(../images/wel_bg.gif);background-repeat: repeat-x;height: 99px;}
+.wel_left {background-image: url(../images/wel_left.gif);background-repeat: no-repeat;background-position: left top;height: 99px;}
+.wel_right {background-image: url(../images/wel_right.gif);background-repeat: no-repeat;background-position: right top;height: 99px;}
+.main_bg {background-image: url(../images/main_bg.gif);background-position: left top;background-repeat: no-repeat;height:335px}
+.info2 {color: #d7520c;font-size: 14px;padding-top: 15px;padding-left:20px;}
+.list1_title {background:url(../images/title1.png);_filter: progid:DXImageTransform.Microsoft.AlphaImageLoader(enabled=true, sizingMethod=scale, src="../images/title1.png" );_background:none;background-repeat: no-repeat;width:220px;height:50px;margin-top:15px;margin-left:20px;font-weight: bold;color: #cc6600;}
+.list1_title font{padding-top:20px;line-height:50px;margin-left:45px;position:relative;font-size:15px;}
+.list1_title font a{color: #cc6600;text-decoration: none;}
+.list2_title {background:url(../images/title2.png);_filter: progid:DXImageTransform.Microsoft.AlphaImageLoader(enabled=true, sizingMethod=scale, src="../images/title2.png" );_background:none;background-repeat: no-repeat;width:220px;height:50px;margin-top:15px;margin-left:20px;font-weight: bold;color: #cc6600;}
+.list2_title font{padding-top:20px;line-height:50px;margin-left:45px;position:relative;font-size:15px;}
+.list2_title font a{color: #cc6600;text-decoration: none;}
+.list3_title {background:url(../images/title3.png);_filter: progid:DXImageTransform.Microsoft.AlphaImageLoader(enabled=true, sizingMethod=scale, src="../images/title3.png" );_background:none;background-repeat: no-repeat;width:220px;height:50px;margin-top:15px;margin-left:20px;font-weight: bold;color: #cc6600;}
+.list3_title font{padding-top:20px;line-height:50px;margin-left:45px;position:relative;font-size:15px;}
+.list3_title font a{color: #cc6600;text-decoration: none;}
+.list table {border: 0px solid #bbd6ec;border-collapse:collapse;margin:0px auto 0 auto;}
+.color1{background:#f5f5f5}
+.list table  td {border-right-width: 0px;border-right-style: solid;border-right-color: #bbd6ec;text-align: center;font-size: 12px;color: #717070;height: 22px;}
+.list table  th {border-right-width: 0px;border-right-style: solid;border-right-color: #bbd6ec;background-image: url(../images/list_th.gif);background-repeat: repeat-x;height: 22px;font-size: 12px;color: #136192;font-weight: normal;}
+.list2{ float:left; width:40%}
+.list3{ float:left; width:60%}
+.link_bg {background-image: url(../images/link_bg.gif);background-repeat: repeat-x;height: 81px;margin:10px auto 0 auto;width:97%;}
+.link_left {background-image: url(../images/link_left.gif);background-repeat: no-repeat;background-position: left top;height: 81px;}
+.link_right {background-image: url(../images/link_right.gif);background-repeat: no-repeat;background-position: right top;height: 81px;padding-top:18px;}
+.link_right table{ width:84%; float:right}
+.link_right table td {text-align: center;}
+.link_right table td font {font-size: 12px;color: #ff0000;}
+.link_right table td font a {font-size: 12px;color: #ff0000;text-decoration: none;	}
+.link_right table td font a:hover{text-decoration: underline;}
+
+.anylinkcss{
+	position:absolute;
+	visibility: hidden;
+	border:1px solid black;
+	border-bottom-width: 0;
+	font:normal 12px Verdana;
+	line-height: 18px;
+	z-index: 100;
+	background-color: #E9FECB;
+	width: 120px;
+	}
+	.anylinkcss a{
+	width: 100%;
+	display: block;
+	text-indent: 3px;
+	border-bottom: 1px solid black;
+	padding: 1px 0;
+	text-decoration: none;
+	font-weight: bold;
+	text-indent: 5px;
+	}
+	.anylinkcss a:hover{ /*hover background color*/
+	background-color: blue;
+	color: white;
+	}

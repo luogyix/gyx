@@ -1,0 +1,18 @@
+@CHARSET "UTF-8";
+
+
+
+
+.x-icon-error{
+	background-image: url(../images/exclamation.gif) !important;
+}
+
+.x-icon-information{
+	background-image: url(../images/information.gif) !important;
+}
+
+
+
+
+
+

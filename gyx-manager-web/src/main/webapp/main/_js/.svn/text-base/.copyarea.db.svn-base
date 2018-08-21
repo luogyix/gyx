@@ -1,0 +1,14 @@
+ClearCase CopyAreaDB|4
+UCP\src\AB\FCBank\trade\Frame\NewFrame\main\_js
+2
+a
+b:tradelib.js|1|15e71976ef2|8edf|1f3d8a53|5a1e61c14bd84770859b28a2b313be93|0
+7:Main.js|1|15f332eb6fb|b9cb|f1ca84d6|7aeda658a78446e285018bac1b4e040f|0
+f:adore-custom.js|1|15e846230e8|12be|abed3eab|92f20502334d4822886b37205960517d|0
+a:require.js|1|15df3f4a3ea|14ad0|f6cdbed8|0aad05b9dda0421b8089de1e236eac97|0
+17:adore-expandabletext.js|1|15f332eb5dc|6f77|1c431e3e|29dbc4513bdc456bb68cad42ae154b9a|0
+b:internal.js|1|15e71976e66|2160|d829b0c0|09700cad60e842c9996d6b0d11dfe62d|0
+7:echarts|2|0|0|0|cddd76a26baf48a49faa7770cbe46c2d|0
+d:PinYinDict.js|1|15e71976e75|312c9|f0ea3101|ae8571a32f0d48deb40944b0d987827b|0
+13:jquery-2.1.3.min.js|1|15df3f4a3b6|1d78b|fe0ad7a1|55fb4aace1c04f0f9f03e019e0087637|0
+10:AdoreTradeLib.js|1|15df3f4a3d2|8f25|88a29d04|8bb506f6ea2d4163bb898e90902211d5|0

@@ -1,0 +1,18 @@
+{
+    // See https://go.microsoft.com/fwlink/?LinkId=733558
+    // for the documentation about the tasks.json format
+    "version": "2.0.0",
+    "tasks": [
+        {
+            "version":"0.1.0",
+            "taskName": "Chrome",
+            "command": "Chrome",
+            "type": "shell",
+            "window":{"command":"D:/应用软件/Chrome/Application/chrome.exe"},
+            "isShellCommand":true,
+            "args":["${file}"],
+            "showOutPut":"never"
+
+        }
+    ]
+}

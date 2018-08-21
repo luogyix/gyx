@@ -1,0 +1,1286 @@
+<!DOCTYPE html>
+<!--禁止鼠标在源页面拖拽、使用右键、禁止选择 --gl 2017-12-20-->
+<html ondragstart="return false;" onSelectStart="return false;" oncontextmenu="return false;" >
+
+<head>
+  <!--<meta charset="UTF-8">-->
+  <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+  <title></title>
+  <link rel="stylesheet" href="_plugins/font-awesome/css/font-awesome.min.css" />
+  <link rel="stylesheet" href="./_css/main.css" />
+  <link rel="stylesheet" href="./_css/todo.css" />
+  <link rel="stylesheet" href="_css/adore-expandabletext.css" />
+  <style type="text/css"> 
+.box{width:600px;height:auto;margin:20px auto; float:left; margin-left:300px;}
+.box label{font-size:14px;float:left;line-height:33px;color:#434343;}
+.timeDateTwo{width:500px;float:left;}
+.timeDateOne{width:600px;float:left; display:inline; margin-top:30px;}
+</style>
+  <script type="text/javascript" src="_js/echarts/echarts-all.js"></script>
+</head>
+
+<body style="background-color: #FFFFFF;">
+  <div>
+    <!--新增加载中标签--gl-->
+<!--    <div id="loading" style="position:absolute; font-size:20px;font-weight:600;width:100vw; height:100vh; z-index:999;">
+      <div class="loader" style="margin-left:35vw;margin-top:30vh;height: 60px;width: 300px;background: green;border-radius:5px;">
+        <div class="loader-inner ball-spin-fade-loader" >
+          <div></div>
+          <div></div>
+          <div></div>
+          <div></div>
+          <div></div>
+          <div></div>
+          <div></div>
+          <div></div>
+        </div>
+        <span style="margin-left:90px;line-height: 40px;color: white;width:200px;">正在载入中,请稍等</span>
+      </div>
+    </div>-->
+    <div id="marquee" style="position:absolute; font-size:2vw; margin-top: 10vh;margin-left:10vw; z-index:1" class="ct-displayNone">
+     <marquee direction="left" bgcolor="transparent"  behavior="scroll" loop="-1" scrollamount="3" scrolldelay="0.1" style="background: rgba(123,123,0,0.1);width:80vw;height:3vw;background-image: url(./_img/noticeBG.jpg);  background-repeat: round;opacity: 0.7;border: 2px groove greenyellow;">
+       <!--hspace="100" vspace="100px"--> 
+         <i class="fa fa-twitter" style="font-size: 2vw;color: red;margin-top: 0.5vw;"></i>
+         <font color="red" size="5pt" id="noticeMessage" style="font-size: 2vw;margin-top: 0.5vw;">
+                      公告：立刻开始日终检查
+         </font>
+     </marquee>
+     </div>
+    <div id="header" class="ct-header">
+      <div class="ct-dropdown" id="user">
+        <a href="javascript:;">
+						<i class="ct-icon-dropdown fa fa-user"></i>
+						<span class="ct-dropdownText" id="ct-tellerInfo">&nbsp &nbsp &nbsp &nbsp &nbsp &nbsp &nbsp </span>
+						<i class="fa fa-angle-down" style="color: white; height: 100%; line-height: 46px; margin-left: 10px; margin-right: 10px;"></i>
+					</a>
+        <ul class="ct-dropdown-menu ct-hide" id="userInfo" style="width: 100%; height: 200px;">
+          <li class="ct-dropdown-content" style>
+            <div class="ct-dropdown-content-list" style=" height:200px;">
+              <ul class="ct-dropdown-content-ul">
+                <li id="ct-personInfo" >
+                  <div>
+                    <i class="fa fa-user"></i>
+                  </div>
+                  <span>个人信息</span>
+                  
+                  
+                  
+                </li>
+                <!--									<li id="ct-help" style="width: 140px;">
+										<div>
+											<i class="fa fa-question-circle"></i>
+										</div>
+										<span>帮助</span>
+									</li>-->
+                <li id="ct-setting" >
+                  <div>
+                    <i class="fa fa-cog"></i>
+                  </div>
+                  <span>设置</span>
+                </li>
+                <li id="ct-lock" >
+                  <div>
+                    <i class="fa fa-lock"></i>
+                  </div>
+                  <span>锁屏</span>
+                </li>
+                <li id="ct-signout" >
+                  <div>
+                    <i class="fa fa-sign-out"></i>
+                  </div>
+                  <span>退出</span>
+                </li>
+<!--                <li id="ct-device" >
+                  <div>
+                    <i class="fa fa-laptop"></i>
+                  </div>
+                  <span>外设状态</span>
+                </li>
+                <li id="ct-service" >
+                  <div>
+                    <i class="fa fa-server"></i>
+                  </div>
+                  <span>服务信息</span>
+                </li>-->
+              </ul>
+            </div>
+          </li>
+        </ul>
+      </div>
+      <div id="signin" class="ct-dropdown ct-display" style="width:95px;border-right: 1px solid white;">
+          <a href="javascript:;" id="signIn">
+              <i class="ct-icon-dropdown fa fa-sign-in" id="sign-ico"></i>
+              <span class="ct-dropdownText" id="signina">柜员签到</span>
+          </a> 
+             <ul id="signInfo" style="display: none;position: absolute;border: 1px solid #eee;z-index: 9999;background-color: powderblue;overflow-x: auto;height:414px;width: 100%; height: 15vh;margin-top: -2px !important;" >
+          <li class="ct-dropdown-content" >
+            <div class="ct-dropdown-content-list" >
+              <ul class="ct-dropdown-content-ul">
+                <li id="ct-tellerIn" >
+                  <div>
+                    <i class="fa fa-sign-in"></i>
+                  </div>
+                  <span>签到</span>
+                </li>
+                <li id="ct-tellerOut" >
+                  <div>
+                    <i class="fa fa-sign-out"></i>
+                  </div>
+                  <span>签退</span>
+                </li>
+              </ul>
+            </div>
+          </li>
+        </ul>
+      </div>
+      
+      
+      
+<div id="commonMenu" class="ct-dropdown" style="width:95px;border-right: 1px solid white;" >
+          <a href="javascript:;" >
+                       <i class="ct-icon-dropdown fa fa-windows"></i>
+                       <span class="ct-dropdownText" >我的菜单</span>
+						<img src="_img/changwhite5.png" style="margin-top:3px; background: antiquewhite;margin-left: 5px; height: 40px; border-radius:50%" />
+					</a>
+     </div> 
+      
+      
+      
+      
+        
+       <div id="sidebar" class="ct-collapseSidebar" style="float: left;width: 190px;border-right: 1px solid white;">
+<!--        <ul>
+          <li style="display: none;">
+            <a>
+								<i class="fa fa-navicon"></i>
+							</a>
+          </li>
+          <li>-->
+            <div class="ct-sidebarUnselect sidebarItem" data="ct-content-custom" style="height: 46px;width: 95px;" >
+              <i class="fa fa-user-circle" style="margin-top: 15px;margin-left: 5px;"></i>
+              <span class="ct-collapseSidebarText" >全部菜单</span>
+              <!--<span class="ct-selectedBar ct-hide"></span>-->
+            </div>
+          <!--</li>-->
+          <!--<li>-->
+            <div class="ct-sidebarSelected sidebarItem" data="ct-content-internal" style="margin-top: -45px;  margin-left: 95px;  width: 95px;height: 46px;    ">
+              <i class="fa fa-television" style="margin-top: 15px;margin-left: 5px;"></i>
+              <span class="ct-collapseSidebarText" >内部服务</span>
+              <!--<span class="ct-selectedBar"></span>-->
+            </div>
+            <!--<div style="position: absolute; right: 45px; width: 200px; z-index: 999;">
+							<ul>
+								<li><span>首页</span></li>
+								<li><span>全部菜单</span></li>
+							</ul>
+							</div>-->
+          <!--</li>-->
+        <!--</ul>-->
+      </div>
+<!--      <div id="tranHelp" class="ct-dropdown" style="width:95px;border-left: 1px solid white;">
+          <a href="javascript:;" >
+              <i class="ct-icon-dropdown fa fa-file-o"></i>
+              <span class="ct-dropdownText" >交易帮助</span>
+          </a> 
+      </div>-->
+      
+      <!--VT登陆状态-赵凯       --> 
+      <div id="VTconnect" class="ct-dropdown ct-display" style="width:125px;border-right: 1px solid white;">
+          <a href="javascript:;" id="VTconnect">
+              <i class="ct-icon-dropdown fa fa-file-o" id="sign-ico"></i>
+              <span class="ct-dropdownText" id="VTconnect1">VOST正在连接</span>
+          </a>          
+      </div>
+      
+      <div style="float:right">
+      <div id="remoteControl" class="ct-dropdown ct-displayNone" style="border-left: 1px solid white;margin-right: 15px;">
+          <a href="javascript:;" >
+              <i class="ct-icon-dropdown fa fa-play" id="remoteIco"></i>
+              <span class="ct-dropdownText" id="remoteName">启动远程控制台</span>
+          </a>
+      </div>
+      <div class="adore-expandableText" style="float: right; margin-right: 1vw; margin-top: 8px; height: 30px; border-radius: 5px;width: 20vw;;background: white;box-shadow: 0 2px 5px 10px rgba(252, 252, 252, 0.16), 0 2px 10px 0 rgba(245, 236, 236, 0.12);"></div>
+    </div>
+    </div>
+
+    <div id="container" class="ct-container">
+<!--      <div id="sidebar" class="ct-collapseSidebar">
+        <ul>
+          <li style="display: none;">
+            <a>
+								<i class="fa fa-navicon"></i>
+							</a>
+          </li>
+          <li>
+            <div class="ct-sidebarUnselect sidebarItem" data="ct-content-custom">
+              <i class="fa fa-users"></i>
+              <span class="ct-collapseSidebarText">客户服务</span>
+              <span class="ct-selectedBar ct-hide"></span>
+            </div>
+          </li>
+          <li>
+            <div class="ct-sidebarSelected sidebarItem" data="ct-content-internal">
+              <i class="fa fa-television"></i>
+              <span class="ct-collapseSidebarText">内部服务</span>
+              <span class="ct-selectedBar"></span>
+            </div>
+          </li>
+        </ul>
+      </div>-->
+      <div>
+        
+        <div class="ct-commonMenu-container-collapse ct-hide">
+          <div style="height: 470px; width: 100%;">
+            <div style="margin-left: 10px; margin-top: 10px;margin-bottom:10px;">
+              <span>快捷菜单</span>
+            </div>
+            <div id="ct-commonMenu-Data">
+              <a class="ct-menu-item">
+									<img src="_img/trade/icon_trade_bill.png" />
+									<span>存入</span>
+								</a>
+
+              <a class="ct-menu-item">
+									<img src="_img/trade/icon_trade_card.png" />
+									<span>支取</span>
+								</a>
+
+              <a class="ct-menu-item">
+									<img src="_img/trade/icon_trade_cash.png" />
+									<span>对公活期账户结算</span>
+								</a>
+
+              <a class="ct-menu-item">
+									<img src="_img/trade/icon_trade_customer.png" />
+									<span>客户信息新建</span>
+								</a>
+
+              <a class="ct-menu-item">
+									<img src="_img/trade/icon_trade_default.png" />
+									<span>卡签约管理</span>
+								</a>
+            </div>
+          </div>
+          <div style="height: 20px; width: 100%;">
+            <i id="menu_close" class="fa fa-close" style="float: right; margin-right: 10px; margin-bottom: 5px; color:#CA1111;"></i>
+          </div>
+        </div>
+      </div>
+      <div id="ct-content" class="ct-content_sidebarCollapse">
+        <div id="ct-content-internal" class="ct-display ct-content-div" style="background: azure;">
+          <div>
+            <ul class="ct-tab">
+              <li class="ct-tab-seleted">
+                <a href="javascript:;" value="home">首页</a>
+              </li>
+              <li class="ct-tab-unseleted">
+                <a href="javascript:;" value="multipanelcomposite_manage" style="background: azure;">内部菜单</a>
+              </li>
+            </ul>
+          </div>
+          <div id="tabContent" class="ct-tabContent">
+            <div id="home">
+              <div class="ct-row" >
+                <div class="ct-aequilate4" id="ct-busiNum" style="float: left;">
+                  <div class="ct-vcol ct-blueMadison">
+                    <div class="ct-visual">
+                      <i class="fa fa-group fa-icon-medium ct-chartIcon"></i>
+                    </div>
+                    <div class="ct-details">
+                      <div id="ct-custNum-div" class="ct-number">0</div>
+                      <div class="ct-desc">服务客户数</div>
+                    </div>
+                    <a id="ct-serviceCustoms" class="ct-more" href="javascript:;">
+												查看更多
+												<i class="fa fa-arrow-circle-right"></i>
+											</a>
+                  </div>
+                  <div class="ct-vcol ct-redMadison" style="margin-top: 5px;">
+                    <div class="ct-visual">
+                      <i class="fa fa-book fa-icon-medium ct-chartIcon"></i>
+                    </div>
+                    <div class="ct-details">
+                      <div id="ct-busiNum-div" class="ct-number">0</div>
+                      <div class="ct-desc">办理交易数</div>
+                    </div>
+                    <a id="ct-finishedTrades" class="ct-more" href="javascript:;">
+												查看更多
+												<i class="fa fa-arrow-circle-right"></i>
+											</a>
+                  </div>
+                </div>
+                <!--									<div class="ct-contentList ct-aequilate4" style="height: 253px; border: 1px solid #36B98A; margin-top: 0px; margin-bottom: 0px; float: left;">
+										<div class="ct-listTitle" style="background-color:#36B98A;">
+											<span>工作任务</span>
+											<i class="fa fa-refresh ct-refresh" onclick="initWorkTask();"></i>
+										</div>
+										<div id="ct-workTaskData" style="overflow: auto; height: 191px;">
+											<div class="todo-tasklist" id="todo-tasklist">
+											</div>
+										</div>
+										<div class="ct-more1">
+											<a href="javascript:;" onclick="moreTask(event);"> 查看更多 &gt;&gt;</a>
+										</div>
+									</div>-->
+                <div class="ct-notice ct-aequilate4" style="border: 1px solid #578ebe;position: relative;">
+                  <div class="ct-noticeTop" style="background-color: #578ebe;">
+                    <span>公告</span>
+                    <i class="fa fa-refresh ct-refresh" onclick="refreshNotice();"></i>
+                    <!--公告加一个加号-->
+                    <i class="fa fa-plus ct-refresh" onclick="NewNoticeRelease(event);"></i>
+                  </div>
+                  <div id="myNoticeList" class="ct-noticeDetial">
+
+                  </div>
+                  <div class="ct-more1" style="position: absolute;">
+                    <a href="javascript:;" onclick="moreNotice(event);" > 查看更多 &gt;&gt;</a>
+                  </div>
+                </div>
+
+                <div class="ct-contentList ct-aequilate4" id="ct-note" style="float: left; border: 1px solid #00A6B1;position: relative;">
+                  <div class="ct-listTitle" style="background-color: #00A6B1;">
+                    <span>我的便签</span>
+                    <i class="fa fa-refresh ct-refresh" onclick="refreshNote();"></i>
+                    <i class="fa fa-plus ct-refresh" onclick="addNote(event);"></i>
+                  </div>
+                  <div class="ct-timeAxis" id="myNoteList">
+                    <ul id="myNoteListItem">
+
+                    </ul>
+                    <div class="sperator"></div>
+
+                  </div>
+                  <div class="ct-more1 ct-clear" style="position: absolute;">
+                    <a href="javascript:;" onclick="moreNote(event);" > 查看更多 &gt;&gt;</a>
+                  </div>
+                </div>
+
+
+              </div>
+              <div class="ct-row" style="height: 400px;margin-top:9px">
+                  <div class="todo-pull-left ct-question">
+                  <div class="ct-product-title">
+                    日历
+                  </div>
+               <input type="text" id="text1" style="display: none;">
+
+    <div id="calendar" >
+
+        <div id="todayTime"></div>
+        <div id="todayDate"></div>
+
+        <div id="tools">
+            <div class="l">
+                <select id="selectYear" class="calendar-select" style="  width: 5vw; margin-left: 2vw; height: 28px; font-family:  tahoma,Arial,Helvetica,sans-serif;"></select> 年
+                <select id="selectMonth" class="calendar-select" style=" width: 5vw;height: 28px; font-family:  tahoma,Arial,Helvetica,sans-serif;margin-left: 3vw;"></select> 月
+            </div>
+            <div class="r">
+                <i class="fa fa-arrow-circle-left" id="prevMonth" style="width: 1vw;  font-size: 1.2vw;  font-weight: 900;"></i>
+                <i class="fa fa-arrow-circle-right" id="nextMonth" style="margin-right: 1vw;width: 1vw;  font-size: 1.2vw;  font-weight: 900;margin-left: 1vw;"></i>
+            </div>
+        </div>
+
+        <table id="showTable">
+            <thead>
+                <tr>
+                    <th>日</th>
+                    <th>一</th>
+                    <th>二</th>
+                    <th>三</th>
+                    <th>四</th>
+                    <th>五</th>
+                    <th>六</th>
+                </tr>
+            </thead>
+            <tbody></tbody>
+        </table>
+
+    </div>
+    </div>
+              <!--<div id="simple-calendar"></div>-->
+                <div class="todo-pull-left ct-question" style="width: calc((100% - 60px)/1.5);">
+                  <div class="ct-product-title">
+                    快捷登录
+                  </div>
+                  <div class="question" id="OutSystemList">
+                    <!--<a class="ct-runingrisk"><img src="_img/trade/icon_trade_middle.png" alt="" style="height:50px;width:50px"><span>外围系统</span></a>-->
+                  </div>
+                </div>
+                <!--<div class="todo-pull-left ct-question"style="border: 1px solid #36B98A;">
+											<div class="ct-product-title"style="background-color:#36B98A;">
+												问题上报
+											</div>
+											<div class="question">
+												
+											</div>
+										</div> -->
+                <!--									 <div class="todo-pull-left ct-question" style="border:1px solid #578EBE">
+											<div class="ct-product-title" style="background-color:#578EBE">
+												知识问答
+											</div>
+											<div class="question">
+												
+											</div>
+										</div>-->
+<!--                <div class="ct-finish">
+                  <div class="ct-finish-title">
+                    等待处理
+                  </div>
+                  <div class="question">
+                    等待完善。。。
+                  </div>
+                </div>-->
+              </div>
+            </div>
+
+            <div id="multipanelcomposite_manage" class="ct-displayNone ct-multicomposite">
+            </div>
+          </div>
+        </div>
+
+        <div id="ct-content-custom" class="ct-displayNone ct-clear ct-content-div" style="background: azure;">
+          <div class="ct-customView">
+            <div class="ct-displayNone">
+              <div class="ct-baseInfo" style="border-color: #578EBE;">
+                <!--<div class="ct-infoTitle" style="padding-left: 10px; background-color: #578EBE;">软叫号</div>-->
+                <div id="softCallFunc" class="ct-softCallFunc">
+                  <!-- <div class="ct-orderCall">
+											<img src="_img/icon/icon_order_normal.png" alt="">
+										</div> -->
+                  <div class="ct-softCallButton" type="1">
+                    <img src="_img/icon/顺呼.png" />
+                    <span>顺    呼</span>
+                  </div>
+                  <!-- <div class="ct-softCallButton" type="2">
+											<img src="_img/icon/重呼.png" />
+											<span>重    呼</span>
+										</div> -->
+                  <div class="ct-softCallButton" type="2">
+                    <img src="_img/icon/优先叫号.png" />
+                    <span>优先叫号</span>
+                  </div>
+                  <div class="ct-softCallButton" type="3">
+                    <img src="_img/icon/暂停.png" />
+                    <span>暂    停</span>
+                  </div>
+                  <!-- <div class="ct-softCallButton" type="5">
+											<img src="_img/icon/转移.png" />
+											<span>转    移</span>
+										</div> -->
+                  <div class="ct-softCallButton" type="4">
+                    <img src="_img/icon/呼叫大堂经理.png" />
+                    <span>大堂经理</span>
+                  </div>
+                </div>
+                <div id="bindWindow" class="ct-softCallFunc ct-displayNone">
+                  <div class="ct-softCallButton" type="7" style="margin-left: 80px; margin-top: 58px;">
+                    <img src="_img/icon/窗口绑定.png" />
+                    <span>窗口绑定</span>
+                  </div>
+                </div>
+              </div>
+              <div class="ct-baseInfo" style="border-color: #36B98A; padding-bottom: 10px;">
+                <!--<div class="ct-infoTitle" style="background-color: #36B98A;">排队信息</div>-->
+                <div style="margin-top: 10px;">
+                  <label>当前排队号：</label><label id="ct-queueNo">00000</label>
+                </div>
+                <div style="margin-top: 10px;">
+                  <label>等待人数：</label><label id="ct-waitNum">0</label>
+                </div>
+              </div>
+
+              <div class="ct-baseInfo" style="border-color: #00A6B1; padding-bottom: 10px; border-bottom: 0;">
+                <!--<div class="ct-infoTitle" style="background-color: #00A6B1;">流水信息</div>-->
+                <div style="margin-top: 10px;">
+                  <label>当前流水号：</label><label id="ct-custom-flow">2017070316180005</label>
+                </div>
+                <div style="margin-top: 10px;">
+                  <label>服务客户数：</label><label id="ct-custom-custNum">1</label>
+                </div>
+                <div style="margin-top: 10px;">
+                  <label>办理交易数：</label><label id="ct-custom-busiNum">5</label>
+                </div>
+              </div>
+              <!--<div class="ct-baseInfo" style="border-color: #F5A623; padding-bottom: 10px;">
+									<div class="ct-infoTitle" style="background-color: #F5A623;">服务信息</div>
+									<div style="margin-top: 10px;">
+										<label>服务时长：</label><label>00:01:00</label>
+									</div>
+									<div style="margin-top: 10px;">
+										<label>均值：</label><label>00:01:00</label>
+									</div>
+									<div style="margin-top: 10px;">
+										<label>交易时长：</label><label>00:01:00</label>
+									</div>
+									<div style="margin-top: 10px;">
+										<label>均值：</label><label>00:01:00</label>
+									</div>
+								</div>-->
+            </div>
+
+            <div id="ct-custom-info-div" style="height: calc(100% - 10px);position: relative;">
+                <div id="ct-remote-task" class="ct-displayNone" style="margin-top: 10px;">
+                      <div class="ct-customInfoTitle" style="margin-top: 10px;">
+                         <i class=" fa fa-tasks"></i>
+                         <span>我的任务</span>
+                         <a id="taskRefresh" style="float: right;margin-right: 10px;color: white;" onclick="RefreshRemoteTasks()">刷新</a>
+                         <i class=" fa fa-refresh ct-refresh" onclick="RefreshRemoteTasks()"></i>               
+                      </div>
+<!--************2018-05-05/16:27高艺祥修改，去除数量字符的 括号******************************************************************-->                      
+                      <div class="ct-input-div">
+                        <label> 已处理任务总数:</label>
+                        <label id="ct-show-totalTasks"></label>
+                      </div>
+                      <div class="ct-input-div">
+                        <label>授权通过任务数:</label>
+                        <label id="ct-show-passTasks"></label>
+                      </div>
+                      <div class="ct-input-div">
+                        <label> 授权拒绝任务数:</label>
+                        <label id="ct-show-refuseTaseks"></label>
+                      </div>
+<!--*******************************高艺祥2018-05-14/20:25注释******************************
+                      <div class="ct-input-div">
+                        <label>授权终止任务数:</label>
+                        <label id="ct-show-endTasks"></label>
+                      </div>
+**************************************************结束********************************-->
+                      <div class="ct-input-div">
+                        <label>网点待补扫任务数:</label>
+                        <label id="ct-show-nopassTasks"></label>
+                      </div>
+<!--***************************End*******************************************************-->                      
+                  </div>
+              <div class="ct-customInputInfo ct-display">
+                <div>
+                  <ul class="ct-tab">
+                    <li class="ct-tab-seleted">
+                      <a href="javascript:;" value="ct-custom-personal">个人</a>
+                    </li>
+                    <li class="ct-tab-unseleted">
+                      <a href="javascript:;" value="ct-custom-company">对公</a>
+                    </li>
+                  </ul>
+                </div>
+                <div class="ct-tabContent " style="top: 30px; margin-top: 0px;">
+              <!--   <div id="ct-custom-tabInput">-->
+                  <div id="ct-custom-personal" >
+                    <div class="ct-customInfoTitle">
+                      <span>介质信息</span>
+                    </div>
+                    <div>
+<!--                      <select id="customType">
+					    <option value="" selected="true" disabled="true" style="color: gainsboro;">请选择凭证类型</option>
+				        <option value="01">01-身份证</option>
+				        <option value="02">02-军官证</option>
+						<option value="03">03-户口簿</option>
+						<option value="04">04-警官证</option>
+						<option value="05">05-士兵证</option>
+						<option value="06">06-护照</option>
+						<option value="07">07-港澳台居民通行证</option>
+						<option value="10">10-外国人永久居留证</option>
+						<option value="11">11-临时身份证</option>
+						<option value="49">49-其他(对私)</option>
+						<option value="55">55-开户证明</option>
+					  </select>-->
+                    </div>
+                    <div>
+                      <select id="customMode1" onkeypress="if(event.keyCode==13) focusNextInput(this);" onchange="ChangeCustomMode1()">
+						<option value="" selected="true" disabled="true" style="color: gainsboro;">请选择输入方式</option>
+				        <option value="0" >0-手工输入</option>
+						<option value="2" >2-磁条输入</option>
+						<option value="6" >6-IC卡输入</option>
+					  </select>
+                    </div>
+                    <div>
+                        <!--<input id="certNum" type="text" placeholder="请输入凭证账号" onkeydown="onlyNum();" style="ime-mode:Disabled">-->
+                        <!--<input  type="text" placeholder="请输入凭证账号" onkeypress="if(event.keyCode==13) focusNextInput(this);" onkeydown="onlyNum();" style="ime-mode:Disabled"></input>-->
+                      <input id="certNum" type="text" placeholder="请输入凭证账号" onkeypress="if(event.keyCode==13) focusNextInput(this);else onlyNum();" onkeyup="value=value.replace(/[^\d]/g,'')" onfocus="certNumOnFocus()"></input>
+                    </div>
+                    <div>
+                      <input id="customQueryButton" type="button" value="查询" onkeypress="if(event.keyCode==13) CustomQueryButton_Entry();"/>
+                    </div>
+                    
+                      <div class="ct-customInfoTitle" style="background-color: #36B98A;">
+                        <span>客户信息</span>
+                      </div>
+                      <div>
+                        <select id="selectMode" onchange="ChangeSelectMode()" onkeypress="if(event.keyCode==13) SelectMode_Entry();" >
+						  <option value="" selected="true" disabled="true" style="color: gainsboro;">请选择查询类型</option>
+						  <option value="0" >0-客户号</option>
+						  <option value="1" >1-证件号</option>
+						</select>
+                      </div>
+                      <div>
+                        <select id="voucherType" onchange="ChangeVoucherType()">
+						   <option value="" selected="true" disabled="true" style="color: gainsboro;">请选择证件种类</option>
+						   <option value="01" onkeypress="if(event.keyCode==13) focusNextInput(this);">01-身份证</option>
+				        <option value="02" onkeypress="if(event.keyCode==13) focusNextInput(this);">02-军官证</option>
+						<option value="03" onkeypress="if(event.keyCode==13) focusNextInput(this);">03-户口簿</option>
+						<option value="04" onkeypress="if(event.keyCode==13) focusNextInput(this);">04-警官证</option>
+						<option value="05" onkeypress="if(event.keyCode==13) focusNextInput(this);">05-士兵证</option>
+						<option value="06" onkeypress="if(event.keyCode==13) focusNextInput(this);">06-护照</option>
+						<option value="07" onkeypress="if(event.keyCode==13) focusNextInput(this);">07-港澳台居民通行证</option>
+						<option value="10" onkeypress="if(event.keyCode==13) focusNextInput(this);">10-外国人永久居留证</option>
+						<option value="11" onkeypress="if(event.keyCode==13) focusNextInput(this);">11-临时身份证</option>
+						<option value="49" onkeypress="if(event.keyCode==13) focusNextInput(this);">49-其他(对私)</option>
+						<option value="55" onkeypress="if(event.keyCode==13) focusNextInput(this);">55-开户证明</option>
+						</select>
+                      </div>
+                      <div>
+                        <select id="inputType2" >
+							<option value="" selected="true" disabled="true" style="color: gainsboro;">请选择输入方式</option>
+							<option value="0" onkeypress="if(event.keyCode==13) focusNextInput(this);">0-手工输入</option>
+						    <option value="1" onkeypress="if(event.keyCode==13) focusNextInput(this);">1-读取证件</option>
+						  <!--  <option value="6" onkeypress="if(event.keyCode==13) focusNextInput(this);">6-IC卡输入</option>-->
+						</select>
+                      </div>
+                      <div>
+                        <input id="accountInput" type="text" placeholder="请输入客户号或证件号码" onkeypress="if(event.keyCode==13) focusNextInput(this);" onkeyup="value=value.replace(/[^\w\/]/ig,'')" onfocus="ChangeInputType2()"/>
+                      </div>
+                      <div>
+                        <input id="customQueryButton1" type="button" value="查询" onkeypress="if(event.keyCode==13) focusNextInput(this);"/>
+                      </div>
+                    
+                    <!--									<div>
+										<div class="ct-customInfoTitle" style="background-color: #00A6B1;">
+											<span>客户号</span>
+										</div>
+										<div>
+											<select id="inputCustomType2">
+												<option value="" selected="true" disabled="true" style="color: gainsboro;">请选择客户类型</option>
+												<option value="1">1-个人客户</option>
+												<option value="2">2-对公客户</option>
+											</select>
+										</div>
+										<div>
+											<input id="customNum" type="text" placeholder="请输入客户号" />
+										</div>
+										<div>
+											<input id="accountNoButton" type="button" value="查询" />
+										</div>
+									</div>-->
+                  </div>
+                  <!--对公框架gl新增 11.15-->
+                  <div id="ct-custom-company" class="ct-displayNone">
+                    <div class="ct-customInfoTitle">
+                      <span>介质信息</span>
+                    </div>
+                    <div style="font-size: 15px;">
+                        <label style="margin-left: 10px">客户类型:</label>
+                        <label id="ct-show-cstNum12">对公账号</label>
+                      </div>
+                    <div style="font-size: 15px;">
+                      <label style="margin-left: 10px">输入方式:</label>
+                      <label>0-手工输入</label>
+                    </div>
+                    <div >
+                      <input id="customNumInput" type="text" placeholder="请输入对公账号" onkeypress="if(event.keyCode==13) focusNextInput(this);else onlyNum();" onkeyup="value=value.replace(/[^\d]/g,'')"/>
+                    </div>
+                    <div>
+                      <input id="companyQueryButton" type="button" value="查询" onkeypress="if(event.keyCode==13) focusNextInput(this);"/>
+                    </div>
+
+                    <div class="ct-customInfoTitle" style="background-color: #36B98A;">
+                      <span>客户信息</span>
+                    </div>
+                    <div>
+                      <input id="customNumInput1" type="text" placeholder="请输入客户号" onkeypress="if(event.keyCode==13) focusNextInput(this);else onlyNum();" onkeyup="value=value.replace(/[^\d]/g,'')"/>
+                    </div>
+<!--                    <div>
+                      <input id="customNumInput" type="text" placeholder="请输入企业代码" />
+                    </div>-->
+                    <div>
+                      <input id="companyQueryButton1" type="button" value="查询" onkeypress="if(event.keyCode==13) focusNextInput(this);"/>
+                    </div>
+                  </div>
+                  <!--新增授权任务界面 4.18 g-->
+                  
+                </div>
+                <!--</div>-->
+              </div>
+              <div class="ct-customShowInfo ct-displayNone">
+                <!--<div class="ct-tabContent " style="margin-top: 0px;">-->
+                  <div id="ct-custom-info" class="ct-display">
+                    <div>
+                        <div class="ct-customInfoTitle">
+                      <span>客户信息</span>
+                    </div>
+                      <div class="ct-input-div">
+                        <label>客户号:</label>
+                        <label id="ct-show-cstNum"></label>
+                        <a id="cutomModifyButton"> 修改 </a>
+                        <!--<button id="cutomModifyButton">修改</button>-->
+                      </div>
+                      <div class="ct-input-div" style="height: 120px;">
+                        <div style="width: 105px; height: 120px; float: left;">
+                          <img id="IdPhoto" style="width: 105px; height: 120px;" src="D:\沈阳农信\lnameba_abc_50030\辽宁农信\身份证照片.jpg" />
+                        </div>
+                        <div style="width: 105px; height: 120px; float: left; margin-left: 10px;">
+                          <img id="IdCheckPhoto" style="width: 105px; height: 120px;" src="_img/证件头像.bmp" />
+                        </div>
+                      </div>
+                      <div class="ct-input-div ct-clear">
+                        <label>证件类型:</label>
+                        <label id="ct-show-pcftTp"></label>
+                      </div>
+                      <div class="ct-input-div ct-clear">
+                        <label>证件号码:</label>
+                        <label id="ct-show-pctfNum"></label>
+                      </div>
+                      <div class="ct-input-div">
+                        <label> 建立机构:</label>
+                        <label id="ct-show-bank"></label>
+                      </div>
+                      <div class="ct-input-div">
+                        <label>客户姓名:</label>
+                        <label id="ct-show-pcstNm"></label>
+                      </div>
+                      <div class="ct-input-div">
+                        <label> 客户经理:</label>
+                        <label id="ct-show-pcstMaNm"></label>
+                      </div>
+                      <div class="ct-input-div">
+                        <label>联系电话:</label>
+                        <label id="ct-show-phone"></label>
+                      </div>
+                      <div class="ct-input-div">
+                        <label>证件有效期:</label>
+                        <label id="ct-show-pcstdt"></label>
+                      </div>
+                      <div class="ct-input-div">
+                        <label> 系统证件有效期:</label>
+                        <label id="ct-show-pcstdt2"></label>
+                      </div>
+                      <div class="ct-input-div">
+                        <label>客户类别:</label>
+                        <label id="ct-show-pcstLevel"></label>
+                      </div>
+                      <div class="ct-input-div">
+                        <label>银行服务评级:</label>
+                        <label id="ct-show-cgy"></label>
+                      </div>
+                      <div class="ct-input-div">
+                        <a id="resident" class="cutomModifyButton">税收居民标识: </a> 
+                        <label id="ct-show-checkResident"></label>
+                      </div>
+                      <div class="ct-input-div">
+                        <a id="idCheck" class="cutomModifyButton"> 联网核查: </a>
+                        <label id="ct-show-checkStatus">未核查</label>
+                      </div>
+                      <div class="ct-input-div">
+                        <a id="agentInfo" style="display: inline-block; " class="cutomModifyButton"> 代理人信息: </a>
+                        <label id="ct-show-agentStatus">未录入</label>
+                      </div>
+                    </div>
+                    <div style="height: 421px; width: auto;" class="ct-displayNone">
+                      <div class="ct-input-div">
+                        <label>证件类型</label>
+                        <label id="ct-show-ccftTp">1-身份证</label>
+                      </div>
+                      <div class="ct-input-div">
+                        <label>证件号码</label>
+                        <label id="ct-show-ccftNum"></label>
+                      </div>
+                      <div class="ct-input-div">
+                        <label>客户名称</label>
+                        <label id="ct-show-ccstNm">张三</label>
+                      </div>
+                      <div class="ct-input-div">
+                        <a id="operator">代理人信息</a>
+                      </div>
+                      <div class="ct-input-div">
+                        <a id="companyInfo">对公客户详情</a>
+                      </div>
+                    </div>
+                    <div id="ct-account-list" style="margin-top: 2vh; overflow-y: auto; border-top: 1px solid rgba(128, 128, 128, 0.2);">
+                      <div class="ct-input-div">
+                        <label>介质信息:</label>
+                        <a id="vouNoInfo" class="cutomModifyButton"> 切换 </a>
+                      </div>
+                      <div class="ct-input-div">
+                        <label>介质类型:</label>
+                        <label id="ct-show-cstAccType1"></label>
+                      </div>
+                      <div class="ct-input-div">
+                        <label>账号:</label>
+                        <label id="ct-show-vouNo"></label>
+                      </div>
+                      <div class="ct-input-div" style="display: none;">
+                        <label>余额:</label>
+                        <label></label>
+                        <label id="ct-show-Bal">元</label>
+                      </div>
+                      <div class="ct-input-div">
+                        <label>介质状态:</label>
+                        <label id="ct-show-Stat"></label>
+                      </div>
+                      <div class="ct-input-div">
+                        <label>输入方式:</label>
+                        <label id="ct-show-Mode">0-手工输入</label>
+                      </div>
+                    </div>
+
+                  </div>
+
+                  <div id="ct-account-info" class="ct-displayNone">
+                    <div>
+                      <!--<div class="ct-input-div">
+													<label>活期存款:</label>
+													<label id="ct-show-current">0.00</label>
+												</div>
+												<div class="ct-input-div">
+													<label>定期存款:</label>
+													<label id="ct-show-terminal">0.00</label>
+												</div>
+												<div class="ct-input-div">
+													<label>理财信息:</label>
+													<label id="ct-show-financial">0.00</label>
+												</div>-->
+                      <div>
+                        <div id="chart" style="height: 150px; width: 235px;position: relative;top: 20px;left: -15px;"></div>
+                        <script>
+                          var myChart = echarts.init(document.getElementById('chart'));
+                          myChart.setOption({
+
+                            title: {
+                              text: '',
+                              subtext: '',
+                              x: 'center'
+                            },
+                            tooltip: {
+                              trigger: 'item',
+                              formatter: "{a} <br/>{b} : {c} ({d}%)"
+                            },
+                            color: ['#36B98A', '#1B8E9D', '#0D6DB2'],
+                            calculable: true,
+                            series: [{
+                              name: '账户信息',
+                              type: 'pie',
+                              radius: '40%',
+                              center: ['50%', '40%'],
+                              color: ['#36B98A', '#1B8E9D', '#0D6DB2'],
+                              data: [{
+                                value: 1000.00,
+                                name: '活期',
+                                color: '#36B98A'
+                              },
+                              {
+                                value: 1000.00,
+                                name: '定期',
+                                color: '#1B8E9D'
+
+                              },
+                              {
+                                value: 1000.00,
+                                name: '理财',
+                                color: '#0D6DB2'
+                              }
+                              ]
+                            }]
+
+                          });
+                        </script>
+                      </div>
+                      <div class="ct-input-div">
+                        <a id="customView">客户视图</a>
+                      </div>
+                    </div>
+                    <div id="ct-account-list" style="margin-top: 10px; height: 460px; overflow-y: auto; border-top: 1px solid rgba(128, 128, 128, 0.2);">
+                    </div>
+                  </div>
+
+                  <div id="ct-financial-info" class="ct-displayNone">
+                    <div class="ct-customInfoTitle">
+                      <span>客户信息</span>
+                    </div>
+                    <div class="ct-input-div">
+                        <label>客户号:</label>
+                        <label id="ct-show-gcstNum">200424007</label>
+                        <a id="cutomModifyButton1" class="cutomModifyButton">修改</a>
+                    </div>
+                    <div class="ct-input-div">
+                      <label>客户名称:</label>
+                      <label id="ct-show-gcstNm"></label>
+                    </div>
+                    <div class="ct-input-div">
+                      <label>建立机构:</label>
+                      <label id="ct-show-gbank"></label>
+                    </div>
+                    <div class="ct-input-div">
+                      <label>国别代码:</label>
+                      <label id="ct-show-gcstNaty"></label>
+                    </div>
+                    <div class="ct-input-div">
+                      <label>客户综合评级:</label>
+                      <label id="ct-show-gcstRtg"></label>
+                    </div>
+                    <div class="ct-input-div">
+                      <label>经济性质:</label>
+                      <label id="ct-show-gecp"></label>
+                    </div>
+                    <div class="ct-input-div">
+                      <label>证件类型:</label>
+                      <label id="ct-show-gCtfTp"></label>
+                    </div>
+                    <div class="ct-input-div">
+                      <label>证件号码:</label>
+                      <label id="ct-show-gctfNum"></label>
+                    </div>
+<!--                    <div class="ct-input-div">
+                      <label>营业执照编号:</label>
+                      <label id="ct-show-gbuslic"></label>
+                    </div>
+                    <div class="ct-input-div">
+                      <label>统一社会信用代码:</label>
+                      <label id="ct-show-gcretc"></label>
+                    </div>
+                    <div class="ct-input-div">
+                      <label>批文:</label>
+                      <label id="ct-show-gcode"></label>
+                    </div>-->
+                    <div class="ct-input-div">
+                      <label>系统证件有效期:</label>
+                      <label id="ct-show-gcodedate"></label>
+                    </div>
+                    <div class="ct-input-div" style="border-top: 1px solid rgba(128, 128, 128, 0.2);margin-top: 1vh;padding-top: 0.5vh;">
+                      <label>法定代表人:</label>
+                      <label id="ct-show-juidman"></label>
+                    </div>
+                    <div class="ct-input-div">
+                      <label>证件类型:</label>
+                      <label id="ct-show-gcsttp"></label>
+                    </div>
+                    <div class="ct-input-div">
+                      <label>证件号码:</label>
+                      <label id="ct-show-gcstno"></label>
+                    </div>
+<!-- *******************高艺祥 2018-05-03/22:45增加********************************************************* -->
+                      <div class="ct-input-div">
+                        <label>法人证件有效期:</label>
+                        <label id="ct-show-gcstdate"></label>
+                      </div>
+<!-- *******************end********************************************************* -->                      
+                    <div class="ct-input-div">
+                        <a id="resident1" class="cutomModifyButton">税收居民标识: </a> 
+                        <label id="ct-show-checkResident1"></label>
+                      </div>
+                    <div class="ct-input-div">
+                      <a id="idCheck1" class="cutomModifyButton"> 联网核查:</a>
+                      <label id="ct-show-checkStatus1" >未核查</label>
+                    </div>
+<!-- *******************************高艺祥2018-05-12/14:13 增加 *******************************************-->                    
+                    <div class="ct-input-div" style="border-top: 1px solid rgba(128, 128, 128, 0.2);margin-top: 1vh;padding-top: 0.5vh;">
+                      <a id="checkSeal" style="display: inline-block;" class="cutomModifyButton">验印标志:</a>
+                      <label id="checkSealLabel" >未验印</label>
+                    </div>
+<!-- *******************************结束 *******************************************-->                    
+                    <div class="ct-input-div" style="border-top: 1px solid rgba(128, 128, 128, 0.2);margin-top: 1vh;padding-top: 0.5vh;">
+                      <a id="agentInfo1" style="display: inline-block; " class="cutomModifyButton"> 代理人信息: </a>
+                      <label id="ct-show-agentStatus1">未录入</label>
+                    </div>
+                    <div id="ct-account-list" style="margin-top: 2vh; overflow-y: auto; border-top: 1px solid rgba(128, 128, 128, 0.2);">
+                      <div class="ct-input-div">
+                        <label>介质信息:</label>
+                        <a id="vouNoInfo1" class="cutomModifyButton"> 切换 </a>
+                      </div>
+                      <div class="ct-input-div">
+                        <label>账号:</label>
+                        <label id="ct-show-vouNo1"></label>
+                      </div>
+                      <div class="ct-input-div">
+                      <label>账户性质:</label>
+                      <label id="ct-show-gctq"></label>
+                    </div>
+                      <div class="ct-input-div" style="display: none;">
+                        <label>余额:</label>
+                        <label></label>
+                        <label id="ct-show-Bal1">元</label>
+                      </div>
+                      <div class="ct-input-div">
+                        <label>介质状态:</label>
+                        <label id="ct-show-Stat1"></label>
+                      </div>
+                      <div class="ct-input-div">
+                        <label>输入方式:</label>
+                        <label id="ct-show-Mode1">0-手工输入</label>
+                      </div>
+                    </div>
+                  </div>
+                  <div id="ct-custom-button" style="position: absolute; width: 100%; bottom: 10px;">
+                <!--									<div class="ct-customInfoButtonDiv">
+										<input id="submitButton" type="button" value="待提交(0)" class="ct-customInfoButton" />
+									</div>-->
+                <div class="ct-customInfoButtonDiv" style='position:absolute; bottom:10px; '>
+                  <input id="serviceEndButton" type="button" value="服务结束" class="ct-customInfoButton" />
+                </div>
+              </div>
+                </div>
+                
+              <!--</div>-->
+              
+            </div>
+          </div>
+
+          <div id="multipanelcomposite_custom" class="ct-menu">
+          </div>
+
+        </div>
+      </div>
+    </div>
+
+    <div id="footer" class="ct-footer">
+      <div>
+        <div class="ct-dropup" id="hotkey">
+          <ul class="ct-dropup-menu ct-hide" id="hotkeyList" style="width: 180px; height: 312px;">
+            <li class="ct-dropup-content">
+              <div class="ct-dropup-content-list" style="width: 180px; height: 312px;">
+                <ul id="hotKeyList" class="ct-dropup-content-ul">
+          <!--        <li id="wangyin">
+					<span>网银内管平台</span>
+				  </li>
+				  <li id="wyceshi">
+					<span>测试取值</span>
+				  </li>-->
+				  
+				  <li id="help">
+                    <span>F1帮助</span>
+                    </li>
+				  
+				  
+                  <li id="clock">
+                    <span>F2锁屏</span>
+                  </li>
+                  <!-- <li id="cthotkeyswitch">
+											<span>F2切换服务</span>
+										</li>
+										<li id="cthotkeycall">
+											<span>F3呼叫</span>
+										</li>
+										<li id="cthotkeyprecall">
+											<span>F4优先</span>
+										</li> -->
+                  <!--										<li id="cthotkeymanager">
+											<span>F3大堂经理</span>
+										</li>-->
+
+                  <li id="cthotkeyinput">
+                    <span>F4获取输入框焦点</span>
+                  </li>
+                  
+                  
+                    <li id="submit">
+                    <span>/提交</span>
+                  </li>
+                   <li id="alone">
+                    <span>Shift+s单条数据</span>
+                  </li>
+                   <li id="escs">
+                    <span>Esc退出</span>
+                  </li>
+                  
+                  
+                  <!-- <li id="cthotkeyMainmenu">
+											<span>F5主菜单</span>
+										</li>
+										<li id="cthotkeyLastMenu">
+											<span>F6上一层菜单 </span>
+										</li> -->
+                  <li id="cthotkeystop" class="ct-callagin">
+                    <span>重呼</span>
+                  </li>
+                  <li id="cthotkeytrans" class="ct-callagin">
+                    <span>呼叫转移</span>
+                  </li>
+                </ul>
+              </div>
+            </li>
+          </ul>
+          <div class="ct-dropup-tooltip ct-hide">
+            <span>热键</span>
+          </div>
+          <a href="javascript:;" style="width: 50px;">
+							<i class="ct-icon-dropup fa fa-list-ul"></i>
+						</a>
+        </div>
+
+        <div class="ct-dropup" id="calc">
+          <ul class="ct-dropup-menu ct-hide" id="calcList" style="width: 180px; height: 312px;">
+            <li class="ct-dropup-content">
+              <div class="ct-dropup-content-list" style="width: 180px; height: 312px;">
+                <ul class="ct-dropup-content-ul">
+<!--                  <li id="ct-depositCalc">
+                    <span>理财计算器</span>
+                  </li>-->
+<!--                  <li id="ct-loanCalc">
+                    <span>汇率计算器</span>
+                  </li>
+                  <li id="ct-financialCalc">
+                    <span>券别计算器</span>
+                  </li>-->
+                  <li id="ct-commonCalc">
+                    <span>普通计算器</span>
+                  </li>
+                  <!--<li>
+								<span>理财收益试算</span>
+							</li>
+							<li>
+								<span>汇兑计算器</span>
+							</li>
+							<li>
+								<span>存款利率表查询</span>
+							</li>
+							<li>
+								<span>贷款利率表查询</span>
+							</li>-->
+                </ul>
+              </div>
+            </li>
+          </ul>
+          <div class="ct-dropup-tooltip ct-hide">
+            <span>试算工具</span>
+          </div>
+          <a href="javascript:;" style="width: 50px;"> 
+            <i class="ct-icon-dropup fa fa-calculator"></i>
+            <i class="ct-icon-dropup "></i>
+          </a>
+        </div>
+        
+        <div class="ct-dropup ct-display" id="cash">
+         
+          <div class="ct-dropup-tooltip ct-hide">
+            <span>账簿</span>
+          </div>
+          <a href="javascript:;" style="width: 50px;">
+							<i class="ct-icon-dropup fa fa-shopping-bag"></i>
+						</a>
+        </div>
+
+        <div class="ct-dropup" id="message">
+          <ul class="ct-dropup-menu ct-message ct-hide" style="width: 800px; height: 600px; top: -610px;">
+            <li class="ct-dropup-content" style="width: 100%; height: 100%;">
+              <div id="ChatTool" style="width: 100%; height: 100%;">
+              </div>
+            </li>
+          </ul>
+          <div class="ct-dropup-tooltip ct-hide">
+            <span>消息</span>
+          </div>
+          <a href="javascript:;">
+							<i class="ct-icon-dropup"></i>
+						</a>
+        </div>
+      </div>
+      <div class="ct-tellerInfo">
+        <div class="ct-BrahNum">
+          <span>机构号：</span>
+          <span class="" id="tellerBrahNum"></span>
+        </div>
+        <div class="ct-Tlr">
+          <span>机构名称：</span>
+          <span id="tellerTlr"></span>
+        </div>
+
+      </div>
+      <div class="ct-time" id="showTime">
+        <span class="AcgDate">会计日期 : </span>
+        <span class="s" id="chkDate" style="margin-right:100px"></span>
+        <span class="t"></span>
+      </div>
+    </div>
+
+    <div id="ct-deviceStatus" class="ct-displayList ct-aequilate4 ct-displayNone" style="float: left; border: 1px solid #36B98A; position: absolute; bottom: 37px; left: 0px; box-shadow: 5px -5px 5px rgba(0, 0, 0, 0.6);">
+      <div class="ct-displayTitle" style="background-color: #36B98A;">
+        <span>外设状态</span>
+        <i class="fa fa-close ct-refresh" onclick="closeDiv('ct-deviceStatus');"></i>
+        <i class="fa fa-refresh ct-refresh" onclick="refreshDeviceStatus();"></i>
+      </div>
+      <div id="deviceList" class="ct-displayDetail">
+        <ul id="deviceListItem" class="ct-displayDetailItem">
+          <li class="ct-clear">
+            <span class="ct-deviceName">打印机：</span>
+            <div class="ct-devicestatusNormal"></div>
+          </li>
+          <li class="ct-clear">
+            <span class="ct-deviceName">密码键盘：</span>
+            <div class="ct-devicestatusNormal"></div>
+          </li>
+          <li class="ct-clear">
+            <span class="ct-deviceName">柜外清：</span>
+            <div class="ct-devicestatusNormal"></div>
+          </li>
+          <li class="ct-clear">
+            <span class="ct-deviceName">二代证：</span>
+            <div class="ct-devicestatusNormal"></div>
+          </li>
+          <li class="ct-clear">
+            <span class="ct-deviceName">磁卡读写器：</span>
+            <div class="ct-devicestatusNormal"></div>
+          </li>
+          <li class="ct-clear">
+            <span class="ct-deviceName">IC卡：</span>
+            <div class="ct-devicestatusNormal"></div>
+          </li>
+          <li class="ct-clear">
+            <span class="ct-deviceName">评价器：</span>
+            <div class="ct-devicestatusNormal"></div>
+          </li>
+          <li class="ct-clear">
+            <span class="ct-deviceName">支付密码器：</span>
+            <div class="ct-devicestatusNormal"></div>
+          </li>
+        </ul>
+      </div>
+    </div>
+
+    <div id="ct-serviceInfo" class="ct-displayList ct-aequilate4 ct-displayNone" style="float: left; border: 1px solid #00A6B1;position: absolute; bottom: 5px; left: 0px; box-shadow: 5px -5px 5px rgba(0, 0, 0, 0.6);">
+      <div id="service" class="ct-displayTitle" style="background-color: #00A6B1;">
+        <span>服务信息</span>
+        <i class="fa fa-close ct-refresh" onclick="closeDiv('ct-serviceInfo');"></i>
+        <i class="fa fa-refresh ct-refresh" onclick="refreshService();"></i>
+      </div>
+      <div id="myServiceList" class="ct-displayDetail">
+        <ul id="myServiceListItem" class="ct-displayDetailItem">
+          <li>
+            <span>ABS节点：</span>
+            <em>ABS01</em>
+          </li>
+          <li>
+            <span>ABS IP地址：</span>
+            <em>3.1.11.8</em>
+          </li>
+          <li>
+            <span class="ct-netStatus">ABC连接状态：</span>
+            <div id="ct-netStatusDiv" class="ct-netStatusNormal"></div>
+          </li>
+          <li style="clear: both;">
+            <span>上次登录时间：</span>
+            <em>2017-05-23 09:01:01</em>
+          </li>
+        </ul>
+      </div>
+    </div>
+  </div>
+
+  <script type="text/javascript" src="./_js/jquery-2.1.3.min.js"></script>
+  <script type="text/javascript" src="./_js/adore-custom.js"></script>
+  <script type="text/javascript" src="./_js/main.js"></script>
+  <script type="text/javascript" src="./_js/internal.js"></script>
+  <script type="text/javascript" src="_js/PinYinDict.js"></script>
+  <script type="text/javascript" src="_js/adore-expandabletext.js"></script>
+  <script type="text/javascript" src="_js/require.js"></script>
+  <script>
+                          requirejs.config({
+                            baseUrl: '.',
+                            shim: {},
+                            paths: {},
+                            packages: []
+                          });
+  </script>
+  <script type="text/javascript" src="_js/AdoreTradeLib.js"></script>
+  <script>
+    require(["tradets/AdoreTradeLib"]);
+  </script>
+</body>
+
+</html>

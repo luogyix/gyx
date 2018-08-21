@@ -1,0 +1,72 @@
+@CHARSET "UTF-8";
+table td {
+	font-size: 15px;/*设置表格中字体大小*/
+	font-family: '黑体', '宋体', sans-serif;/*规定文本的字体系列。*/
+}
+#l_button{
+	/*相对于父元素，进行定位*/
+	position: absolute;/*定位方式为绝对定位*/
+	right: 145px;
+}
+ #z_button{
+ 	/*相对于父元素，进行定位*/
+ 	position: absolute;
+ 	right: 65px;
+ }
+ .loginButton{
+ 	border-radius: 28px;/*圆角级别*/
+ 	border: 0px !important;/*边框大小为0，!important设置此样式优先级为最高*/
+ 	outline: none;/*设置边框为没有任何样式*/
+ 	background-color: #44c767;/*背景颜色*/
+    -moz-border-radius: 28px;/*圆角，兼容chrome(谷歌)和safari*/
+    -webkit-border-radius: 28px;/*圆角，兼容火狐*/
+    display: inline-block;/*设置布局类型。元素既具有block元素可以设置width和height属性的特性，又保持了inline元素不换行的特性*/
+    color: #ffffff;/*颜色*/
+    font-family: Arial;/*规定文本的字体系列。*/
+    font-size: 17px;/*设置字体大小*/
+    padding: 4px 10px;/*内边距*/
+    text-decoration: none;/*不修饰文本*/
+    text-shadow: 0px 1px 0px #2f6627;/*设置文字 阴影*/
+    
+ }
+ /*获得焦点*/
+ .loginButton:focus{
+ 	/*background-color: #5493f8;背景颜色*/
+ }
+ /*鼠标悬停*/
+ .loginButton:hover {
+    background-color:#5cbf2a;
+ }
+ /*点击样式*/
+ .loginButton:active {
+    position:relative;/*相对定位*/
+    margin-top: 1px;
+    background: radial-gradient(circle,#d7d7d7,#b9ccab,#a2d27f,#86d052)
+ }
+ body{ 
+	background-image:url(../picture/home_page_background/img4.jpg);/*body背景图片*/
+	/*background-size:cover;*/	
+ }
+.logon{
+	width: 250px;
+ 	height: 150px; 
+ 	padding: 20px; /*内边距*/
+ 	position: absolute;/*设置为绝对定位*/
+ 	top: 65%;/*距画面顶部百分比*/
+ 	left: 85%;/*距画面左侧百分比*/
+ 	margin: -70px 0 0 -170px;/*外边距的上 右  下 左*/
+}
+.loginInput{
+	border-radius: 5px;
+	background-color: #f8f5ff; 
+	border: 0px !important;
+	outline: none;
+}
+.loginInput:focus{
+	/*outline: royalblue auto 7px;*/
+	box-shadow: 0px 0px 20px royalblue;
+}
+
+.inputTitle{
+	text-align: right;/*文字右对齐*/
+}

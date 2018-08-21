@@ -1,0 +1,82 @@
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+	<modelVersion>4.0.0</modelVersion>
+	<parent>
+		<groupId>com.gyx</groupId>
+		<artifactId>gyx-manager</artifactId>
+		<version>0.0.1-SNAPSHOT</version>
+	</parent>
+	<artifactId>gyx-manager-dao</artifactId>
+	<!-- 添加工程依赖 -->
+	<dependencies>
+		<!-- Mybatis -->
+		<dependency>
+			<groupId>org.mybatis</groupId>
+			<artifactId>mybatis</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>org.mybatis</groupId>
+			<artifactId>mybatis-spring</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>com.github.miemiedev</groupId>
+			<artifactId>mybatis-paginator</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>com.github.pagehelper</groupId>
+			<artifactId>pagehelper</artifactId>
+		</dependency>
+		<!-- MySql -->
+		<dependency>
+			<groupId>mysql</groupId>
+			<artifactId>mysql-connector-java</artifactId>
+		</dependency>
+		<!--**************DB2***Start************************************************-->
+			<dependency>
+			    <groupId>org.apache.commons</groupId>
+			    <artifactId>commons-pool</artifactId>
+			</dependency>
+			<dependency>
+			    <groupId>org.apache.commons</groupId>
+			    <artifactId>commons-collections4</artifactId>
+			</dependency>
+			<dependency>
+			    <groupId>com.ibm.db2</groupId>
+			    <artifactId>db2jcc_license_cu</artifactId>
+			</dependency>
+			<dependency>
+			    <groupId>com.ibm.db2.jcc</groupId>
+			    <artifactId>db2jcc4</artifactId>
+			</dependency>
+			<dependency>
+			    <groupId>org.apache.commons</groupId>
+			    <artifactId>commons-dbcp2</artifactId>
+			</dependency>
+<!--**************End******************************************************** -->
+		<!-- 连接池 -->
+		<dependency>
+			<groupId>com.alibaba</groupId>
+			<artifactId>druid</artifactId>
+		</dependency>
+		<!-- dao层依赖pojo层 -->
+		<dependency>
+			<groupId>com.gyx</groupId>
+			<artifactId>gyx-manager-pojo</artifactId>
+			<version>0.0.1-SNAPSHOT</version>
+		</dependency>
+	</dependencies>
+	<!-- 如果不添加此节点mybatis的mapper.xml文件都会被漏掉。 -->
+	<build>
+		<resources>
+            <resource>
+                <directory>src/main/java</directory>
+                <includes>
+                    <include>**/*.properties</include>
+                    <include>**/*.xml</include>
+                </includes>
+                <filtering>false</filtering>
+            </resource>
+        </resources>
+	</build>
+<!-- 	<name>d</name> -->
+</project>

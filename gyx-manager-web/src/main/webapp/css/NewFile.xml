@@ -1,0 +1,560 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<platform xmlns="http://www.w3school.com.cn" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://www.w3school.com.cn platform.xsd">
+	<version>1.0</version>
+	<global>
+		<licenseFile>AFA.lic</licenseFile>
+		<instanceName>afa4j</instanceName>
+		<adminPort>9004</adminPort>
+		<scriptRoot>${workspace}/java</scriptRoot>
+		<scriptPaths>
+			<scriptPath>${workspace}/component/tech</scriptPath>
+			<scriptPath>${workspace}/component/business</scriptPath>
+		</scriptPaths>
+	</global>
+	<workgroups>
+		<workgroup id="1" name="赞同科技AMEBA配套监控">
+			<description>监控工作组</description>
+			<startupMode>0</startupMode>
+			<jvmOptions>-Xms1024m -Xmx1024m -XX:PermSize=256M
+				-XX:MaxPermSize=256M
+			</jvmOptions>
+			<startTimeout>600000</startTimeout>
+			<stopTimeout>60000</stopTimeout>
+			<lsrs>
+				<lsr id="1" name="AMEBA配套监控接入适配器">
+					<description>AMEBA配套监控接入适配器</description>
+					<flowControl>
+						<usable>false</usable>
+						<whitelist>
+							<trade mc="test001" tc="test9" />
+						</whitelist>
+					</flowControl>
+					<services>
+						<service id="6" name="aimlsr" type="99">
+							<description>aim外联总线</description>
+							<identifier>aimlsr</identifier>
+							<defaultMC>BASE</defaultMC>
+							<defaultTC>RegisterMessage</defaultTC>
+							<packetType>aim</packetType>
+							<aimPlatOptions>
+								<ioEventThreads>0</ioEventThreads>
+								<port>9090</port>
+								<devName>aimp1</devName>
+								<hostedAgents>s1-s9,testAgent,aimAgent234</hostedAgents>
+								<deployBasePath>${workspace}/version/versionfile
+								</deployBasePath>
+							</aimPlatOptions>
+						</service>
+						<service id="2" name="timer" type="2">
+							<description></description>
+							<defaultMC></defaultMC>
+							<defaultTC></defaultTC>
+							<packetType></packetType>
+							<tasks>
+								<!-- 定时任务 -->
+								<task id="1" name="taskavg_host1">
+									<description>统计数据</description>
+									<usable>true</usable>
+									<mode>0</mode>
+									<tradeInfo>
+										<mc>TIMESVR</mc>
+										<tc>TASK_AVG</tc>
+										<requestData>{"tablenames":["AIM_N_H_PROC_SUM_REP","AIM_N_JVMRUNINFO_REP"],"interval":"1"}
+										</requestData>
+										<sessionTimeout>20000</sessionTimeout>
+									</tradeInfo>
+									<conditions>
+										<condition>
+											<second>1</second>
+											<minute>*/1</minute>
+											<hour>*</hour>
+											<day>*</day>
+											<month>*</month>
+											<week>*</week>
+										</condition>
+									</conditions>
+								</task>
+								<task id="2" name="业务预警">
+									<description>业务预警</description>
+									<usable>true</usable>
+									<mode>0</mode>
+									<tradeInfo>
+										<mc>TIMESVR</mc>
+										<tc>AdvanceNotice</tc>
+										<requestData></requestData>
+										<sessionTimeout>200000</sessionTimeout>
+									</tradeInfo>
+									<conditions>
+										<condition>
+											<second>50</second>
+											<minute>*/1</minute>
+											<hour>*</hour>
+											<day>*</day>
+											<month>*</month>
+											<week>*</week>
+										</condition>
+									</conditions>
+								</task>
+								<task id="3" name="afa-flow-static">
+									<description>afa-flow-static</description>
+									<usable>true</usable>
+									<mode>0</mode>
+									<tradeInfo>
+										<mc>APP_AB4</mc>
+										<tc>DATASTATISSAVE</tc>
+										<requestData></requestData>
+										<sessionTimeout>200000</sessionTimeout>
+									</tradeInfo>
+									<conditions>
+										<condition>
+											<second>10</second>
+											<minute>*/1</minute>
+											<hour>*</hour>
+											<day>*</day>
+											<month>*</month>
+											<week>*</week>
+										</condition>
+									</conditions>
+								</task>
+								<task id="4" name="5minutssave">
+									<description>5分钟性能数据入</description>
+									<usable>true</usable>
+									<mode>0</mode>
+									<tradeInfo>
+										<mc>APP_AB4</mc>
+										<tc>INSTDATASTATIS5</tc>
+										<requestData></requestData>
+										<sessionTimeout>20000</sessionTimeout>
+									</tradeInfo>
+									<conditions>
+										<condition>
+											<second>25</second>
+											<minute>*/1</minute>
+											<hour>*</hour>
+											<day>*</day>
+											<month>*</month>
+											<week>*</week>
+										</condition>
+									</conditions>
+								</task>
+								<task id="5" name="absflows">
+									<description>abs业务流水统计入库</description>
+									<usable>true</usable>
+									<mode>0</mode>
+									<tradeInfo>
+										<mc>TIMESVR</mc>
+										<tc>ABFLOWSTAT1</tc>
+										<requestData></requestData>
+										<sessionTimeout>40000</sessionTimeout>
+									</tradeInfo>
+									<conditions>
+										<condition>
+											<second>25</second>
+											<minute>*/1</minute>
+											<hour>*</hour>
+											<day>*</day>
+											<month>*</month>
+											<week>*</week>
+										</condition>
+									</conditions>
+								</task>
+								<task id="6" name="abs5minflows">
+									<description>abs业务流水5分钟数据统计入库</description>
+									<usable>true</usable>
+									<mode>0</mode>
+									<tradeInfo>
+										<mc>TIMESVR</mc>
+										<tc>ABFLOWSTAT5min</tc>
+										<requestData></requestData>
+										<sessionTimeout>40000</sessionTimeout>
+									</tradeInfo>
+									<conditions>
+										<condition>
+											<second>25</second>
+											<minute>*/5</minute>
+											<hour>*</hour>
+											<day>*</day>
+											<month>*</month>
+											<week>*</week>
+										</condition>
+									</conditions>
+								</task>
+								<task id="7" name="absflowsclean">
+									<description>abs业务流水统计数据统计清除</description>
+									<usable>true</usable>
+									<mode>0</mode>
+									<tradeInfo>
+										<mc>TIMESVR</mc>
+										<tc>Abflowstatclean</tc>
+										<requestData></requestData>
+										<sessionTimeout>20000</sessionTimeout>
+									</tradeInfo>
+									<conditions>
+										<condition>
+											<second>0</second>
+											<minute>0</minute>
+											<hour>0</hour>
+											<day>*/1</day>
+											<month>*</month>
+											<week>*</week>
+										</condition>
+									</conditions>
+								</task>
+								<task id="8" name="absfminflowsclean">
+									<description>abs业务流水5分钟统计数据统计清除</description>
+									<usable>true</usable>
+									<mode>0</mode>
+									<tradeInfo>
+										<mc>TIMESVR</mc>
+										<tc>Abfminflowstatclean</tc>
+										<requestData></requestData>
+										<sessionTimeout>20000</sessionTimeout>
+									</tradeInfo>
+									<conditions>
+										<condition>
+											<second>0</second>
+											<minute>0</minute>
+											<hour>0</hour>
+											<day>*/1</day>
+											<month>*</month>
+											<week>*</week>
+										</condition>
+									</conditions>
+								</task>
+								<task id="9" name="insmoniter">
+									<description>实例状态检测</description>
+									<usable>true</usable>
+									<mode>0</mode>
+									<tradeInfo>
+										<mc>APP_AB3</mc>
+										<tc>ServiceStartupStatus</tc>
+										<requestData></requestData>
+										<sessionTimeout>20000</sessionTimeout>
+									</tradeInfo>
+									<conditions>
+										<condition>
+											<second>0</second>
+											<minute>*/1</minute>
+											<hour>*</hour>
+											<day>*</day>
+											<month>*</month>
+											<week>*</week>
+										</condition>
+									</conditions>
+								</task>
+								<task id="10" name="abscluster">
+									<description>abs集群信息入库</description>
+									<usable>true</usable>
+									<mode>0</mode>
+									<tradeInfo>
+										<mc>APP_AB4</mc>
+										<tc>INSTCLUSTERDATA</tc>
+										<requestData></requestData>
+										<sessionTimeout>20000</sessionTimeout>
+									</tradeInfo>
+									<conditions>
+										<condition>
+											<second>0</second>
+											<minute>*/1</minute>
+											<hour>*</hour>
+											<day>*</day>
+											<month>*</month>
+											<week>*</week>
+										</condition>
+									</conditions>
+								</task>
+								<task id="11" name="absdynmaic">
+									<description>abs服务信息采集</description>
+									<usable>true</usable>
+									<mode>0</mode>
+									<tradeInfo>
+										<mc>APP_AB4</mc>
+										<tc>ABS_DYNMAIC</tc>
+										<requestData></requestData>
+										<sessionTimeout>20000</sessionTimeout>
+									</tradeInfo>
+									<conditions>
+										<condition>
+											<second>0</second>
+											<minute>*/1</minute>
+											<hour>*</hour>
+											<day>*</day>
+											<month>*</month>
+											<week>*</week>
+										</condition>
+									</conditions>
+								</task>
+								<task id="12" name="abs_abclist">
+									<description>abs_abc列表信息入库</description>
+									<usable>true</usable>
+									<mode>0</mode>
+									<tradeInfo>
+										<mc>APP_AB4</mc>
+										<tc>ABS_ABCLIST</tc>
+										<requestData></requestData>
+										<sessionTimeout>20000</sessionTimeout>
+									</tradeInfo>
+									<conditions>
+										<condition>
+											<second>0</second>
+											<minute>*/1</minute>
+											<hour>*</hour>
+											<day>*</day>
+											<month>*</month>
+											<week>*</week>
+										</condition>
+									</conditions>
+								</task>
+								<task id="13" name="AFA性能数据同步">
+									<description>AFA性能数据同步</description>
+									<usable>true</usable>
+									<mode>0</mode>
+									<tradeInfo>
+										<mc>APP_AB4</mc>
+										<tc>INSTDATASTATISSAVE</tc>
+										<requestData></requestData>
+										<sessionTimeout>20000</sessionTimeout>
+									</tradeInfo>
+									<conditions>
+										<condition>
+											<second>30</second>
+											<minute>*/1</minute>
+											<hour>*</hour>
+											<day>*</day>
+											<month>*</month>
+											<week>*</week>
+										</condition>
+									</conditions>
+								</task>
+								<task id="14" name="afa-inst-load">
+									<description>afa-inst-load</description>
+									<usable>true</usable>
+									<mode>0</mode>
+									<tradeInfo>
+										<mc>APP_AB4</mc>
+										<tc>INSTDATALOAD</tc>
+										<requestData>{"interval":60}</requestData>
+										<sessionTimeout>200000</sessionTimeout>
+									</tradeInfo>
+									<conditions>
+										<condition>
+											<second>20</second>
+											<minute>*/1</minute>
+											<hour>*</hour>
+											<day>*</day>
+											<month>*</month>
+											<week>*</week>
+										</condition>
+									</conditions>
+								</task>
+								<task id="16" name="table_clean">
+									<description>AIM数据库数据清理</description>
+									<usable>true</usable>
+									<mode>0</mode>
+									<tradeInfo>
+										<mc>TIMESVR</mc>
+										<tc>Cleanruledb</tc>
+										<requestData></requestData>
+										<sessionTimeout>200000</sessionTimeout>
+									</tradeInfo>
+									<conditions>
+										<condition>
+											<second>0</second>
+											<minute>0</minute>
+											<hour>0</hour>
+											<day>*/1</day>
+											<month>*</month>
+											<week>*</week>
+										</condition>
+									</conditions>
+								</task>
+								<task id="15" name="aim_log_clean">
+									<description>AIM日志清理</description>
+									<usable>true</usable>
+									<mode>0</mode>
+									<tradeInfo>
+										<mc>TIMESVR</mc>
+										<tc>Aim_LogClean</tc>
+										<requestData>{"shell_path":"workspace/aim-file/","shell_name":"logclean.sh","log_path":"log/app/","interval":1}
+										</requestData>
+										<sessionTimeout>200000</sessionTimeout>
+									</tradeInfo>
+									<conditions>
+										<condition>
+											<second>0</second>
+											<minute>0</minute>
+											<hour>0</hour>
+											<day>*/1</day>
+											<month>*</month>
+											<week>*</week>
+										</condition>
+									</conditions>
+								</task>
+							</tasks>
+						</service>
+						<service name="文件传输服务" type="7" id="8">
+							<description>文件传输服务</description>
+							<aftOptions>
+								<port>40010</port>
+								<ioEventThreads>0</ioEventThreads>
+								<readTimeout>0</readTimeout>
+								<baseDir>/home/aim_ab/aim_server/workspace/version</baseDir>
+								<maxDirDepth>10</maxDirDepth>
+								<maxFileNameLength>20</maxFileNameLength>
+								<maxUploadFileSize>1G</maxUploadFileSize>
+								<maxDownloadFileSize>2G</maxDownloadFileSize>
+								<overrideIfExist>true</overrideIfExist>
+								<makeDirIfAbsent>true</makeDirIfAbsent>
+							</aftOptions>
+							<defaultMC></defaultMC>
+							<defaultTC></defaultTC>
+							<packetType>AFP</packetType>
+						</service>
+					</services>
+				</lsr>
+			</lsrs>
+			<svc>
+				<engineType>1</engineType>
+				<hotDeployment>true</hotDeployment>
+				<preloadScript>false</preloadScript>
+				<proxy>false</proxy>
+				<scriptPaths>
+					<scriptPath>${workspace}/trade/001</scriptPath>
+					<scriptPath>${workspace}/trade</scriptPath>
+					<scriptPath>${workspace}/java/projects/demo/apps</scriptPath>
+				</scriptPaths>
+				<applog>
+					<recordMode>0</recordMode>
+					<traceEnabled>true</traceEnabled>
+					<debugEnabled>true</debugEnabled>
+					<inforEnabled>true</inforEnabled>
+					<errorEnabled>true</errorEnabled>
+					<dumpEnabled>true</dumpEnabled>
+					<bufferSize>32k</bufferSize>
+					<maxFileSize>100m</maxFileSize>
+					<maxFileCount>1000</maxFileCount>
+					<rootPath />
+					<dateDirMode>1</dateDirMode>
+					<filterMode>2</filterMode>
+					<fileEncoding />
+					<customizedTrades>
+					</customizedTrades>
+				</applog>
+				<threadPool>
+					<corePoolSize>32</corePoolSize>
+					<maxPoolSize>64</maxPoolSize>
+					<keepAliveTime>6000</keepAliveTime>
+					<queueSize>320</queueSize>
+				</threadPool>
+				<dbConnPools>
+					<dbConnPool id="1" name="afa" type="0" encipherVersion="1">
+						<property name="User" value="aim" />
+						<property name="Password" value="aim" />
+						<property name="JdbcUrl" value="jdbc:oracle:thin:@3.1.11.7:1521:ORCL11G" />
+						<property name="DriverClass" value="oracle.jdbc.driver.OracleDriver" />
+						<property name="InitialPoolSize" value="16" />
+						<property name="MinPoolSize" value="16" />
+						<property name="MaxPoolSize" value="1000" />
+						<property name="AcquireIncrement" value="8" />
+						<property name="AcquireRetryAttempts" value="1" />
+						<property name="AcquireRetryDelay" value="1000" />
+						<property name="MaxIdleTime" value="1500" />
+						<property name="MaxIdleTimeExcessConnections" value="0" />
+						<property name="MaxConnectionAge" value="0" />
+						<property name="CheckoutTimeout" value="0" />
+						<property name="AutoCommitOnClose" value="false" />
+						<property name="BreakAfterAcquireFailure" value="false" />
+						<property name="MaxStatements" value="0" />
+						<property name="MaxStatementsPerConnection" value="0" />
+						<property name="PropertyCycle" value="0" />
+						<property name="UnreturnedConnectionTimeout" value="0" />
+						<property name="NumHelperThreads" value="3" />
+					</dbConnPool>
+				</dbConnPools>
+				<hibernate>
+					<sessionFactory id="1" name="oracle">
+						<property name="connection.pool.name" value="afa" />
+						<property name="connection.autocommit" value="true" />
+						<property name="hibernate.show_sql" value="false" />
+						<property name="hibernate.dialect" value="org.hibernate.dialect.OracleDialect" />
+					</sessionFactory>
+				</hibernate>
+				<paramMemorize>
+					<usable>false</usable>
+					<paramSources>
+						<paramSource>${afahome}/conf/platform/paramsrc/paramsrc001.xml
+						</paramSource>
+					</paramSources>
+				</paramMemorize>
+			</svc>
+			<dcm>
+				<services>
+					<service name="cacheModule" type="0" id="1">
+						<description>缓存模块管理</description>
+						<identifier>cacheIdentify_1</identifier>
+						<ehcacheOptions>
+							<diskStore>${afahome}/ehcache/diskStore</diskStore>
+							<cacheManagerPeerProviderFactory
+								factoryClass="net.sf.ehcache.distribution.RMICacheManagerPeerProviderFactory">
+								<socketTimeoutMillis>2000</socketTimeoutMillis>
+								<rmiUrls>
+								</rmiUrls>
+							</cacheManagerPeerProviderFactory>
+							<cacheManagerPeerListenerFactory
+								factoryClass="net.sf.ehcache.distribution.RMICacheManagerPeerListenerFactory">
+								<socketTimeoutMillis>2000</socketTimeoutMillis>
+								<hostName>3.1.11.8</hostName>
+								<port>40001</port>
+							</cacheManagerPeerListenerFactory>
+							<caches>
+								<cache name="myCache" maxEntriesLocalHeap="10000" eternal="true"
+									timeToIdleSeconds="10000" timeToLiveSeconds="10000"
+									overflowToDisk="false">
+									<cacheEventListenerFactory
+										factoryClass="net.sf.ehcache.distribution.RMICacheReplicatorFactory">
+										<property name="replicateAsynchronously" value="false" />
+										<property name="replicatePuts" value="true" />
+										<property name="replicateUpdates" value="true" />
+										<property name="replicatePutsViaCopy" value="true" />
+										<property name="replicateUpdatesViaCopy" value="true" />
+										<property name="replicateRemovals" value="true" />
+										<property name="asynchronousReplicationIntervalMillis"
+											value="1000" />
+									</cacheEventListenerFactory>
+									<bootstrapCacheLoaderFactory
+										factoryClass="net.sf.ehcache.distribution.RMIBootstrapCacheLoaderFactory" />
+								</cache>
+								<cache name="routerTable" maxEntriesLocalHeap="10000"
+									eternal="true" timeToIdleSeconds="10000" timeToLiveSeconds="10000"
+									overflowToDisk="false">
+									<cacheEventListenerFactory
+										factoryClass="net.sf.ehcache.distribution.RMICacheReplicatorFactory">
+										<property name="replicateAsynchronously" value="false" />
+										<property name="replicatePuts" value="true" />
+										<property name="replicateUpdates" value="true" />
+										<property name="replicatePutsViaCopy" value="true" />
+										<property name="replicateUpdatesViaCopy" value="true" />
+										<property name="replicateRemovals" value="true" />
+										<property name="asynchronousReplicationIntervalMillis"
+											value="1000" />
+									</cacheEventListenerFactory>
+									<bootstrapCacheLoaderFactory
+										factoryClass="net.sf.ehcache.distribution.RMIBootstrapCacheLoaderFactory" />
+								</cache>
+							</caches>
+						</ehcacheOptions>
+					</service>
+				</services>
+			</dcm>
+			<outs>
+			</outs>
+		</workgroup>
+	</workgroups>
+	<monitor>
+		<open>true</open>
+		<serviceRecord>5000</serviceRecord>
+		<removeCacheFull>1000</removeCacheFull>
+	</monitor>
+</platform>
