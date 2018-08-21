@@ -1,0 +1,125 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.gyx.mapper.administration.UserMapper">
+	<!-- 
+		如果根据不同的sql需要定义不同的resultMap，
+		可以在resultMap标签中使用extends来继承令一个resultMap标签的数据
+	-->
+	<resultMap type="user" id="userMapFather">
+		<id column="usercode" property="usercode"/>
+		<result column="userid" property="userid"/>
+		<result column="username" property="username"/>
+		<result column="password" property="password"/>
+		<result column="sex" property="sex"/>
+		<result column="mailbox" property="mailbox" />
+		<result column="telphone" property="telphone" />
+		<result column="cellphone" property="cellphone" />
+		<result column="createuser" property="createuser" />
+		<result column="createdate" property="createdate" />
+		<result column="lastmoduser" property="lastmoduser" />
+		<result column="lastmoddate" property="lastmoddate" />
+		<result column="state" property="state" />
+		<result column="operatorcardid" property="operatorcardid" />
+		<result column="usertype" property="usertype" />
+		<result column="sexdesc" property="sexdesc" />
+		<result column="statedesc" property="statedesc" />
+		<result column="usertypedesc" property="usertypedesc" />
+		<result column="unitid" property="unitid" />
+		<result column="unitname" property="unitname" />
+		<result column="infoex1" property="infoex1" />
+		<result column="infoex2" property="infoex2" />
+		<result column="infoex3" property="infoex3" />
+		<result column="infoex4" property="infoex4" />
+		<result column="infoex5" property="infoex5" />
+		<result column="hostip" property="hostip" />
+		<result column="logintime" property="logintime" />
+		<result column="errcount" property="errcount" />
+		<result column="logincnt" property="logincnt" />
+		<result column="tellerno" property="tellerno" />
+		<result column="mdno" property="mdno" />
+		<result column="orgno" property="orgno" />
+		<result column="pdno" property="pdno" />
+		<result column="channelID" property="channelID" />
+	</resultMap>
+	 
+	<!-- 
+		用户所有信息映射关系，包括角色及拥有的菜单
+	 -->
+	<resultMap type="user" id="userAllDataMap" extends="userMapFather">
+		
+		<!-- 	
+			collection标签：定义一对多关系
+			property属性：实体类中的属性名
+			ofType属性：集合或数组的泛型
+		 用户拥有角色
+		-->
+		<collection property="roles" ofType="role" >
+			<id column="roleid" property="roleid"/>
+			<result column="rolename" property="rolename"/>
+			<result column="roledescribe" property="roledescribe"/>
+			<result column="roletype" property="roletype"/>
+			<result column="enabled" property="enabled"/>
+			<result column="statusdesc" property="statusdesc"/>
+			<result column="rolelevel" property="rolelevel"/>
+			<result column="createuser" property="createuser"/>
+			<result column="createdate" property="createdate"/>
+			<result column="lastmoduser" property="lastmoduser"/>
+			<result column="lastmoddate" property="lastmoddate"/>
+			<result column="default_flag" property="default_flag"/>
+			<!-- 菜单 -->
+			<collection property="modules" ofType="module">
+				<id column="moduleid" property="moduleid"/>
+				<result column="modulename" property="modulename"/>
+				<result column="parentmoduleid" property="parentmoduleid"/>
+				<result column="moduletype" property="moduletype"/>
+				<result column="moduleaction" property="moduleaction"/>
+				<result column="moduleorder" property="moduleorder"/>
+				<result column="modulelevel" property="modulelevel"/>
+				<result column="logflag" property="logflag"/>
+				<result column="privilegeType" property="privilegeType"/>
+				<result column="createuser" property="createuser"/>
+				<result column="createdate" property="createdate"/>
+				<result column="lastmoduser" property="lastmoduser"/>
+				<result column="lastmoddate" property="lastmoddate"/>
+				<result column="moduleImg" property="moduleImg"/>
+				<result column="authflag" property="authflag"/>
+				<result column="remark1" property="remark1"/>
+				<result column="remark2" property="remark2"/>
+				<result column="remark3" property="remark3"/>
+			</collection>
+		</collection>
+	</resultMap>
+	
+	<!-- 
+		获得用户所有数据,包括角色及拥有的菜单
+	-->
+	<select id="selectUserAllDataByUserCode" parameterType="java.lang.String" resultMap="userAllDataMap">
+		SELECT
+		    *
+		FROM
+		    (
+		        SELECT
+		            *
+		        FROM
+		            T_BSMS_MNGUSERINFO USER
+		        LEFT JOIN
+		            T_BSMS_MNGUSERROLE userAndRole
+		        ON
+		            user.usercode = userAndRole.user_id
+		        LEFT JOIN
+		            T_BSMS_MNGROLEINFO role
+		        ON
+		            role.roleid = userAndRole.role_id
+		     )userRole 
+		left join 
+		        T_BSMS_MNGROLEMODULE roleAndModule 
+		on
+		        userRole.role_id = roleAndModule.role_id
+		left join
+		        T_BSMS_MNGMODULEINFO module
+		on 
+		        module.moduleid = roleAndModule.module_id
+		WHERE
+		            userRole.usercode = #{userCode}
+	</select>
+</mapper>

@@ -1,0 +1,42 @@
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+  <modelVersion>4.0.0</modelVersion>
+  <parent>
+    <groupId>com.gyx</groupId>
+    <artifactId>gyx-parent</artifactId>
+    <version>0.0.1-SNAPSHOT</version>
+  </parent>
+  <groupId>com.gyx</groupId>
+  <artifactId>gyx-manager</artifactId>
+  <version>0.0.1-SNAPSHOT</version>
+  <packaging>pom</packaging>
+  <!-- 添加项目依赖 -->
+  <dependencies>
+  	<dependency>
+  		<groupId>com.gyx</groupId>
+  		<artifactId>gyx-common</artifactId>
+  		<version>0.0.1-SNAPSHOT</version>
+  	</dependency>
+  </dependencies>
+  <!-- 添加插件 -->
+  <build>
+  	<plugins>
+		<!-- 配置Tomcat插件 -->
+		<plugin>
+			<groupId>org.apache.tomcat.maven</groupId>
+			<artifactId>tomcat7-maven-plugin</artifactId>
+			<configuration>
+				<!-- 配置tomcat端口，不写的话默认也是这个 -->
+				<port>8081</port>
+				<!-- tomcat地址之后输入什么就能访问这个项目。现在是输入tomcat地址直接访问项目 -->
+				<path>/gyx</path>
+			</configuration>
+		</plugin>
+	</plugins>
+  </build>
+  <modules>
+  	<module>gyx-manager-dao</module>
+  	<module>gyx-manager-service</module>
+  	<module>gyx-manager-web</module>
+  	<module>gyx-manager-pojo</module>
+  </modules>
+</project>

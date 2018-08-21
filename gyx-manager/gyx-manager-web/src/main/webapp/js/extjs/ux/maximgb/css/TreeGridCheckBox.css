@@ -1,0 +1,41 @@
+.x-grid3-col-company .ux-maximgb-tg-mastercol-icon,
+.x-grid3-col-company .ux-maximgb-tg-mastercol-cb
+{
+    margin-right: 4px;
+}
+
+.ux-maximgb-tg-mastercol-cb
+{
+    vertical-align: -3px;
+    border: 0px solid black;
+}
+
+.ux-maximgb-tg-mastercol-icon
+{
+    width: 10px;
+    height: 10px;
+    vertical-align: -1px;
+    background: url('../images/bullet_green.png') no-repeat -3px -3px;
+}
+
+.ux-maximgb-tg-branch-icon
+{
+    width: 16px;
+    height: 16px;
+    vertical-align: -1px;
+    background: url('../images/branch.png') no-repeat;    
+}
+.ux-maximgb-tg-testcase-icon
+{
+    width: 16px;
+    height: 16px;
+    vertical-align: -1px;
+    background: url('../images/testcase.png') no-repeat;    
+}
+.ux-maximgb-tg-usecase-icon
+{
+    width: 16px;
+    height: 16px;
+    vertical-align: -1px;
+    background: url('../images/usecase.png') no-repeat;    
+}

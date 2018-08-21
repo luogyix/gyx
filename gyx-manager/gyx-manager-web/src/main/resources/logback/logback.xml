@@ -1,0 +1,68 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<configuration>
+	<property name="LOG_DIR" value="D:/gyx-log/logs" />
+	<!--<property name="LOG_DIR" value="/imslog/abt/" />-->
+	<property name="consoleLayoutPattern" value="%d{yyyyMMdd HH:mm:ss.SSS}[%p-%logger{30}-%X{msgid}] %msg%n" />
+
+	<contextName>osgiApp</contextName>
+ 
+	<appender name="CONSOLE" class="ch.qos.logback.core.ConsoleAppender">
+		<layout name="StandardFormat" class="ch.qos.logback.classic.PatternLayout">
+			<pattern>${consoleLayoutPattern}</pattern>
+		</layout>
+	</appender>
+	<!-- 对要生成的日志文件进行设置：如大小，名称，生成时间等 -->
+	<appender name="SIFT" class="ch.qos.logback.classic.sift.SiftingAppender">
+		<!-- 有程序设置属性 -->
+		<discriminator>
+			<!-- 通过这个key找到程序中设置的值 -->
+			<Key>branch</Key>
+			<!-- 第一次生成日志文件时这个属性的值 -->
+			<DefaultValue>abt</DefaultValue>
+		</discriminator>
+		<sift>
+			<appender name="FILE-${branch}"	class="ch.qos.logback.core.rolling.RollingFileAppender">
+				<prudent>true</prudent>
+				<append>true</append>
+				<rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
+					<fileNamePattern>${LOG_DIR}/%d{yyyy-MM-dd}/${branch}_%i.log
+					</fileNamePattern>
+					<timeBasedFileNamingAndTriggeringPolicy
+								class="ch.qos.logback.core.rolling.SizeAndTimeBasedFNATP">
+						<maxFileSize>10MB</maxFileSize>
+					</timeBasedFileNamingAndTriggeringPolicy>
+					<maxHistory>7</maxHistory><!-- days -->
+				</rollingPolicy>
+				<layout class="ch.qos.logback.classic.PatternLayout">
+					<Pattern>%d{yyyyMMdd_HH:mm:ss.SSS}[%p-%logger{30}-%X{msgid}] %msg%n</Pattern>
+				</layout>
+				<!-- 乱码问题 -->
+			    <encoder>
+					<pattern>%d{HH:mm:ss.SSS} [%thread] %-5level %logger{36} - %msg%n</pattern>
+					<immediateFlush>true</immediateFlush>
+					<charset class="java.nio.charset.Charset">UTF-8</charset>
+			  	</encoder>
+			</appender>
+		</sift>
+	</appender>
+	 
+	<logger name="org.springframework"	level="DEBUG" additivity="false">
+		<appender-ref ref="SIFT" />
+	</logger>
+	<logger name="org.hibernate"	level="DEBUG" additivity="false">
+		<appender-ref ref="SIFT" />
+	</logger>
+	<logger name="com.opensymphony.xwork2"	level="DEBUG" additivity="false">
+		<appender-ref ref="SIFT" />
+	</logger>
+	<logger name="org.apache"	level="DEBUG" additivity="false">
+		<appender-ref ref="SIFT" />
+	</logger>
+	<logger name="net.sf.ehcache"	level="DEBUG" additivity="false">
+		<appender-ref ref="SIFT" />
+	</logger>
+	<root level="DEBUG">
+		<appender-ref ref="SIFT" />
+	</root>
+	
+</configuration>

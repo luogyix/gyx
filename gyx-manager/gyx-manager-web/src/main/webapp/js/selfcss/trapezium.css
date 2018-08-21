@@ -1,0 +1,43 @@
+body {
+	font: normal 11px auto "Trebuchet MS", Verdana, Arial, Helvetica, sans-serif;
+	color: #4f6b72;
+	background: #E6EAE9;
+}
+
+a {
+	color: #c75f3e;
+}
+
+#table_nodirect {
+	padding: 0;
+	margin: 0;
+	border-top: 1px solid #C4E1FF;
+	border-left: 1px solid #C4E1FF;
+	border-right: 1px solid #C4E1FF;
+	border-bottom: 1px solid #C4E1FF;
+	border-top: 1px solid #C4E1FF;
+	background-color:#FFFFFF;
+	align:center;
+}
+#table_up {
+	padding: 0;
+	margin: 0;
+	border-top: 1px solid #C4E1FF;
+	border-left: 1px solid #C4E1FF;
+	border-right: 1px solid #C4E1FF;
+	border-bottom: 1px solid #C4E1FF;
+	border-top: 1px solid #C4E1FF;
+	background-color:#FFFFFF;
+	align:center;
+}
+#table_down {
+	padding: 0;
+	margin: 0;
+	border-top: 1px solid #C4E1FF;
+	border-left: 1px solid #C4E1FF;
+	border-right: 1px solid #C4E1FF;
+	border-bottom: 1px solid #C4E1FF;
+	border-top: 1px solid #C4E1FF;
+	background-color:#FFFFFF;
+	align:center;
+}

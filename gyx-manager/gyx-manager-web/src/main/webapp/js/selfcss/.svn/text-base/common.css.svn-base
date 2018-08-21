@@ -1,0 +1,392 @@
+@CHARSET "UTF-8";
+
+
+.x-image-none{
+	display:none !important;
+}
+
+.x-image-nodeback {
+	background-image: url(../images/default/tree/folder.gif) !important;
+	background-repeat : repeat-x !important;
+	height : 20 !important;
+}
+.x-image-nodestyle {
+	height : 20 !important;
+}
+.x-selectable, .x-selectable * {    
+        -moz-user-select: text! important ;    
+        -khtml-user-select: text! important ;    
+}
+
+/*
+桌面背景：../images/application/login.jpg
+登录名图标：../images/application/user.gif
+登录密码图标：../images/application/key.gif
+
+*/
+.x-image-user{
+	background-image: url(../images/application/user.gif) !important;
+}
+
+/**************************************树形菜单图标*****************************************/
+/**********************系统管理**************************/
+/*用户信息管理图片*/
+.x-image-group{
+	background-image: url(../images/application/group.png) !important;
+}
+/*角色管理图片*/
+.x-image-award_star_gold{
+	background-image: url(../images/application/award_star_gold.png) !important;
+}
+/*部门管理图片*/
+.x-image-chart_organisation{
+	background-image: url(../images/application/chart_organisation.png) !important;
+}
+/*交易管理图片*/
+.x-image-deal{
+	background-image: url(../images/application/deal.png) !important;
+}
+/*操作管理图片*/
+.x-image-arrow_switch{
+	background-image: url(../images/application/arrow_switch.png) !important;
+}
+/*系统参数管理图片*/
+.x-image-system1{
+	background-image: url(../images/application/system1.png) !important;
+}
+/*系统通知管理图片*/
+.x-image-notice{
+	background-image: url(../images/application/notice.png) !important;
+}
+.x-image-notauth{
+	background-image: url(../images/monitor_offline.png) !important;
+}
+/**********************支付平台参数管理**************************/
+/************应用服务管理*******************/
+/************业务控制管理*******************/
+/************业务规则管理*******************/
+/************行内机构管理*******************/
+/************支付信息管理*******************/
+/**********************支付平台操作管理**************************/
+/************人行公共信息查询***************/
+/************资金流动性管理*****************/
+/************数字证书管理*******************/
+/**********************支付平台应用管理**************************/
+/************大额支付应用*******************/
+/************小额支付应用*******************/
+/************网银跨行支付*******************/
+/**********************支付平台业务管理**************************/
+/************大额支付应用*******************/
+/************小额支付应用*******************/
+/**********************操作记录查询**************************/
+.x-image-record_query{
+	background-image: url(../images/application/record_query.png) !important;
+}
+/**********************个人设置**************************/
+.x-image-folder_user{
+	background-image: url(../images/application/folder_user.png) !important;
+}
+
+/**************************************按钮图标*********************************************/
+/*查询按钮图片*/
+.x-image-query{
+	background-image: url(../images/application/query.png) !important;
+}
+.x-image-query2{
+	background-image: url(../images/application/query2.png) !important;
+}
+/*重置按钮图片*/
+.x-image-reset{
+	background-image: url(../images/application/reset.png) !important;
+}
+
+/*****用户******/
+/*用户添加图片*/
+.x-image-user_add{
+	background-image: url(../images/application/group_add.png) !important;
+}
+/*用户修改图片*/
+.x-image-user_edit{
+	background-image: url(../images/application/group_edit.png) !important;
+}
+/*用户删除图片*/
+.x-image-user_delete{
+	background-image: url(../images/application/group_delete.png) !important;
+}
+/*角色分配按钮图片*/
+.x-image-database_go{
+	background-image: url(../images/application/database_go.png) !important;
+}
+/*应用添加图片*/
+.x-image-application_form_add{
+	background-image: url(../images/application/application_form_add.png) !important;
+}
+/*应用删除图片*/
+.x-image-application_form_delete{
+	background-image: url(../images/application/application_form_delete.png) !important;
+}
+/*应用修改图片*/
+.x-image-application_form_edit{
+	background-image: url(../images/application/application_form_edit.png) !important;
+}
+/*开通按钮图片*/
+.x-image-cluster_tiny_1{
+	background-image: url(../images/application/cluster_tiny_1.png) !important;
+}
+/*关闭按钮图片*/
+.x-image-cluster_tiny_3{
+	background-image: url(../images/application/cluster_tiny_3.png) !important;
+}
+/*设置管理图片图片*/
+.x-image-application_management{
+	background-image: url(../images/application/application_management.png) !important;
+}
+/*Excel图片*/
+.x-image-Excel{
+	background-image: url(../images/application/Excel.png) !important;
+}
+/*明细按钮图片*/
+.x-image-detailed{
+	background-image: url(../images/application/detailed.png) !important;
+}
+/***************************************其他图标*****************************************************/
+/*文件夹图片*/
+.x-image-file{
+	background-image: url(../images/application/file.png) !important;
+}
+/**/
+.x-image-leaf{
+	background-image: url(../images/application/leaf.png) !important;
+}
+/*小房子图片1*/
+.x-image-house{
+	background-image: url(../images/application/house.png) !important;
+}
+/**/
+.x-image-package_tiny{
+	background-image: url(../images/application/package_tiny.png) !important;
+}
+/**/
+
+/*系统菜单树图片*/
+.x-image-expand-all{
+	background-image: url(../images/application/expand-all.gif) !important;
+}
+/**/
+.x-image-load_ing{
+	position:absolute;right:5px;top:25px;background:rgb(221, 68, 119) url(../images/application/loading.gif) no-repeat 4px 2px ;z-index: 200001;
+          height:20px;line-height:20px;width:150px;font-size:12px;padding-left:30px;color:#FFF; 
+}
+
+.x-image-note_go{
+	background-image: url(../images/note_go.png) !important;
+}
+
+/********************************************************************************************/
+ /*rowspan grid合并行效果*/  
+.rowspan-grid .x-grid3-body .x-grid3-row {   
+    border:none;   
+    cursor:default;   
+    width:100%;   
+}   
+.rowspan-grid .x-grid3-header .x-grid3-cell{   
+    /*border-left: 2px solid transparent;*//*ie6的transparent下显示黑色*/  
+    border-left: 2px solid #fff;   
+}   
+.rowspan-grid .x-grid3-body .x-grid3-row{   
+    overflow: hidden;   
+    border-right: 1px solid #ccc;   
+}   
+.rowspan-grid .x-grid3-body .x-grid3-cell {   
+    border: 1px solid #ccc;   
+    border-bottom:#fff;   
+    border-right:none;   
+}   
+.rowspan-grid .x-grid3-body .x-grid3-cell-first {   
+    /*border-left: 1px solid transparent;*/  
+    border-left: 1px solid #fff;   
+}   
+.rowspan-grid .x-grid3-body .rowspan-unborder {   
+    /*border-bottom:1px solid transparent;*/  
+    border-top:1px solid #fff;   
+}  
+
+.rowspan-grid .x-grid3-body .rowspan-border {   
+    /*border-bottom:1px solid transparent;*/  
+    background-color:#ffffff;
+} 
+
+
+.rowspan-grid .x-grid3-body .rowspan {   
+    border-top: 1px solid #ccc;   
+}
+
+.rowspan-grid .x-grid3-body .rowspan_bottom {   
+    border-bottom: 1px solid #ccc;   
+}
+
+
+/********************************************************************************************/
+/*js中使用*/
+/**/
+.x-image-load_ing{
+	position:absolute;right:5px;top:25px;background:rgb(221, 68, 119) url(../images/application/loading.gif) no-repeat 4px 2px ;z-index: 200001;
+          height:20px;line-height:20px;width:150px;font-size:12px;padding-left:30px;color:#FFF; 
+}
+/**/
+.x-image-application_cascadeIcon{
+	background-image: url(../images/application/application_cascade.png) !important;
+}
+/**/
+.x-image-application_doubleIcon{
+	background-image: url(../images/application/application_double.png) !important;
+}
+/**/
+.x-image-applicationIcon{
+	background-image: url(../images/application/application.png) !important;
+}
+
+
+/********************************************************************************************/
+/*暂时未使用的*/
+/**/
+.x-image-tbar_synchronizeIcon{
+	background-image: url(../images/application/tbar_synchronize.png) !important;
+}
+.x-image-package_tiny_1{
+	background-image: url(../images/application/package_tiny_1.png) !important;
+}
+/*应用XX图片*/
+.x-image-application_form_magnify{
+	background-image: url(../images/application/application_form_magnify.png) !important;
+}
+/*锁头图片*/
+.x-image-lock{
+	background-image: url(../images/application/lock.png) !important;
+}
+/*锁头编辑图片*/
+.x-image-lock_edit{
+	background-image: url(../images/application/lock_edit.png) !important;
+}
+/*加号图片，绿色的*/
+.x-image-add{
+	background-image: url(../images/application/add.png) !important;
+}
+/*减号图片，红色*/
+.x-image-delete{
+	background-image: url(../images/application/delete.png) !important;
+}
+/*业务产品菜单文件夹*/
+.x-image-filecase-busi{
+	background-image: url(../images/application/filecase-busi.png) !important;
+}
+.x-image-role{
+	background-image: url(../images/application/role.png) !important;
+}
+.x-image-system2{
+	background-image: url(../images/application/system2.png) !important;
+}
+.x-image-themeIcon{
+	background-image: url(../images/application/sss-1.gif) !important;
+}
+.x-image-config2Icon{
+	background-image: url(../images/application/sss-2.gif) !important;
+}
+.x-image-relogin{
+	background-image: url(../images/application/sss-3.gif) !important;
+}
+.x-image-bullet_error{
+	background-image: url(../images/bullet_error.png) !important;
+}
+.x-image-error{
+	background-image: url(../images/delete.gif) !important;
+}
+.x-image-accept{
+	background-image: url(../images/accept.png) !important;
+}
+
+.x-image-cnapslogin{
+	background-image: url(../images/application/cnapslogin.jpg) !important;
+}
+
+.x-image-web-result{
+	background-image: url(../images/application/web-result.jpg) !important;
+}
+
+.x-readOnly-bgColor{
+  background:#CCCCCC;
+}
+
+.x-image-web-result1{
+	background-image: url(../images/application/web-result1.jpg) !important;
+}
+.icon-expand-all{
+	background-image: url(../images/expand-all.gif) !important;
+}
+.icon-collapse-all{
+	background-image: url(../images/collapse-all.gif) !important;
+}
+.x-image-up{
+	background-image: url(../extjs/resources/images/default/up2.gif) !important;
+}
+.x-image-down{
+	background-image: url(../extjs/resources/images/default/down2.gif) !important;
+}
+.x-image-top{
+	background-image: url(../extjs/resources/images/default/top2.gif) !important;
+}
+.x-image-bottom{
+	background-image: url(../extjs/resources/images/default/bottom2.gif) !important;
+}   
+.x-image-Transmitters-web{
+	background-image: url(../extjs/resources/images/application/Transmitters-web.jpg) !important;
+}
+
+.x-image-add{
+	background-image: url(../images/11.png) !important;
+}
+.x-image-delete{
+	background-image: url(../images/12.png) !important;
+}
+.x-image-edit{
+	background-image: url(../images/edit.png) !important;
+}
+loading-module{
+	background-image: url(../images/loading-module.gif) !important;
+	}
+.x-image-computergo{
+	background-image: url(../images/computer_go.png) !important;
+	}
+.x-image-exclamation{
+	background-image: url(../images/exclamation.gif) !important;
+}
+
+.x-image-pdf{
+	background-image: url(../images/pdf.gif) !important;
+}
+
+/*等待提示效果
+#loading{
+        position:absolute;
+        left:45%;
+        top:40%;
+        padding:2px;
+        z-index:20001;
+        height:auto;
+        border:1px solid #ccc;
+    }
+#loading a {
+        color:#225588;
+    }
+#loading .loading-indicator{
+        background:white;
+        color:#444;
+        font:bold 13px tahoma,arial,helvetica;
+        padding:10px;
+        margin:0;
+        height:auto;
+    }
+#loading-msg {
+        font: normal 10px arial,tahoma,sans-serif;
+    }
+*/

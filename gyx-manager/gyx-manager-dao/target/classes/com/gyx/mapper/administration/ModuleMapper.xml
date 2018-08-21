@@ -1,0 +1,67 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.gyx.mapper.administration.ModuleMapper">
+	<!-- 
+		如果根据不同的sql需要定义不同的resultMap，
+		可以在resultMap标签中使用extends来继承令一个resultMap标签的数据
+	-->
+	<!-- 
+		公共的user基本数据映射结果映射
+	 -->
+	<resultMap type="module" id="moduleMap">
+		<id column="moduleid" property="moduleid"/>
+		<result column="modulename" property="modulename"/>
+		<result column="parentmoduleid" property="parentmoduleid"/>
+		<result column="moduletype" property="moduletype"/>
+		<result column="moduleaction" property="moduleaction"/>
+		<result column="moduleorder" property="moduleorder"/>
+		<result column="modulelevel" property="modulelevel"/>
+		<result column="logflag" property="logflag"/>
+		<result column="privilegeType" property="privilegeType"/>
+		<result column="createuser" property="createuser"/>
+		<result column="createdate" property="createdate"/>
+		<result column="lastmoduser" property="lastmoduser"/>
+		<result column="lastmoddate" property="lastmoddate"/>
+		<result column="moduleImg" property="moduleImg"/>
+		<result column="authflag" property="authflag"/>
+		<result column="remark1" property="remark1"/>
+		<result column="remark2" property="remark2"/>
+		<result column="remark3" property="remark3"/>
+	</resultMap>
+	
+	<!-- 根据 roleid集合获得菜单 -->
+	<select id="selectModuleInRoleIdList" resultMap="moduleMap">
+		SELECT DISTINCT
+		    m.moduleid,
+		    m.modulename,
+		    m.parentmoduleid,
+		    m.moduletype,
+		    m.moduleaction,
+		    m.moduleorder,
+		    m.modulelevel,
+		    m.logflag,
+		    m.privilegeType,
+		    m.createuser,
+		    m.createdate,
+		    m.lastmoduser,
+		    m.lastmoddate,
+		    m.moduleImg,
+		    m.authflag,
+		    m.remark1,
+		    m.remark2,
+		    m.remark3
+		FROM
+		    T_BSMS_MNGROLEMODULE r,
+		    T_BSMS_MNGMODULEINFO m
+		WHERE
+		    r.role_id IN
+		<foreach collection="roleIds" item="roleId" open="(" close=")"
+			separator="," index="index">
+			#{roleId}
+		</foreach>
+		AND r.module_id=m.moduleid
+		ORDER BY
+		    modulelevel,
+		    moduleorder ASC
+	</select>
+</mapper>

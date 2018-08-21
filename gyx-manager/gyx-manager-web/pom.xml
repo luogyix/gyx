@@ -1,0 +1,64 @@
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+  <modelVersion>4.0.0</modelVersion>
+  <parent>
+    <groupId>com.gyx</groupId>
+    <artifactId>gyx-manager</artifactId>
+    <version>0.0.1-SNAPSHOT</version>
+    <relativePath>E:/Development/eclipse-mars2-workspace/gyx-manager</relativePath>
+  </parent>
+  <artifactId>gyx-manager-web</artifactId>
+  <packaging>war</packaging>
+  <!-- 依赖的jar包 -->
+  <dependencies>
+  			<!-- logback -->
+  			<dependency>
+				<groupId>ch.qos.logback</groupId>
+				<artifactId>logback-classic</artifactId>
+			</dependency>
+			<dependency>
+				<groupId>org.slf4j</groupId>
+				<artifactId>jcl-over-slf4j</artifactId>
+			</dependency>
+			<!-- https://mvnrepository.com/artifact/ch.qos.logback/logback-core -->
+			<dependency>
+	    			<groupId>ch.qos.logback</groupId>
+	   			 <artifactId>logback-core</artifactId>
+			</dependency>
+			<!-- https://mvnrepository.com/artifact/org.logback-extensions/logback-ext-spring -->
+			<dependency>
+				<groupId>org.logback-extensions</groupId>
+	    			<artifactId>logback-ext-spring</artifactId>
+			</dependency>
+  			<!-- JSP相关 -->
+			<dependency>
+				<groupId>jstl</groupId>
+				<artifactId>jstl</artifactId>
+			</dependency>
+			<dependency>
+				<groupId>javax.servlet</groupId>
+				<artifactId>servlet-api</artifactId>
+				<scope>provided</scope>
+			</dependency>
+			<dependency>
+				<groupId>javax.servlet</groupId>
+				<artifactId>jsp-api</artifactId>
+				<scope>provided</scope>
+			</dependency>
+			<!-- 文件上传组件 -->
+			<dependency>
+				<groupId>commons-fileupload</groupId>
+				<artifactId>commons-fileupload</artifactId>
+			</dependency>
+			<!-- 表现层依赖service层 -->
+			<dependency>
+				<groupId>com.gyx</groupId>
+			    <artifactId>gyx-manager-service</artifactId>
+			    <version>0.0.1-SNAPSHOT</version>
+			</dependency>
+			<dependency>
+				<groupId>com.gyx</groupId>
+			    <artifactId>gyx-manager-pojo</artifactId>
+			    <version>0.0.1-SNAPSHOT</version>
+			</dependency>
+  </dependencies>
+</project>
