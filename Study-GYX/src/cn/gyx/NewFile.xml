@@ -1,0 +1,11 @@
+<Message>
+	<Body>
+		<RspCode>999999</RspCode>
+		<RspMsg>登录密码网银加密pin失败</RspMsg>
+		<IdType></IdType>
+		<IdNo></IdNo>
+		<CstNo></CstNo>
+		<UserId></UserId>
+		<seqNb></seqNb>
+	</Body>
+</Message>
