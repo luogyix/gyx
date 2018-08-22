@@ -1,0 +1,18 @@
+﻿<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-2.0.xsd">
+	
+	<!-- 机具外设状态 -->
+	<bean id="machineDeviceAction" class="com.agree.abt.action.devmanager.MachineDeviceAction" scope="prototype">
+		<property name="cona" ref="natpBean" />
+	</bean>
+	<!-- 机具外设状态 -->
+	<bean id="machineMonitoringAction" class="com.agree.abt.action.devmanager.MachineMonitoringAction" scope="prototype">
+		<property name="cona" ref="natpBean" />
+	</bean>
+	<!-- 自助流水查询action -->
+	<bean id="machineNotesAction" class="com.agree.abt.action.configManager.MachineNotesAction" scope="prototype">
+		<property name="cona" ref="natpBean" />
+	</bean>
+</beans>

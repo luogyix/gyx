@@ -1,0 +1,25 @@
+log4j.rootLogger=info, stdout,R
+log4j.appender.stdout=org.apache.log4j.ConsoleAppender
+log4j.appender.stdout.Target=System.out
+log4j.appender.stdout.layout = org.apache.log4j.PatternLayout
+log4j.appender.stdout.layout.ConversionPattern = %-d{yyyy-MM-dd HH:mm:ss SSS}[ %p-%.30c-%X{msgid}]  %m%n
+#\u65e5\u5fd7\u6587\u4ef6
+log4j.appender.R=org.apache.log4j.RollingFileAppender
+log4j.appender.R.File=D:/abt/logs/abt.log
+#log4j.appender.R.File=${webApp2.root}/../../applogs/abt.log
+log4j.appender.R.MaxFileSize=10000KB
+log4j.appender.R.MaxBackupIndex=10
+log4j.appender.R.layout = org.apache.log4j.PatternLayout
+log4j.appender.R.layout.ConversionPattern = %-d{yyyy-MM-dd HH:mm:ss SSS}[ %p-%.30c-%X{msgid}]  %m%n
+#\u6570\u636e\u5e93
+log4j.logger.org.hibernate=info
+log4j.logger.org.hibernate.SQL=debug
+#log4j.logger.org.hibernate.type=info
+#log4j.logger.org.hibernate.tool.hbm2ddl=info
+log4j.logger.org.hibernate.cache=error
+
+#log4j.logger.com.opensymphony.xwork2=ERROR
+#log4j.logger.org.apache.struts2.components.ServletUrlRenderer=ERROR
+#log4j.logger.org.apache.struts2.util.TextProviderHelper=ERROR
+log4j.logger.org.apache.struts2.components.ServletUrlRenderer=debug
+log4j.logger.org.apache.struts2.util.TextProviderHelper=debug

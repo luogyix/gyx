@@ -1,0 +1,97 @@
+﻿<?xml version="1.0" encoding="UTF-8"?>
+
+<!DOCTYPE struts PUBLIC 
+	"-//Apache Software Foundation//DTD Struts Configuration 2.0//EN"
+	"http://struts.apache.org/dtds/struts-2.0.dtd">
+
+
+<struts>
+	<package name="pfs" extends="BasePackage">
+	    <!-- 预填单更新包操作 -->
+		<action name="update_package_*" class="update_packageActionBean" method="{1}">
+		<interceptor-ref name="SystemConsoleInterceptorStack"></interceptor-ref>
+		<result name="downloadSuccess" type="stream">
+				<param name="contentType">application/octet-stream;charset=ISO8859-1</param>
+				<param name="inputName">fileInputStream</param>
+				<param name="contentDisposition">attachment;filename="${downloadFileName}"</param>
+				<param name="bufferSize">4096</param>
+		</result>
+	    <result name="success">/webpages/abt/pfs/updatePackage.jsp</result>
+		</action>
+		
+		<!-- 预填单业务配置 -->
+		<action name="pfsTrade_*" class="pfsTradeAction" method="{1}">
+			<interceptor-ref name="SystemConsoleInterceptorStack"></interceptor-ref>
+			<result name="success">/webpages/abt/pfs/trade.jsp</result>
+		</action>
+		
+		<!-- 预填单机界面配置 -->
+		<action name="pfsMobinterface_*" class="pfsMobinterfaceAction" method="{1}">
+			<interceptor-ref name="SystemConsoleInterceptorStack"></interceptor-ref>
+			<result name="success">/webpages/abt/pfs/mobInterface.jsp</result>
+		</action>
+		
+		<!-- 预填单机参数配置 -->
+		<action name="paramConfig_*" class="paramConfigAction" method="{1}">
+			<interceptor-ref name="SystemConsoleInterceptorStack"></interceptor-ref>
+			<result name="success">/webpages/abt/pfs/pfsParamConfig.jsp</result>
+		</action>
+		
+		<!-- 预填单信息查询 -->
+		<action name="pfsMsgQuery_*" class="pfsMsgQueryAction" method="{1}">
+			<interceptor-ref name="SystemConsoleInterceptorStack"></interceptor-ref>
+			<result name="success">/webpages/abt/pfs/pfsMsgQuery.jsp</result>
+		</action>
+		
+		<!-- 休眠排队号查询-->
+		<action name="pfsRestQuery_*" class="pfsRestQueryAction" method="{1}">
+			<interceptor-ref name="SystemConsoleInterceptorStack"></interceptor-ref>
+			<result name="success">/webpages/abt/pfs/pfsRestQuery.jsp</result>
+		</action>
+		
+		<!-- 客户信息处理-->
+		<action name="pfsCustInfo_*" class="pfsCustInfoAction" method="{1}">
+			<interceptor-ref name="SystemConsoleInterceptorStack"></interceptor-ref>
+			<result name="success">/webpages/abt/pfs/CustInfo.jsp</result>
+		</action>
+		
+		<!-- 转发json -->
+		<action name="mobServe_*" class="mobServeAction" method="{1}">
+			<interceptor-ref name="SystemConsoleInterceptorStack"></interceptor-ref>
+		</action>
+		
+		<!-- 手持设备登录 -->
+		<action name="mobInit_*" class="mobInitAction" method="{1}">
+			<interceptor-ref name="SystemConsoleInterceptorStack"></interceptor-ref>
+		</action>
+		
+		<!-- 排队机服务  -->
+		<action name="qmServer_*" class="qmServerAction" method="{1}">
+			<interceptor-ref name="SystemConsoleInterceptorStack"></interceptor-ref>
+		</action>
+		
+		<!-- 手持排队机初始化 -->
+		<action name="qmInit_*" class="qmInitAction" method="{1}">
+			<interceptor-ref name="SystemConsoleInterceptorStack"></interceptor-ref>
+		</action>
+		
+		<!-- 执行利率管理-->
+		<action name="custInterest_*" class="custInterestAction" method="{1}">
+			<interceptor-ref name="SystemConsoleInterceptorStack"></interceptor-ref>
+			<result name="success">/webpages/abt/pfs/CustInterest.jsp</result>
+		</action>
+		
+		
+		<!--费率管理-->
+		<action name="custRate_*" class="custRateAction" method="{1}">
+			<interceptor-ref name="SystemConsoleInterceptorStack"></interceptor-ref>
+			<result name="success">/webpages/abt/pfs/custRate.jsp</result>
+		</action>
+		
+		<!-- 手持广告管理 -->
+		<action name="hosAdvertInfo_*" class="hosAdvertInfoAction" method="{1}">
+			<interceptor-ref name="SystemConsoleInterceptorStack"></interceptor-ref>
+			<result name="success">/webpages/abt/pfs/hosAdvertInfo.jsp</result>
+		</action>
+	</package>
+</struts>

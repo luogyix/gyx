@@ -1,0 +1,109 @@
+package com.agree.abt.service.confmanager.impl;
+
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+
+import net.sf.json.JSONObject;
+
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.transaction.annotation.Transactional;
+
+import com.agree.abt.model.confManager.BtDevPeripheralType;
+import com.agree.abt.service.confmanager.IPeripheralTypeService;
+import com.agree.framework.dao.entity.Page;
+import com.agree.framework.web.common.ServiceReturn;
+import com.agree.framework.web.service.base.BaseService;
+
+/**
+ * 设备外设类型接口实现
+ * @classname:PeripheralTypeServiceImpl.java
+ * @author wangguoqing
+ * @company 赞同科技
+ * 2015-3-30
+ */
+@SuppressWarnings({ "unchecked", "rawtypes" })
+public class PeripheralTypeServiceImpl extends BaseService implements IPeripheralTypeService{
+	private static final Logger logger = LoggerFactory.getLogger(PeripheralTypeServiceImpl.class);
+	/**
+	 * 查询外设类型信息
+	 * */
+	@Transactional
+	public List queryPeripheralType(Map<String,String> map, Page pageInfo) throws Exception{
+		List list = null;
+		HashMap<String,String> paramaHashMap = new HashMap<String,String>();
+		String hql = "select new map(p_type_key,p_type_value,p_type_devicetype) from BtDevPeripheralType";
+		//paramaHashMap.put("p_type_key", "%" + map.get("p_type_key") + "%");
+		list = sqlDao_h.getRecordList(hql,paramaHashMap,false);
+		List list2 = new ArrayList();
+		for (Object obj : list) {
+			Map map2 = (Map)obj;
+			BtDevPeripheralType devpt = new BtDevPeripheralType();
+			devpt.setP_type_key(map2.get("0").toString());
+			devpt.setP_type_value(map2.get("1").toString());
+			devpt.setP_type_devicetype(map2.get("2").toString());
+			list2.add(devpt);
+		}
+		return list2;
+	}
+	/**
+	 * 添加外设类型信息
+	 * */
+	@Transactional
+	public ServiceReturn addPeripheralType(BtDevPeripheralType btDevPeripheralType) throws Exception{
+		ServiceReturn ret = new ServiceReturn(ServiceReturn.SUCCESS,"");
+		//判断有没有,有的话报错
+		Map<String,String> map=new HashMap<String,String>();
+		map.put("p_type_key", btDevPeripheralType.getP_type_key());
+		Long count = sqlDao_h.getRecordCount("select count(*) from BtDevPeripheralType where p_type_key=:p_type_key",map);
+		if(count > 0){
+			ret.setSuccess(false);
+			ret.setOperaterResult(false);
+			ret.setErrmsg("该外设类型已存在！请删除后再添加");
+		}else{//添加
+			sqlDao_h.saveRecord(btDevPeripheralType);
+		}
+		return ret;
+	}
+	/**
+	 * 修改外设信息
+	 * */
+	@Transactional
+	public ServiceReturn editPeripheralType(String jsonString) throws Exception{
+		JSONObject obj = JSONObject.fromObject(jsonString);
+		ServiceReturn ret = new ServiceReturn(ServiceReturn.SUCCESS,"");
+		BtDevPeripheralType devpt = (BtDevPeripheralType)JSONObject.toBean(obj, BtDevPeripheralType.class);
+		try{
+			String[] param = {devpt.getP_type_devicetype(),devpt.getP_type_value(),devpt.getP_type_key()} ;
+			String sql = "update BT_DEV_PERIPHERALTYPE set P_TYPE_DEVICETYPE = ?,P_TYPE_VALUE = ? where P_TYPE_KEY = ?";
+			sqlDao_h.excuteSql(sql, param);
+		}catch(Exception e){
+			 ret = new ServiceReturn(ServiceReturn.SUCCESS, "外设类型["+devpt.getP_type_value()+"]已存在,请重新输入");
+		}
+		return ret;
+	}
+	/**
+	 * 删除外设类型信息
+	 * */
+	@Transactional
+	public ServiceReturn delPeripheralType(List<BtDevPeripheralType> ids) throws Exception{
+		ServiceReturn ret = new ServiceReturn(ServiceReturn.SUCCESS,"");
+		for (BtDevPeripheralType devpt :ids){
+			//删除
+			Object[] paramuser={devpt.getP_type_key()};
+			try {
+				sqlDao_h.excuteHql("delete from BtDevPeripheralType where p_type_key = ?",paramuser);
+			} catch (Exception e) {
+				ret.setSuccess(false);
+				ret.setOperaterResult(false);
+				ret.setErrmsg("外设类型删除失败,外设类型ID:" + devpt.getP_type_key());
+				logger.error(e.getMessage(),e);
+				return ret;
+			}
+		}
+		return ret;
+	}
+	
+}

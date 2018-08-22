@@ -1,0 +1,433 @@
+﻿<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-2.0.xsd">
+	
+    
+    
+    <!-- 广告参数配置  -->
+    <bean id="advertParamAction" class="com.agree.abt.action.devmanager.AdvertParamAction" scope="prototype">
+		<property name="cona">
+			<ref bean="natpBean" />
+		</property>
+	</bean>
+    <!-- 广告图片配置 -->
+	<bean id="advertImageService" class="com.agree.abt.service.devmanager.impl.AdvertImageServiceImpl" scope="prototype">
+		<property name="sqlDao_h" ref="habernateDao" />
+		<property name="cona">
+			<ref bean="natpBean" />
+		</property>
+	</bean>
+	<bean id="advertImageAction" class="com.agree.abt.action.devmanager.AdvertImageAction" scope="prototype">
+		<property name="advertImageService"> 
+			<ref bean="advertImageService" />
+		</property>
+		<property name="cona">
+			<ref bean="natpBean" />
+		</property>
+		<property name="advertservice">
+			<ref bean="advertParamService" />
+		</property>
+	</bean>
+	
+	<!-- 排队机信息配置 -->
+	<bean id="qmInfoAction" class="com.agree.abt.action.configManager.QmInfoAction" scope="prototype">
+		<property name="cona">
+			<ref bean="natpBean" />
+		</property>
+	</bean>
+	
+	<!-- 排队机界面配置 -->
+	<bean id="machineViewConfAction" class="com.agree.abt.action.configManager.MachineViewConfAction" scope="prototype">
+		<property name="cona">
+			<ref bean="natpBean" />
+		</property>
+	</bean>
+	
+	<!-- 叫号规则配置 -->
+	<bean id="queueingRulesAction" class="com.agree.abt.action.configManager.QueueingRulesAction" scope="prototype">
+		<property name="cona">
+			<ref bean="natpBean" />
+		</property>
+	</bean>
+	
+	<!-- 主题参数配置 -->
+	<bean id="themeinfoConfigAction" class="com.agree.abt.action.configManager.ThemeinfoConfigAction" scope="prototype">
+		<property name="cona">
+			<ref bean="natpBean" />
+		</property>
+	</bean>
+	
+	<!-- 业务配置 -->
+	<bean id="bussinessAction" class="com.agree.abt.action.configManager.BussinessAction" scope="prototype">
+		<property name="cona">
+			<ref bean="natpBean" />
+		</property>
+	</bean>
+	
+	<!-- 卡bin配置 -->
+	<bean id="cardBinConfigAction" class="com.agree.abt.action.configManager.CardBinConfigAction" scope="prototype">
+		<property name="cona">
+			<ref bean="natpBean" />
+		</property>
+	</bean>
+	
+	<!-- 客户类型配置 -->
+	<bean id="custTypeConfigAction" class="com.agree.abt.action.configManager.CustTypeConfigAction" scope="prototype">
+		<property name="cona">
+			<ref bean="natpBean" />
+		</property>
+	</bean>
+	
+	<!-- 小票模板配置 -->
+	<bean id="ticketConfigAction" class="com.agree.abt.action.configManager.TicketConfigAction" scope="prototype">
+		<property name="cona">
+			<ref bean="natpBean" />
+		</property>
+	</bean>
+	
+	<!-- 队列类型配置 -->
+	<bean id="queueTypeAction" class="com.agree.abt.action.configManager.QueueTypeAction" scope="prototype">
+		<property name="cona">
+			<ref bean="natpBean" />
+		</property>
+	</bean>
+	
+	<!-- 窗口映射配置 -->
+	<bean id="windowConfigAction" class="com.agree.abt.action.configManager.WindowConfigAction" scope="prototype">
+		<property name="cona">
+			<ref bean="natpBean" />
+		</property>
+	</bean>
+	
+	<!-- 软叫号配置 -->
+	<bean id="softCallConfigAction" class="com.agree.abt.action.configManager.SoftCallConfigAction" scope="prototype">
+		<property name="cona">
+			<ref bean="natpBean" />
+		</property>
+	</bean>
+	
+	<!-- 条屏信息配置 -->
+	<bean id="screenDisplayAction" class="com.agree.abt.action.configManager.ScreenDisplayAction" scope="prototype">
+		<property name="cona">
+			<ref bean="natpBean" />
+		</property>
+	</bean>
+	
+	<!-- 二层屏配置 -->
+	<bean id="doubleScreenDisplayAction" class="com.agree.abt.action.configManager.DoubleScreenDisplayAction" scope="prototype">
+		<property name="cona">
+			<ref bean="natpBean" />
+		</property>
+	</bean>
+	
+	<!-- 节假日配置 -->
+	<bean id="holidayAction" class="com.agree.abt.action.configManager.HolidayConfigAction" scope="prototype">
+		<property name="cona">
+			<ref bean="natpBean" />
+		</property>
+	</bean>
+	
+	<!-- 排队机参数配置 -->
+	<bean id="queueMachineParamAction" class="com.agree.abt.action.configManager.QueueMachineParamAction" scope="prototype">
+		<property name="cona">
+			<ref bean="natpBean" />
+		</property>
+	</bean>
+	
+	<!-- 业务可预约时间配置 -->
+	<bean id="queueBusiAction" class="com.agree.abt.action.configManager.QueueBusiAction" scope="prototype">
+		<property name="cona">
+			<ref bean="natpBean" />
+		</property>
+	</bean>
+	
+	<!-- 预约业务配置 -->
+	<bean id="subscribeBusinessAction" class="com.agree.abt.action.configManager.SubscribeBusinessAction" scope="prototype">
+		<property name="cona">
+			<ref bean="natpBean" />
+		</property>
+	</bean>
+	
+	<!-- 预约时段配置 -->
+	<bean id="subscribeTimeAction" class="com.agree.abt.action.configManager.SubscribeTimeAction" scope="prototype">
+		<property name="cona">
+			<ref bean="natpBean" />
+		</property>
+	</bean>
+	
+	<!-- 队列监控参数配置 -->
+	<bean id="QMMonitorConfAction" class="com.agree.abt.action.configManager.QMMonitorConfAction" scope="prototype">
+		<property name="cona">
+			<ref bean="natpBean" />
+		</property>
+	</bean>
+	
+	<!-- 机构参数配置 -->
+	<bean id="branchParamAction" class="com.agree.abt.action.configManager.BranchParamAction" scope="prototype">
+		<property name="cona">
+			<ref bean="natpBean" />
+		</property>
+	</bean>
+	
+	<!-- 大堂经理取号配置 -->
+	<bean id="managerCallNumAction" class="com.agree.abt.action.configManager.ManagerCallNumAction" scope="prototype">
+		<property name="cona">
+			<ref bean="natpBean" />
+		</property>
+	</bean>
+	
+	<!-- 机构参数模板配置 -->
+	<bean id="unitModelAction" class="com.agree.abt.action.configManager.UnitModelAction" scope="prototype">
+		<property name="cona">
+			<ref bean="natpBean" />
+		</property>
+	</bean>
+	<!-- 参数模板配置 -->
+	<bean id="templateInfoService" class="com.agree.abt.service.confmanager.impl.TemplateInfoServiceImpl">
+		<property name="sqlDao_h">
+			<ref bean="habernateDao"/>
+		</property>
+	</bean>
+	<bean id="templateInfoAction" class="com.agree.abt.action.configManager.TemplateInfoAction" scope="prototype">
+		<property name="cona">
+			<ref bean="natpBean" />
+		</property>
+		<property name="templateInfoService">
+			<ref bean="templateInfoService" />
+		</property>
+	</bean>
+	
+	<!-- 错误消息提示配置 -->
+	<bean id="errorMessageAction" class="com.agree.abt.action.configManager.ErrorMessageAction" scope="prototype">
+		<property name="cona">
+			<ref bean="natpBean" />
+		</property>
+	</bean>
+	
+	<!-- 设备接入注册信息配置 -->
+	<bean id="deviceRegistInfoAction" class="com.agree.abt.action.configManager.DeviceRegistInfoAction" scope="prototype">
+		<property name="cona">
+			<ref bean="natpBean" />
+		</property>
+	</bean>
+	
+	<!-- 设备类型配置 -->
+	<bean id="deviceManagerAction" class="com.agree.abt.action.configManager.DeviceManagerAction" scope="prototype">
+		<property name="cona">
+			<ref bean="natpBean" />
+		</property>
+	</bean>
+	
+	<!-- 消息推送规则配置 -->
+	<bean id="msgPushRuleAction" class="com.agree.abt.action.configManager.MsgPushRuleAction" scope="prototype">
+		<property name="cona">
+			<ref bean="natpBean" />
+		</property>
+	</bean>
+		
+	<!-- 消息类型配置 -->
+	<bean id="msgManagerAction" class="com.agree.abt.action.configManager.MsgManagerAction" scope="prototype">
+		<property name="cona">
+			<ref bean="natpBean" />
+		</property>
+	</bean>
+	
+	<!-- 主题配置与应用Service -->
+	<bean id="themeManagerService" class="com.agree.abt.service.confmanager.impl.ThemeManagerServiceImpl">
+		<property name="sqlDao_h">
+			<ref bean="habernateDao"/>
+		</property>
+	</bean>
+	<!-- 主题配置与应用Action -->
+	<bean id="themeManagerAction" class="com.agree.abt.action.configManager.ThemeManagerAction" scope="prototype">
+		<property name="cona">
+			<ref bean="natpBean" />
+		</property>
+		<property name="themeManagerService">
+			<ref bean="themeManagerService" />
+		</property>
+	</bean>
+	
+	<!-- 系统参数配置Service -->
+	<bean id="systemParameterService" class="com.agree.abt.service.confmanager.impl.SystemParameterServiceImpl">
+		<property name="sqlDao_h">
+			<ref bean="habernateDao"/>
+		</property>
+	</bean>
+	<!-- 系统参数配置Action -->
+	<bean id="systemParameterAction" class="com.agree.abt.action.configManager.SystemParameterAction" scope="prototype">
+		<property name="systemParameterService">
+			<ref bean="systemParameterService" />
+		</property>
+		<property name="selfMenuService">
+			<ref bean="selfMenuService" />
+		</property>
+		<property name="cona">
+			<ref bean="natpBean" />
+		</property>
+	</bean>
+	<!-- 手持产品配置Service -->
+	<bean id="productService" class="com.agree.abt.service.confmanager.impl.ProductServiceImpl" scope="prototype">
+		<property name="cona">
+			<ref bean="natpBean" />
+		</property>
+	</bean>
+	<!-- 手持产品配置Action -->
+	<bean id="productAppAction" class="com.agree.abt.action.configManager.ProductAppAction" scope="prototype">
+		<property name="productService">
+			<ref bean="productService"/>
+		</property>
+	</bean>	
+	<!-- 周边网点配置Service -->
+	<bean id="aroundBranchService" class="com.agree.abt.service.confmanager.impl.AroundBranchServiceImpl">
+		<property name="sqlDao_h">
+			<ref bean="habernateDao"/>
+		</property>
+	</bean>
+	<!-- 周边网点配置Action -->
+	<bean id="aroundBranchAction" class="com.agree.abt.action.configManager.AroundBranchAction">
+		<property name="aroundBranchService">
+			<ref bean="aroundBranchService"/>
+		</property>
+	</bean>
+	<!-- 设备信息配置 -->
+	<bean id="deviceMsgInfoAction" class="com.agree.abt.action.configManager.DeviceInfoAction" scope="prototype">
+		<property name="cona">
+			<ref bean="natpBean" />
+		</property>
+	</bean>
+	<!-- 自助设备信息-->
+	<bean id="selfDeviceInfoAction" class="com.agree.abt.action.configManager.SelfDeviceInfoAction" scope="prototype">
+		<property name="cona">
+			<ref bean="natpBean" />
+		</property>
+	</bean>
+	<!-- 自助设备菜单管理-->
+	<bean id="selfDevMenuAction" class="com.agree.abt.action.configManager.SelfDevMenuAction" scope="prototype">
+		 <property name="selfDevMenuService">
+			<ref bean="selfDevMenuService" />
+		</property> 
+	</bean>
+	<bean id="selfDevMenuService" class="com.agree.abt.service.confmanager.impl.SelfDevMenuServiceImpl" scope="prototype">
+		<property name="sqlDao_h">
+			<ref bean="habernateDao"/>
+		</property>
+	</bean>
+	<!-- 自助设备参数配置-->
+	<bean id="devParamAction" class="com.agree.abt.action.configManager.DevParamAction" scope="prototype">
+		 <property name="devParam">
+			<ref bean="devParamService" />
+		</property> 
+	</bean>
+	<bean id="devParamService" class="com.agree.abt.service.confmanager.impl.DevParamServiceImpl" scope="prototype">
+		<property name="sqlDao_h">
+			<ref bean="habernateDao"/>
+		</property>
+	</bean>
+	
+	
+	<!-- 设备信息配置管理-->
+  	<bean id="devInfoPeripheralAction" class="com.agree.abt.action.configManager.DevInfoPeripheralAction" >
+		<property name="devInfoPeripheralService" ref="devInfoPeripheralService" />
+	</bean>
+	<bean id="devInfoPeripheralService" class="com.agree.abt.service.confmanager.impl.DevInfoPeripheralServiceImpl" >
+		<property name="sqlDao_h" ref="habernateDao"/>
+	</bean>	
+	
+	
+	<!-- 设备对应外设状态配置Action -->
+	<bean id="devicePeripheralConfAction" class="com.agree.abt.action.configManager.DevicePeripheralConfAction" scope="prototype">
+		<property name="devicePeripheralState">
+			<ref bean="devicePeripheralConfService"/>
+		</property>
+	</bean>
+	<!-- 设备对应外设状态配置Service -->
+	<bean id="devicePeripheralConfService" class="com.agree.abt.service.confmanager.impl.DevPeripheralStateServiceImpl" scope="prototype">
+		<property name="sqlDao_h">
+			<ref bean="habernateDao"/>
+		</property>
+	</bean>
+	<!-- VIP客户信息配置Service -->
+	<bean id="vipCustInfoService" class="com.agree.abt.service.confmanager.impl.VipCustInfoServiceImpl">
+		<property name="sqlDao_h" ref="habernateDao" />
+	</bean>
+	<!-- VIP客户信息配置Action -->
+	<bean id="vipCustInfoAction" class="com.agree.abt.action.configManager.VipCustInfoAction">
+		<property name="vipCustInfoService" ref="vipCustInfoService" />
+	</bean>	
+	<!-- 白名单客户信息配置Service -->
+	<bean id="whiteCustInfoService" class="com.agree.abt.service.confmanager.impl.WhiteCustInfoServiceImpl">
+		<property name="sqlDao_h" ref="habernateDao" />
+	</bean>
+	<!-- 白名单客户信息配置Action -->
+	<bean id="whiteCustInfoAction" class="com.agree.abt.action.configManager.WhiteCustInfoAction">
+		<property name="whiteCustInfoService" ref="whiteCustInfoService" />
+	</bean>	
+	
+	<!-- 外设类型配置Service -->
+	<bean id="peripheralTypeService" class="com.agree.abt.service.confmanager.impl.PeripheralTypeServiceImpl">
+		<property name="sqlDao_h" ref="habernateDao" />
+	</bean>
+	<!-- 外设类型配置Action -->
+	<bean id="peripheralTypeAction" class="com.agree.abt.action.configManager.PeripheralTypeAction">
+		<property name="peripheralTypeService" ref="peripheralTypeService" />
+	</bean>	
+	<!-- 外设状态配置Service -->
+	<bean id="peripheralStateService" class="com.agree.abt.service.confmanager.impl.PeripheralStateServiceImpl">
+		<property name="sqlDao_h" ref="habernateDao" />
+	</bean>
+	<!-- 外设状态配置Action -->
+	<bean id="peripheralStateAction" class="com.agree.abt.action.configManager.PeripheralStateAction">
+		<property name="peripheralStateService" ref="peripheralStateService" />
+	</bean>	
+	<!-- 发卡机信息配置 -->
+	<bean id="cardMachineAction" class="com.agree.abt.action.configManager.CardMachineAction" scope="prototype">
+		<property name="cona">
+			<ref bean="natpBean" />
+		</property>
+	</bean>
+	
+	<bean id="selfDevParamAction" class="com.agree.abt.action.configManager.SelfDevParamAction" scope="prototype">
+		<property name="cona">
+			<ref bean="natpBean" />
+		</property>
+	</bean>
+	<!-- 卡种配置 -->
+	<bean id="cardTypeAction" class="com.agree.abt.action.configManager.CardTypeAction" scope="prototype">
+		<property name="productService" ref="productService" />
+		<property name="cona" ref="natpBean" />
+	</bean>
+	
+	<!-- 设备菜单管理Action -->
+	<bean id="selfMenuInfoAction" class="com.agree.abt.action.configManager.SelfMenuInfoAction" scope="prototype">
+		<property name="selfMenuService">
+			<ref bean="selfMenuService" />
+		</property>
+	</bean>
+	<!-- 设备菜单管理Service -->
+	<bean id="selfMenuService" class="com.agree.abt.service.confmanager.impl.SelfMenuServiceImpl" lazy-init="true">
+		<property name="sqlDao_h">
+			<ref bean="habernateDao"/>
+		</property>
+	</bean>
+	
+	<!-- 自助设备广告管理Service -->
+	<bean id="advertParamService" class="com.agree.abt.service.confmanager.impl.AdvertParamServiceImpl" lazy-init="true">
+		<property name="sqlDao_h">
+			<ref bean="habernateDao"/>
+		</property>
+	</bean>
+	<!-- 法人参数配置-->
+	<bean id="corporationParamAction" class="com.agree.abt.action.configManager.CorporationParamAction" scope="prototype">
+		<property name="cona">
+			<ref bean="natpBean" />
+		</property>
+	</bean>
+	<!-- 自助设备广告管理Actioin -->
+	<bean id="advertInfoAction" class="com.agree.abt.action.configManager.AdvertInfoAction" scope="prototype">
+		<property name="advertservice">
+			<ref bean="advertParamService" />
+		</property>
+	</bean>
+</beans>

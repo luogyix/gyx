@@ -1,0 +1,24 @@
+exception.default = System Error. Please contect system administrator\!
+
+exception.invaliduser = 10001
+exception.duplicateusercode = 10002
+exception.userlogontimeout = 10003
+exception.usercodealreadyexist = 10004
+exception.userprohibited = 10005
+exception.usernoprivilidge = 10006
+exception.duplicateuserid = 10007
+
+
+exception.noprivilege = 10011
+
+exception.parameterobjectisnull = 10016
+exception.parameterobjectwrongtype = 10017
+
+exception.buslinenotconfigured=10021
+exception.buslinestationnotconfigured=10022
+exception.buslineupstationnotconfigured=10023
+exception.buslinedownstationnotconfigured=10024
+exception.buslinesectionnotconfigured=10025
+exception.buslineupsectionnotconfigured=10026
+exception.buslinedownsectionnotconfigured=10027
+exception.dberror=10060

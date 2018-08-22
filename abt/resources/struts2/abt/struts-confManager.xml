@@ -1,0 +1,306 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!DOCTYPE struts PUBLIC 
+	"-//Apache Software Foundation//DTD Struts Configuration 2.0//EN"
+	"http://struts.apache.org/dtds/struts-2.0.dtd">
+
+<struts>
+	<package name="confManager" extends="BasePackage">
+		
+	    <!-- 广告图片配置  -->
+		<action name="advert_*" class="advertImageAction" method="{1}">
+			<interceptor-ref name="SystemConsoleInterceptorStack"></interceptor-ref>
+			<result name="success">/webpages/abt/devmanager/advertImage.jsp</result>
+		</action>
+		<!-- 广告参数配置  -->
+		<action name="adParam_*" class="advertParamAction" method="{1}">
+			<interceptor-ref name="SystemConsoleInterceptorStack"></interceptor-ref>
+			<result name="success">/webpages/abt/devmanager/advertParam.jsp</result>
+		</action>
+		<!-- 排队机信息配置 -->
+		<action name="qm_*" class="qmInfoAction" method="{1}">
+			<interceptor-ref name="SystemConsoleInterceptorStack"></interceptor-ref>
+			<result name="success">/webpages/abt/configManager/QMInfo.jsp</result>
+		</action>
+		
+		<!-- 排队机参数配置 -->
+		<action name="machineParam_*" class="queueMachineParamAction" method="{1}">
+			<interceptor-ref name="SystemConsoleInterceptorStack"></interceptor-ref>
+			<result name="success">/webpages/abt/configManager/queueParam.jsp</result>
+		</action>
+		
+		<!-- 排队机界面配置 -->
+		<action name="machineView_*" class="machineViewConfAction" method="{1}">
+			<interceptor-ref name="SystemConsoleInterceptorStack"></interceptor-ref>
+			<result name="success">/webpages/abt/configManager/machineView.jsp</result>
+			<result name="success2">/webpages/abt/configManager/machineView2.jsp</result>
+		</action>
+		
+		<!-- 叫号规则配置 -->
+		<action name="queueingRules_*" class="queueingRulesAction" method="{1}">
+			<interceptor-ref name="SystemConsoleInterceptorStack"></interceptor-ref>
+			<result name="success">/webpages/abt/configManager/queueingRules.jsp</result>
+			<result name="success2">/webpages/abt/configManager/queueingRules2.jsp</result>
+		</action>
+		
+		<!-- 排队机主题配置 -->
+		<action name="themeInfo_*" class="themeinfoConfigAction" method="{1}">
+			<interceptor-ref name="SystemConsoleInterceptorStack"></interceptor-ref>
+			<result name="success">/webpages/abt/configManager/themeInfo.jsp</result>
+		</action>
+		
+		<!-- 业务配置 -->
+		<action name="business_*" class="bussinessAction" method="{1}">
+			<interceptor-ref name="SystemConsoleInterceptorStack"></interceptor-ref>
+			<result name="success">/webpages/abt/configManager/business.jsp</result>
+		</action>
+		
+		<!-- 卡Bin配置 -->
+		<action name="cardBin_*" class="cardBinConfigAction" method="{1}">
+			<interceptor-ref name="SystemConsoleInterceptorStack"></interceptor-ref>
+			<result name="success">/webpages/abt/configManager/cardBin.jsp</result>
+		</action>
+		
+		<!-- 客户类型配置 -->
+		<action name="custType_*" class="custTypeConfigAction" method="{1}">
+			<interceptor-ref name="SystemConsoleInterceptorStack"></interceptor-ref>
+			<result name="success">/webpages/abt/configManager/custType.jsp</result>
+		</action>
+		
+		<!-- 小票模板配置 -->
+		<action name="ticket_*" class="ticketConfigAction" method="{1}">
+			<interceptor-ref name="SystemConsoleInterceptorStack"></interceptor-ref>
+			<result name="success">/webpages/abt/configManager/ticket.jsp</result>
+		</action>
+		
+		<!-- 队列类型配置 -->
+		<action name="queuetype_*" class="queueTypeAction" method="{1}">
+			<interceptor-ref name="SystemConsoleInterceptorStack"></interceptor-ref>
+			<result name="success">/webpages/abt/configManager/queueType.jsp</result>
+		</action>
+		
+		<!-- 窗口配置 -->
+		<action name="window_*" class="windowConfigAction" method="{1}">
+			<interceptor-ref name="SystemConsoleInterceptorStack"></interceptor-ref>
+			<result name="success">/webpages/abt/configManager/window.jsp</result>
+		</action>
+		
+		<!-- 软叫号配置 -->
+		<action name="softCall_*" class="softCallConfigAction" method="{1}">
+			<interceptor-ref name="SystemConsoleInterceptorStack"></interceptor-ref>
+			<result name="success">/webpages/abt/configManager/softCall.jsp</result>
+		</action>
+		
+		<!-- 条屏参数配置 -->
+		<action name="screenDisplay_*" class="screenDisplayAction" method="{1}">
+			<interceptor-ref name="SystemConsoleInterceptorStack"></interceptor-ref>
+			<result name="success">/webpages/abt/configManager/screenDisplay.jsp</result>
+		</action>
+		
+		<!-- 二层屏配置 -->
+		<action name="doubleScreenDisplay_*" class="doubleScreenDisplayAction" method="{1}">
+			<interceptor-ref name="SystemConsoleInterceptorStack"></interceptor-ref>
+			<result name="success">/webpages/abt/configManager/doubleScreenDisplay.jsp</result>
+		</action>
+		
+		<!-- 节假日配置 -->
+		<action name="holiday_*" class="holidayAction" method="{1}">
+			<interceptor-ref name="SystemConsoleInterceptorStack"></interceptor-ref>
+			<result name="success">/webpages/abt/configManager/holiday.jsp</result>
+		</action>
+		
+		<!-- 业务可办理时段配置 -->
+		<action name="queuebusi_*" class="queueBusiAction" method="{1}">
+			<interceptor-ref name="SystemConsoleInterceptorStack"></interceptor-ref>
+			<result name="success">/webpages/abt/configManager/queuebusiInfo2.jsp</result>
+			<result name="success_old">/webpages/abt/configManager/queuebusiInfo.jsp</result>
+		</action>
+		
+		<!-- 预约业务配置 -->
+		<action name="subscribeBusiness_*" class="subscribeBusinessAction" method="{1}">
+			<interceptor-ref name="SystemConsoleInterceptorStack"></interceptor-ref>
+			<result name="success">/webpages/abt/configManager/subscribeBusiness.jsp</result>
+		</action>
+		
+		<!-- 预约时段配置 -->
+		<action name="subscribeTime_*" class="subscribeTimeAction" method="{1}">
+			<interceptor-ref name="SystemConsoleInterceptorStack"></interceptor-ref>
+			<result name="success">/webpages/abt/configManager/subscribeTime.jsp</result>
+		</action>
+		
+		<!-- 队列监控参数配置 -->
+		<action name="QMMonitorConf_*" class="QMMonitorConfAction" method="{1}">
+			<interceptor-ref name="SystemConsoleInterceptorStack"></interceptor-ref>
+			<result name="success">/webpages/abt/configManager/QMMonitorConf.jsp</result>
+		</action>
+		
+		<!-- 机构参数配置 -->
+		<action name="branchParam_*" class="branchParamAction" method="{1}">
+			<interceptor-ref name="SystemConsoleInterceptorStack"></interceptor-ref>
+			<result name="success">/webpages/abt/configManager/branchParam.jsp</result>
+		</action>
+		
+		<!-- 大堂经理取号配置 -->
+		<action name="managerCallNum_*" class="managerCallNumAction" method="{1}">
+			<interceptor-ref name="SystemConsoleInterceptorStack"></interceptor-ref>
+			<result name="success">/webpages/abt/configManager/managerCallNum.jsp</result>
+		</action>
+		
+		<!-- 机构参数模板配置 -->
+		<action name="unitModel_*" class="unitModelAction" method="{1}">
+			<interceptor-ref name="SystemConsoleInterceptorStack"></interceptor-ref>
+			<result name="success">/webpages/abt/configManager/unitModel.jsp</result>
+		</action>
+		
+		<!-- 错误消息提示配置 -->
+		<action name="errorMessage_*" class="errorMessageAction" method="{1}">
+			<interceptor-ref name="SystemConsoleInterceptorStack"></interceptor-ref>
+		</action>
+		
+		<!-- 设备接入注册信息配置 -->
+		<action name="deviceRegist_*" class="deviceRegistInfoAction" method="{1}">
+			<interceptor-ref name="SystemConsoleInterceptorStack"></interceptor-ref>
+			<result name="success">/webpages/abt/configManager/deviceRegistInfo.jsp</result>
+		</action>
+		<!-- 设备类型配置 -->
+		<action name="deviceManager_*" class="deviceManagerAction" method="{1}">
+			<interceptor-ref name="SystemConsoleInterceptorStack"></interceptor-ref>
+			<result name="success">/webpages/abt/configManager/deviceManager.jsp</result>
+		</action>
+		<!-- 消息推送规则配置 -->
+		<action name="msgPushRule_*" class="msgPushRuleAction" method="{1}">
+			<interceptor-ref name="SystemConsoleInterceptorStack"></interceptor-ref>
+			<result name="success">/webpages/abt/configManager/msgPushRule.jsp</result>
+		</action>
+		<!-- 消息类型配置 -->
+		<action name="msgManager_*" class="msgManagerAction" method="{1}">
+			<interceptor-ref name="SystemConsoleInterceptorStack"></interceptor-ref>
+			<result name="success">/webpages/abt/configManager/msgManager.jsp</result>
+		</action>
+<!--		<action name="themeManager_*" class="themeManagerAction" method="{1}">   -->
+<!--			<interceptor-ref name="SystemConsoleInterceptorStack"></interceptor-ref>-->
+<!--			<interceptor-ref name="fileUpload">   -->
+<!--		        <param name="allowedTypes">image/bmp,image/png,image/gif,image/jpeg,image/jpg</param>-->
+<!--		        <param name="maximumSize">20000000000</param>-->
+<!--		    </interceptor-ref>  -->
+<!--		    <interceptor-ref name="defaultStack" />-->
+<!--		    <result name ="success" >/webpages/abt/configManager/themeManager.jsp</result >-->
+<!--		</action> -->
+		<!-- 主题配置与应用 -->
+		<action name="themeManager_*" class="themeManagerAction" method="{1}">   
+			<interceptor-ref name="SystemConsoleInterceptorStack"></interceptor-ref>
+			<interceptor-ref name="fileUpload">   
+			<!--拦截器strut2自带的, 指定上传文件的格式,如果不符合规定，将会自动拦截下来 -->  
+		        <param name="allowedTypes">image/bmp,image/png,image/gif,image/jpeg,image/jpg</param>
+		        <param name="maximumSize">20000000000</param>
+		    </interceptor-ref>  
+		    <interceptor-ref name="defaultStack" />
+		    <result name="success" >/webpages/abt/configManager/themeManager.jsp</result>
+		    <result name="success_manager" >/webpages/abt/configManager/themeConfig.jsp</result>
+		</action>
+		
+		<!-- 系统参数配置 -->
+		<action name="systemParameter_*" class="systemParameterAction" method="{1}">   
+			<interceptor-ref name="SystemConsoleInterceptorStack"></interceptor-ref>
+		</action>
+		
+		<!-- 参数模板配置 -->
+		<action name="template_*" class="templateInfoAction" method="{1}">
+			<interceptor-ref name="SystemConsoleInterceptorStack"></interceptor-ref>
+		</action>
+		
+		<!-- 手持产品配置 -->
+		<action name="productApp_*" class="productAppAction" method="{1}">
+			<interceptor-ref name="SystemConsoleInterceptorStack"></interceptor-ref>
+			<result name="success">/webpages/abt/configManager/productAppconfig.jsp</result>
+		</action>
+		<!-- 周边网点配置 -->
+		<action name="aroundBranch_*" class="aroundBranchAction" method="{1}">
+			<interceptor-ref name="SystemConsoleInterceptorStack"></interceptor-ref>
+			<result name="success">/webpages/abt/configManager/aroundBranch.jsp</result>
+		</action>
+		
+		<!-- VIP客户配置 -->
+		<action name="vipCust_*" class="vipCustInfoAction" method="{1}">
+			<interceptor-ref name="SystemConsoleInterceptorStack"></interceptor-ref>
+			<result name="success">/webpages/abt/configManager/vipCustInfo.jsp</result>
+		</action>
+		<!-- 白名单客户配置-->
+		<action name="whiteCust_*" class="whiteCustInfoAction" method="{1}">
+			<interceptor-ref name="SystemConsoleInterceptorStack"></interceptor-ref>
+			<result name="success">/webpages/abt/configManager/whiteCustInfo.jsp</result>
+		</action>
+
+		<!-- 设备信息配置 -->
+	    <action name="deviceMsg_*" class="deviceMsgInfoAction" method="{1}">
+			<interceptor-ref name="SystemConsoleInterceptorStack"></interceptor-ref>
+			<result name="success">/webpages/abt/configManager/deviceInfo.jsp</result>
+		</action>
+		<!-- 自助设备信息配置 -->
+		<action name="selfDevice_*" class="selfDeviceInfoAction" method="{1}">
+			<interceptor-ref name="SystemConsoleInterceptorStack"></interceptor-ref>
+			<result name="success">/webpages/abt/selfdev/selfDeviceInfo.jsp</result>
+		</action>
+		<!-- 自助设备菜单配置 -->
+		<action name="selfMenu_*" class="selfDevMenuAction" method="{1}">
+			<interceptor-ref name="SystemConsoleInterceptorStack"></interceptor-ref>
+			<result name="success">/webpages/abt/selfdev/selfDevMenu.jsp</result>
+		</action>
+		<!-- 自助设备参数配置 -->
+		<action name="devParam_*" class="devParamAction" method="{1}">
+			<interceptor-ref name="SystemConsoleInterceptorStack"></interceptor-ref>
+			<result name="success">/webpages/abt/selfdev/devParam.jsp</result>
+		</action>
+		
+		<!-- 设备对应外设状态配置 -->
+  		<action name="devicePeripheral_*" class="devicePeripheralConfAction" method="{1}">
+			<interceptor-ref name="SystemConsoleInterceptorStack"></interceptor-ref>
+			<result name="success">/webpages/abt/selfdev/decicePeripheralConf.jsp</result>
+		</action>
+		<!-- 设备信息配置管理 -->
+		<action name="devInfoPeripheral_*" class="devInfoPeripheralAction" method="{1}">
+			<interceptor-ref name="SystemConsoleInterceptorStack"></interceptor-ref>
+			<result name="success">/webpages/abt/configManager/devInfoPeripheral.jsp</result>
+		</action> 
+		
+		<!-- 外设类型配置-->
+		<action name="peripheralType_*" class="peripheralTypeAction" method="{1}">
+			<interceptor-ref name="SystemConsoleInterceptorStack"></interceptor-ref>
+			<result name="success">/webpages/abt/configManager/peripheralType.jsp</result>
+		</action>
+		<!-- 外设状态配置-->
+		<action name="peripheralState_*" class="peripheralStateAction" method="{1}">
+			<interceptor-ref name="SystemConsoleInterceptorStack"></interceptor-ref>
+			<result name="success">/webpages/abt/configManager/peripheralState.jsp</result>
+		</action>
+		
+		<!-- 卡种配置 -->
+		<action name="cardType_*" class="cardTypeAction" method="{1}">
+			<interceptor-ref name="SystemConsoleInterceptorStack"></interceptor-ref>
+			<result name="success">/webpages/abt/configManager/tsfCardType.jsp</result>
+		</action>
+		
+		<!-- 自助设备参数管理 -->
+		<action name="selfDevParamAction_*" class="selfDevParamAction" method="{1}">
+			<interceptor-ref name="SystemConsoleInterceptorStack"></interceptor-ref>
+			<result name="success">/webpages/abt/configManager/devParamManager.jsp</result>
+		</action>
+		
+		<!-- 自助设备菜单管理 -->
+		<action name="selfMenuInfoAction_*" class="selfMenuInfoAction" method="{1}">
+			<interceptor-ref name="SystemConsoleInterceptorStack"></interceptor-ref>
+			<result name="success">/webpages/abt/configManager/selfmoduleinfo.jsp</result>
+		</action>
+		
+		<!-- 自助设备广告管理 -->
+		<action name="advertInfoAction_*" class="advertInfoAction" method="{1}">
+			<interceptor-ref name="SystemConsoleInterceptorStack"></interceptor-ref>
+			<result name="success">/webpages/abt/configManager/advertManager.jsp</result>
+		</action>
+		<!-- 法人参数配置 -->
+		<action name="corporationParam_*" class="corporationParamAction" method="{1}">
+			<interceptor-ref name="SystemConsoleInterceptorStack"></interceptor-ref>
+			<result name="success">/webpages/abt/configManager/corporationParam.jsp</result>
+		</action>
+	</package>
+</struts>

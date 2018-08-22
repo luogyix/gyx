@@ -1,0 +1,78 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!DOCTYPE struts PUBLIC 
+	"-//Apache Software Foundation//DTD Struts Configuration 2.0//EN"
+	"http://struts.apache.org/dtds/struts-2.0.dtd">
+
+<struts>
+	<package name="admin" extends="BasePackage">
+	    <!-- 定时任务管理 -->
+	    <action name="timing_*" class="TimingManage" method="{1}">
+	        <interceptor-ref name="SystemConsoleInterceptorStack"></interceptor-ref>
+	        <result name="success">/webpages/freamwork/administration/timinginfo.jsp</result>
+	    </action>
+		<!-- 菜单管理 -->
+		<action name="systemmodule_*" class="ModuleActionBean" method="{1}">
+			<interceptor-ref name="SystemConsoleInterceptorStack"></interceptor-ref>
+			<result name="success">/webpages/freamwork/administration/moduleinfo.jsp</result>
+		</action>
+		<!-- 角色管理 -->
+		<action name="systemrole_*" class="RoleActionBean" method="{1}">
+			<interceptor-ref name="SystemConsoleInterceptorStack"></interceptor-ref>
+			<result name="success">/webpages/freamwork/administration/roleinfo.jsp</result>
+		</action>
+		<!-- 用户管理 -->
+		<action name="systemuser_*" class="UserActionBean" method="{1}">
+			<interceptor-ref name="SystemConsoleInterceptorStack"></interceptor-ref>
+			<result name="success">/webpages/freamwork/administration/userinfo.jsp</result>
+		</action>
+		
+		<!-- 密码修改 -->
+		<action name="systemUserPass_*" class="UpdateUserPassActionBean" method="{1}">
+			<interceptor-ref name="SystemConsoleInterceptorStack"></interceptor-ref>
+			<result name="success">/webpages/freamwork/administration/updateUserPass.jsp</result>
+		</action>
+		<!-- 部门管理 -->
+		<action name="systemunit_*" class="UnitActionBean" method="{1}">
+			<interceptor-ref name="SystemConsoleInterceptorStack"></interceptor-ref>
+			<result name="success">/webpages/freamwork/administration/unitinfo.jsp</result>
+		</action>
+		<!-- 日志管理 -->
+		<action name="systemlog_*" class="LogActionBean" method="{1}">
+			<interceptor-ref name="SystemConsoleInterceptorStack"></interceptor-ref>
+			<result name="success">/webpages/freamwork/administration/loginfo.jsp</result>
+		</action>
+		<!-- 通用管理 -->
+		<action name="bsmscommon_*" class="CommonActionBean" method="{1}">
+		</action>
+		<!-- 资源权限管理 -->
+		<action name="privilegequery_*" class="PrivilegeQueryActionBean" method="{1}">
+			<interceptor-ref name="SystemConsoleInterceptorStack"></interceptor-ref>
+		</action>
+		<!-- 字典管理 -->
+		<action name="systemdict_*" class="DictinfoActionBean" method="{1}">
+			<interceptor-ref name="SystemConsoleInterceptorStack"></interceptor-ref>
+			<result name="success">/webpages/freamwork/administration/dictinfo.jsp</result>
+		</action>
+		<!-- 通知管理 -->
+		<action name="sysnotice_*" class="SysNoticeActionBean" method="{1}">
+			<interceptor-ref name="SystemConsoleInterceptorStack"></interceptor-ref>
+			<result name="success">/webpages/freamwork/administration/sysNotice.jsp</result>
+		</action>
+		<!-- 表格设计器 -->
+		<action name="gridDesigner_*" class="gridDesignerAction" method="{1}">
+			<interceptor-ref name="SystemConsoleInterceptorStack"></interceptor-ref>
+			<result name="success">/webpages/freamwork/administration/gridDesigner.jsp</result>
+		</action>
+		<!-- 表单设计器 -->
+		<action name="formDesigner_*" class="formDesignerAction" method="{1}">
+			<interceptor-ref name="SystemConsoleInterceptorStack"></interceptor-ref>
+			<result name="success">/webpages/freamwork/administration/formDesigner.jsp</result>
+		</action>
+		<!--F5心跳检测-->
+		<action name="F5Check_*" class="F5CheckAction" method="{1}">
+			<interceptor-ref name="SystemConsoleInterceptorStack"></interceptor-ref>
+			<result name="success"></result>
+		</action>
+	</package>
+</struts>

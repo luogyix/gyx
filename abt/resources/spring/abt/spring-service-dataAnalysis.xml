@@ -1,0 +1,11 @@
+﻿<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-2.0.xsd">
+	<!-- 消息流水服务 -->
+	<bean id="PushMsgFlowService" class="com.agree.abt.service.dataAnalysis.impl.PushMsgFlowServiceImpl">
+		<property name="sqlDao_h">
+			<ref bean="habernateDao"/>
+		</property>
+	</bean>
+</beans>

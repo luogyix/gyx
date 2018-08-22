@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+"http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+<hibernate-mapping>
+    <class name="com.agree.abt.model.confManager.BtTsfMetadata" table="BT_TSF_METADATA" >
+    <cache usage="read-write"/>
+    	<id name="metadata_id" type="java.lang.String">
+    		<column name="METADATA_ID" length="20"></column>
+    	</id>
+    	<property name="menu_code" type="java.lang.String">
+            <column name="MENU_CODE" length="20"/>
+        </property>
+        <property name="menu_name" type="java.lang.String">
+            <column name="MENU_NAME" length="50" />
+        </property>
+
+        <property name="trade_flag" type="java.lang.String">
+			<column name="TRADE_FLAG" length="2" />
+        </property>
+         <property name="menu_description" type="java.lang.String">
+			<column name="MENU_DESCRIPTION" length="500" />
+        </property>        
+         <property name="menu_role" type="java.lang.String">
+			<column name="menu_role" length="6" />
+        </property>
+        <property name="menutype" type="java.lang.String">
+			<column name="MENUTYPE" length="2" />
+        </property>
+        <property name="device_type" type="java.lang.String">
+			<column name="DEVICE_TYPE" length="2" />
+        </property>
+        <property name="menustatus" type="java.lang.String">
+			<column name="MENUSTATUS" length="2" />
+        </property>
+        <property name="deleteflag" type="java.lang.String">
+			<column name="DELETEFLAG" length="2" />
+        </property>
+        <property name="busitype" type="java.lang.String">
+			<column name="BUSITYPE" length="2" />
+        </property>
+        <property name="menu_serv_time" type="java.lang.String">
+			<column name="MENU_SERV_TIME" length="100" />
+        </property>
+        <property name="disablestatus" type="java.lang.String">
+			<column name="DISABLESTATUS" length="2" />
+        </property>
+        <property name="interface_id" type="java.lang.String">
+			<column name="INTERFACE_ID" length="20" />
+        </property>
+        <property name="node_location" type="java.lang.String">
+			<column name="NODE_LOCATION" length="4" />
+        </property>
+    </class>
+</hibernate-mapping>

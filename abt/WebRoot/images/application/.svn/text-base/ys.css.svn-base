@@ -1,0 +1,196 @@
+.----red {
+	FONT-SIZE: 12px;
+	COLOR: #666666;
+	font-family: Arial, Helvetica, sans-serif;
+	height: 21px;
+	width: 150px;
+}
+.----bilue {
+	FONT-SIZE: 12px;
+	COLOR: #666666;
+	font-family: Arial, Helvetica, sans-serif;
+	height: 14px;
+	width: 134px;
+}
+.title {
+	font-family: Arial, Helvetica, sans-serif;
+	font-size: 12px;
+	font-weight: bold;
+	color: #FFFFFF;
+}
+
+A.menu01:link {
+	FONT-SIZE: 13px;
+	COLOR: #ffffff;
+	FONT-FAMILY: "Arial", "宋体";
+	TEXT-DECORATION: none
+}
+A.menu01:visited {
+	FONT-SIZE: 13px;
+	COLOR: #ffffff;
+	FONT-FAMILY: "Arial", "宋体";
+	TEXT-DECORATION: none
+}
+A.menu01:hover {
+	FONT-SIZE: 13px;
+	COLOR: #ffff00;
+	FONT-FAMILY: "Arial", "宋体";
+	TEXT-DECORATION: none
+}
+
+
+
+
+A.newslist:link {
+	FONT-SIZE: 12px;
+	COLOR: #666666;
+	FONT-FAMILY: arial;
+	TEXT-DECORATION: none
+}
+A.newslist:visited {
+	FONT-SIZE: 12px;
+	COLOR: #666666;
+	FONT-FAMILY: arial;
+	TEXT-DECORATION: none
+}
+A.newslist:active {
+	FONT-SIZE: 12px;
+	COLOR: #666666;
+	FONT-FAMILY: arial;
+	TEXT-DECORATION: none
+}
+.hui {
+	font-family: Arial, Helvetica, sans-serif;
+	font-size: 12px;
+	color: #E0EBF8;
+}
+
+A.newslist:hover {
+	FONT-SIZE: 12px;
+	COLOR: #3366FF;
+	FONT-FAMILY: arial;
+	TEXT-DECORATION: none
+}
+
+
+A.newslist234:link {
+	FONT-SIZE: 12px;
+	COLOR: #0099CC;
+	FONT-FAMILY: arial;
+	TEXT-DECORATION: none
+}
+A.newslist234:visited {
+	FONT-SIZE: 12px;
+	COLOR: #0099CC;
+	FONT-FAMILY: arial;
+	TEXT-DECORATION: none
+
+}
+A.newslist234:active {
+	FONT-SIZE: 12px;
+	COLOR: #0099CC;
+	FONT-FAMILY: arial;
+	TEXT-DECORATION: none
+}
+A.newslist234:hover {
+	FONT-SIZE: 12px;
+	COLOR: #00CCFF;
+	FONT-FAMILY: arial;
+	TEXT-DECORATION: none
+}
+
+
+
+.shuru {
+	font-family: Arial, Helvetica, sans-serif;
+	font-size: 12px;
+	color: #000066;
+	height: 21px;
+	width: 140px;
+	background-image: url(web-dl-cs-k.gif);
+	border: 1px solid #CCCCCC;
+}
+
+.title-white {
+	font-family: Arial, Helvetica, sans-serif;
+	font-size: 12px;
+	font-weight: bold;
+	color: #FFFFFF;
+}
+.title-reds {
+	font-family: Arial, Helvetica, sans-serif;
+	font-size: 12px;
+	font-weight: bold;
+	color: #000066;
+}
+.di-word {
+	font-family: Arial, Helvetica, sans-serif;
+	font-size: 12px;
+	color: #8EA7B8;
+}
+
+
+
+
+
+
+
+
+
+
+
+
+A.ne:link {
+	FONT-SIZE: 12px;
+	COLOR: #00B0DD;
+	FONT-FAMILY: arial;
+	TEXT-DECORATION: none
+}
+A.ne:visited {
+	FONT-SIZE: 12px;
+	COLOR: #00BBEA;
+	FONT-FAMILY: arial;
+	TEXT-DECORATION: none
+}
+A.ne:active {
+	FONT-SIZE: 12px;
+	COLOR: #00BBEA;
+	FONT-FAMILY: arial;
+	TEXT-DECORATION: none
+}
+A.ne:hover {
+	FONT-SIZE: 12px;
+	COLOR: #00CCFF;
+	FONT-FAMILY: arial;
+	TEXT-DECORATION: none
+}
+
+
+
+
+
+
+A.zzne:link {
+	FONT-SIZE: 12px;
+	COLOR: #000099;
+	FONT-FAMILY: arial;
+	TEXT-DECORATION: none
+}
+A.zzne:visited {
+	FONT-SIZE: 12px;
+	COLOR: #003366;
+	FONT-FAMILY: arial;
+	TEXT-DECORATION: none
+}
+A.zzne:active {
+	FONT-SIZE: 12px;
+	COLOR: #000066;
+	FONT-FAMILY: arial;
+	TEXT-DECORATION: none
+}
+A.zzne:hover {
+	FONT-SIZE: 12px;
+	COLOR: #6666FF;
+	FONT-FAMILY: arial;
+	TEXT-DECORATION: none
+}

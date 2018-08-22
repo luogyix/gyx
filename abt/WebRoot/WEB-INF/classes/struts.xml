@@ -1,0 +1,81 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!DOCTYPE struts PUBLIC 
+	"-//Apache Software Foundation//DTD Struts Configuration 2.0//EN"
+	"http://struts.apache.org/dtds/struts-2.0.dtd">
+
+<struts>
+	<constant name="struts.ui.theme" value="simple"/>
+	<constant name="struts.custom.i18n.resources" 
+		value="resources/messages/messages-common,
+				resources/messages/messages-welcome,
+				resources/messages/messages-exception,
+				resources/messages/messages-admin,
+				resources/messages/messages-dictionary,
+				resources/messages/messages-cnapsmanage,
+				resources/messages/messages-clearing"/>
+	<!-- 上传文件大小限制 ，最大不超过100M-->			
+	<constant name="struts.multipart.maxSize" value="104857600"/>
+
+	<package name="BasePackage" extends="json-default" namespace="/system">
+		<interceptors>
+			<interceptor name="AppExceptionHandler" class="com.agree.framework.struts2.interceptors.ExceptionHandlerInterceptor"></interceptor>
+			<interceptor name="ActionLogger" class="com.agree.framework.struts2.interceptors.ActionLoggingInterceptor"></interceptor>
+			<interceptor name="PrivilegeJudger" class="com.agree.framework.struts2.interceptors.PrivilegeJudgeInterceptor"></interceptor>
+			<interceptor-stack name="SystemConsoleInterceptorStack">
+				<interceptor-ref name="AppExceptionHandler"></interceptor-ref>
+				<interceptor-ref name="PrivilegeJudger"></interceptor-ref>
+				<!--interceptor-ref name="ActionLogger"></interceptor-ref>  -->
+				<interceptor-ref name="defaultStack"></interceptor-ref>
+			</interceptor-stack>
+		</interceptors>
+		
+		<global-results>
+			<result name="login">/webpages/freamwork/welcome/welcomeTimeOut.jsp</result>
+			<result name="nologin">/webpages/freamwork/welcome/nologin.jsp</result>
+			<result name="APPEXCEPTION">/webpages/freamwork/exception/exception.jsp</result>
+			
+			<result name="AJAX_SUCCESS" type="json">
+				<param name="ignoreHierarchy">false</param>
+				<param name="includeProperties">actionresult</param>
+			</result>
+			<result name="JSONP_SUCCESS" type="json">
+				<param name="ignoreHierarchy">false</param>
+				<param name="root">actionresult</param>
+				<param name="callbackParameter">jsoncallback</param>
+			</result>
+		</global-results>
+		
+		<action name="common_*" class="com.agree.framework.web.action.base.CommonAction" method="{1}">
+			
+		</action>
+		<action name="commonselect_*" class="com.agree.framework.web.action.base.CommonGetAction" method="{1}">
+			
+		</action>
+		
+		<action name="welcome" class="com.agree.framework.web.action.welcome.WelcomeAction">
+			<result name="success">/webpages/freamwork/welcome/welcome.jsp</result>
+		</action>
+
+		<!-- 系统登录 -->
+		<action name="logon_*" class="LogonActionBean" method="{1}">
+			<interceptor-ref name="SystemConsoleInterceptorStack"></interceptor-ref>
+			<result name="success">/webpages/freamwork/welcome/mainframe.jsp</result>
+			<result name="fail">/webpages/abt/pfs/tokenError.jsp</result>
+			<result name="systemuserpass">/webpages/freamwork/administration/updateUserPass1.jsp</result>
+		</action>
+		<!-- 系统退出 -->
+		<action name="exitSystem_*" class="ExitSystemActionBean" method="{1}">
+			<interceptor-ref name="SystemConsoleInterceptorStack"></interceptor-ref>
+			<result name="success">/webpages/freamwork/queryInfo/exitSystem.jsp</result>
+		</action>
+	<!-- 系统退出完毕 -->
+	</package>
+	
+	<include file="resources/struts2/freamwork/struts-administration.xml"></include>
+	<include file="resources/struts2/abt/struts-confManager.xml"></include>
+	<include file="resources/struts2/abt/struts-dataAnalysis.xml"></include>
+	<include file="resources/struts2/abt/struts-subscribe.xml"></include>
+	<include file="resources/struts2/abt/struts-devicemanager.xml"></include>
+	<include file="resources/struts2/abt/struts-pfs.xml"></include>
+</struts>

@@ -1,0 +1,3 @@
+export USER_MEM_ARGS="-Xms2048m -Xmx2048m -XX:NewSize=900m -XX:MaxNewSize=900m -XX:MaxPermSize=384m -XX:+UseConcMarkSweepGC -XX:+HeapDumpOnOutOfMemoryError -verbose:gc -Xloggc:./logs/bbosserver_gc.out -XX:+PrintGCDetails -XX:+PrintGCTimeStamps -Dweblogic.threadpool.MinPoolSize=100 -Dweblogic.threadpool.MaxPoolSize=400 -Djava.rmi.server.hostname=127.0.0.1 -Dcom.sun.management.jmxremote.port=8899 -Dcom.sun.management.jmxremote.authenticate=false -Dcom.sun.management.jmxremote.ssl=false"
+
+nohup sh  /home/weblogic/Oracle/Middleware/user_projects/domains/abt/bin/startWebLogic.sh 1>>/home/weblogic/abt/logs/console.log 2>&1 & 

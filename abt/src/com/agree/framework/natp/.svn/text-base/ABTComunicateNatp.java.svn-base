@@ -1,0 +1,604 @@
+package com.agree.framework.natp;
+
+import java.io.ByteArrayInputStream;
+import java.io.ByteArrayOutputStream;
+import java.io.DataInputStream;
+import java.io.DataOutputStream;
+import java.io.IOException;
+import java.net.Socket;
+import java.nio.ByteBuffer;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Iterator;
+import java.util.LinkedHashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.Map.Entry;
+import java.util.UUID;
+
+import javax.servlet.http.HttpServletRequest;
+
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
+import org.apache.struts2.ServletActionContext;
+import org.slf4j.MDC;
+import org.springframework.stereotype.Repository;
+
+import com.agree.framework.communication.natp.NatpPlugin;
+import com.agree.framework.communication.natp.ServerFinder;
+import com.agree.framework.exception.AppException;
+import com.agree.framework.web.form.administration.User;
+import com.agree.util.IDictABT;
+
+/**
+ * 与afa进行通讯的工具类
+ * 
+ */
+@Repository("cona")
+public class ABTComunicateNatp implements INatp {
+	private static final Log loger = LogFactory.getLog(ABTComunicateNatp.class);// 日志
+
+	private static final String ENCODING = "GBK";// 编码
+	
+
+	/**
+	 * NATP报文版本分为2.0和3.0，目前默认使用3.0
+	 */
+	private static final String DefaultNATPVersion = "3.0";
+	private ByteBuffer buf;
+
+	private Map<String, List<String>> result;
+
+	public String getIp() {
+		return ip;
+	}
+
+	public void setIp(String ip) {
+		this.ip = ip;
+	}
+
+	public String getPort() {
+		return port;
+	}
+
+	public void setPort(String port) {
+		this.port = port;
+	}
+
+	public int getTimeout() {
+		return timeout;
+	}
+
+	public void setTimeout(int timeout) {
+		this.timeout = timeout;
+	}
+
+	private StringBuffer sendLog = new StringBuffer();
+
+	private StringBuffer reciveLog = new StringBuffer();
+
+	private DataTransfer dataTransfer = null;
+
+	private HashMap<String, byte[]> vars = new LinkedHashMap<String, byte[]>();
+
+	private String ip;
+	private String port;
+	private int timeout;
+
+	/** 数据写出流 */
+	private ByteArrayOutputStream bout = new ByteArrayOutputStream();
+
+	/** 数据写出流 */
+	private DataOutputStream dout = new DataOutputStream(bout);
+	/**
+	 * socket配置bean
+	 * */
+	private NatpConfigBean natpConfig;
+
+	public NatpConfigBean getNatpConfig() {
+		return natpConfig;
+	}
+
+	public void setNatpConfig(NatpConfigBean natpConfig) {
+		this.natpConfig = natpConfig;
+	}
+
+	/**
+	 * 构造器
+	 * 
+	 * */
+	public ABTComunicateNatp() {
+		this.dataTransfer = new DataTransfer();
+		vars = new LinkedHashMap<String, byte[]>();
+		buf = ByteBuffer.allocate(4096);
+		result = new LinkedHashMap<String, List<String>>();
+		init(0x30, "PRDTUPCHNATP", "PUB", "");
+	}
+
+	/**
+	 * 通讯前判断,是否为模板状态
+	 */
+	private void formatTemplate() {
+		try {
+			HttpServletRequest req = ServletActionContext.getRequest();
+			// 加一层判断,如果template_id不是null则使用模板方式查询,机构号位置传入另一个数据
+			if (req != null) {
+				String template_id = (String) req.getSession().getAttribute(
+						"template");
+				// 判断是否模板状态,现在判断是否属于模板选定的范围内,是的话,则改变机构号
+				if (template_id != null) {
+					String uri = req.getRequestURI();
+					// 判断访问路径是否包括某些数据.
+					for (int i = 0; i < IDictABT.MODEL_LIST.length; i++) {
+						if (uri.indexOf(IDictABT.MODEL_LIST[i]) != -1) {// 判断是否属于模板范畴页面中的访问
+							String[] flags = (String[]) req.getSession()
+									.getAttribute("template_flag");
+							for (int j = 0; j < flags.length; j++) {// 遍历从session里取到的template_flag
+								if (flags[j].equals(IDictABT.MODEL_LIST[i])) {
+									// 符合条件,进入这里代表是模板模式并且调用了属于此模板范畴内的方法,修改机构号
+									set_cover("branch", template_id);
+								}
+							}
+						}
+					}
+				}
+			}
+		} catch (Exception e) {
+		}
+	}
+
+	public synchronized Map<String, List<String>> exchange() throws Exception {
+		String error = "";
+		formatTemplate();
+		Socket socket = null;
+		Object objArr[] = null;
+		String groupName = "default";
+		try {
+			objArr = ServerFinder.createSocket(groupName);
+			socket = (Socket) objArr[0];
+			NatpPlugin.getDefault().increaseTradeCount(groupName,
+					(String) objArr[1]);
+
+			// if(this.ip==null&&this.port==null&&this.timeout==0){
+			// socket = new Socket(this.natpConfig.getHost(),
+			// Integer.parseInt(this.natpConfig.getPort()));
+			// socket.setSoTimeout(Integer.parseInt(this.natpConfig.getSoTimeout()));
+			// }else{
+			// socket = new Socket(this.ip, Integer.parseInt(this.port));
+			// socket.setSoTimeout(this.timeout);
+			// }
+
+			this.dataTransfer.setInputStream(socket.getInputStream());// socket输入流
+			this.dataTransfer.setOutputStream(socket.getOutputStream());// socket输出流
+
+			// 写日志发送之前
+			String msgid = MDC.get(IDictABT.MSGID);
+			if (msgid == null) {
+				msgid = UUID.randomUUID().toString();
+				MDC.put(IDictABT.MSGID, msgid);
+			}
+			sendLog.append("[发送消息-msgid：").append(msgid).append("]\n");
+			sendLog.append("\t\tNatpVersion:")
+					.append(dataTransfer.getNatpVersion()).append("\n");
+			sendLog.append("\t\tTradeCode:")
+					.append(dataTransfer.getTradeCode()).append("\n");
+			sendLog.append("\t\tTemplateCode:")
+					.append(dataTransfer.getTemplateCode()).append("\n");
+			sendLog.append("\t\tReserve:").append(dataTransfer.getReserve())
+					.append("\n");
+
+			byte[] sendData = this.packData(DefaultNATPVersion);
+			loger.info(sendLog.toString());
+			this.sendLog.setLength(0);
+			this.result.clear();
+			long tSend = System.currentTimeMillis();
+			this.dataTransfer.natpSendDatas(sendData);
+			byte[] retData = dataTransfer.natpRecv();
+			ByteArrayInputStream bin = new ByteArrayInputStream(retData);
+			DataInputStream din = new DataInputStream(bin);
+			long tReceive = System.currentTimeMillis();
+			reciveLog.append("[接收消息-msgid：").append(msgid).append("]\n");
+			reciveLog.append("[通讯用时：").append(tReceive - tSend).append("ms]\n");
+			while (din.available() > 0) {
+				int nLen = din.readByte();
+				byte[] byName = new byte[nLen];
+				din.read(byName);
+				String sName = new String(byName, ENCODING);
+				nLen = din.readInt();
+				byte[] byValue = new byte[nLen];
+				din.read(byValue);
+				String sValue = new String(byValue, ENCODING);
+				addResult(sName, sValue);
+				reciveLog.append("\t\t");
+				reciveLog.append(sName).append(":").append(sValue).append("\n");
+			}
+
+			loger.info(reciveLog.toString());
+			reciveLog.setLength(0);
+
+			din.close();
+			error = validMap(result);
+			if(!error.equals("")){
+				throw new AppException(error);
+			}
+		} catch (Exception e) {
+			loger.error(e.getMessage(), e);
+			throw new AppException(error);
+		} finally {
+			if (objArr != null) {
+				NatpPlugin.getDefault().decreaseTradeCount(groupName,
+						(String) objArr[1]);
+			}
+			if (socket != null) {
+				socket.close();
+			}
+		}
+
+		return this.result;
+	}
+
+	/**
+	 * 拼包，把已经设置在其中的变量转换为NATP格式数据
+	 * 
+	 * @return NATP格式数据
+	 * @throws Exception
+	 */
+	public byte[] packData(String version) throws Exception {
+
+		try {
+			Iterator<Entry<String, byte[]>> iter = vars.entrySet().iterator();
+			for (; iter.hasNext();) {
+				String element = iter.next().getKey();
+				byte[] value = get(element);
+				// 2005-01-12 判断是否为同名的natp的节点，然后去处同名节点的后面的'[*]'
+				if (element.lastIndexOf("[") > 0
+						&& repeatVars.containsKey(element.substring(0,
+								element.lastIndexOf("["))))
+					element = element.substring(0, element.lastIndexOf("["));
+				byte[] name = element.getBytes();
+				if (DefaultNATPVersion.equals(version)) {
+					/** 名称长度定为一个字节 */
+					dout.writeByte(name.length);
+					dout.write(name);
+					/** 数据长度定为四个字节 */
+					dout.writeInt(value.length);
+					dout.write(value);
+					sendLog.append("\t\t");
+					sendLog.append(element).append(":")
+							.append(new String(value)).append("\n");
+				} else {
+					dout.writeShort(name.length);
+					dout.write(name);
+					dout.writeShort(value.length);
+					dout.write(value);
+					sendLog.append("\t\t");
+					sendLog.append(element).append(":")
+							.append(new String(value)).append("\n");
+				}
+
+			}
+			byte[] ret = bout.toByteArray();
+			return ret;
+		} catch (IOException e) {
+			throw new Exception("转换数据为NATP格式异常", e);
+		} finally {
+			bout.close();
+			dout.close();
+		}
+	}
+
+	private HashMap<String, Integer> repeatVars = new HashMap<String, Integer>();
+
+	/**
+	 * 获取指定名称的NATP值
+	 * 
+	 * @param name
+	 *            指定名称，如果有重名，可以使用'name[1]', 'name[2]'的表示，下标从1开始
+	 * @return 指定名称的NATP变量值
+	 * @throws Exception
+	 */
+	public byte[] get(String name) throws Exception {
+		if (vars.containsKey(name)) {
+			return (byte[]) vars.get(name);
+		} else if (name.endsWith("[1]")) {
+			String realName = name.substring(0, name.indexOf("[1]"));
+			return get(realName);
+		}
+		throw new Exception("变量'" + name + "'不存在");
+	}
+
+	public int getRecordCount(String fieldName) {
+		return 0;
+	}
+
+	private void addResult(String name, String value) {
+		List<String> list = result.get(name);
+		if (list == null) {
+			list = new ArrayList<String>();
+			result.put(name, list);
+		}
+		list.add(value);
+	}
+
+	public int init(int natpVersion, String transCode, String templateCode,
+			String reservedCode) {
+		this.dataTransfer.setReserve(reservedCode);
+		this.dataTransfer.setTradeCode(transCode);
+		this.dataTransfer.setNatpVersion(natpVersion);
+		this.dataTransfer.setTemplateCode(templateCode);
+		return 0;
+	}
+
+	public void pack(String fieldName, String value) throws Exception {
+		this.buf.put(Byte.valueOf(String.valueOf(fieldName.getBytes(ENCODING).length)));
+		this.buf.put(fieldName.getBytes(ENCODING));
+		this.buf.putInt(value.getBytes(ENCODING).length);
+		this.buf.put(value.getBytes(ENCODING));
+		sendLog.append("\t\t");
+		sendLog.append(fieldName).append(":").append(value).append("\n");
+	}
+
+	public void pack(String[] fieldNames, String[] values) throws Exception {
+		if (fieldNames == null || values == null) {
+			throw new Exception("打包数据不能为null");
+		}
+		if (fieldNames.length != values.length) {
+			throw new Exception("字段数量不匹配");
+		}
+		for (int i = 0; i < fieldNames.length; i++) {
+			buf.putShort((short) fieldNames[i].getBytes(ENCODING).length);
+			buf.put(fieldNames[i].getBytes(ENCODING));
+			buf.putShort((short) values[i].getBytes(ENCODING).length);
+			buf.put(values[i].getBytes(ENCODING));
+			sendLog.append("\t\t");
+			sendLog.append(fieldNames[i]).append(":").append(values[i])
+					.append("\n");
+
+		}
+	}
+
+	/**
+	 * 设置指定名称的变量，重名则覆盖
+	 * 
+	 * @param name
+	 *            变量名
+	 * @param value
+	 *            变量值
+	 */
+	public void set_cover(String name, String value) {
+		byte[] bytevalue = value.getBytes();
+		if (vars.containsKey(name)) {
+			HashMap<String, byte[]> hm = new LinkedHashMap<String, byte[]>();
+			String key;
+			Iterator<Entry<String, byte[]>> iter = vars.entrySet().iterator();
+			for (; iter.hasNext();) {
+				key = iter.next().getKey();
+				if (key.equals(name)) {
+				} else {
+					hm.put(key, vars.get(key));
+				}
+			}
+			vars.clear();
+			vars.putAll(hm);
+			vars.put(name, bytevalue);
+			hm.clear();
+		} else {
+			vars.put(name, bytevalue);
+		}
+	}
+
+	/**
+	 * 设置指定名称的变量，重名则设置为'name[1]', 'name[2]'
+	 * 
+	 * @param name
+	 *            变量名
+	 * @param value
+	 *            变量值
+	 */
+	public void set(String name, String value) throws Exception {
+		// byte [] bytevalue = value.getBytes("GBK");
+		byte[] bytevalue = value.getBytes("gb18030");
+		if (repeatVars.containsKey(name)) {
+			int index = ((Integer) repeatVars.get(name)).intValue();
+			repeatVars.put(name, new Integer(++index));
+			vars.put(name + "[" + index + "]", bytevalue);
+			return;
+		}
+		if (vars.containsKey(name)) {
+			repeatVars.put(name, new Integer(2));
+			byte[] old = (byte[]) vars.get(name);
+			// vars.put(name+"[1]", old);
+			// vars.put(name+"[2]", value);
+			// vars.put(name+"[2]", value); //edited by wang_wang
+			// 将第一个重复的name添加上索引，变为 name[1].( or name[0]? )
+			HashMap<String, byte[]> hm = new LinkedHashMap<String, byte[]>();
+			String key;
+			Iterator<Entry<String, byte[]>> iter = vars.entrySet().iterator();
+			for (; iter.hasNext();) {
+				key = iter.next().getKey();
+				if (key.equals(name)) {
+					hm.put(name + "[1]", old);
+				} else {
+					hm.put(key, vars.get(key));
+				}
+			}
+			vars.clear();
+			vars.putAll(hm);
+			vars.put(name + "[2]", bytevalue);
+			hm.clear();
+		} else
+			vars.put(name, bytevalue);
+	}
+
+	/**
+	 * 设置指定名称的变量，重名则设置为'name[1]', 'name[2]',传入二进制格式用
+	 * 
+	 * @param name
+	 *            变量名
+	 * @param bytevalue
+	 *            变量二进制值
+	 */
+	public void set(String name, byte[] bytevalue) {
+		if (repeatVars.containsKey(name)) {
+			int index = ((Integer) repeatVars.get(name)).intValue();
+			repeatVars.put(name, new Integer(++index));
+			vars.put(name + "[" + index + "]", bytevalue);
+			return;
+		}
+		if (vars.containsKey(name)) {
+			repeatVars.put(name, new Integer(2));
+			byte[] old = (byte[]) vars.get(name);
+
+			HashMap<String, byte[]> hm = new LinkedHashMap<String, byte[]>();
+			String key;
+			Iterator<Entry<String, byte[]>> iter = vars.entrySet().iterator();
+			for (; iter.hasNext();) {
+				key = iter.next().getKey();
+				if (key.equals(name)) {
+					hm.put(name + "[1]", old);
+				} else {
+					hm.put(key, vars.get(key));
+				}
+			}
+			vars.clear();
+			vars.putAll(hm);
+			vars.put(name + "[2]", bytevalue);
+			hm.clear();
+		} else {
+			vars.put(name, bytevalue);
+		}
+	}
+
+	/**
+	 * 将结果以Map形式传入
+	 * 
+	 * @throws Exception
+	 * */
+	public void set(Map<String, Object> map) throws Exception {
+		Iterator<String> it = map.keySet().iterator();
+		while (it.hasNext()) {
+			String key = it.next();
+			String value = map.get(key).toString();
+			this.set(key, value);
+		}
+	}
+
+	public String[] unpack(String fieldName) throws Exception {
+		return null;
+	}
+
+	public String unpack(String fieldName, int iPos) throws Exception {
+		return null;
+	}
+
+	/**
+	 * 
+	 * @param serviceid
+	 *            交易代码
+	 * @param user
+	 *            登录柜员的信息
+	 */
+	public void setBMSHeader(String serviceid, User user) throws Exception {
+		String date = TimeFactory.getDateWithFormat("yyyyMMdd");
+		String time = TimeFactory.getDateWithFormat("hhmmssSSS");
+		this.set("M_CustomerNo", "BMS");// 消费方系统编号
+		this.set("M_PackageType", "NATP");// 报文类型
+		this.set("M_ServicerNo", "IBP");// 服务方系统编号
+		this.set("M_ServiceCode", serviceid);// 交易代码 例 ibp.bms.b140_2.01
+		this.set("M_MesgSndDate", date);// 日期
+		this.set("M_MesgSndTime", time);// 时间
+		String msgid = MDC.get(IDictABT.MSGID);
+		if (msgid == null) {
+			msgid = UUID.randomUUID().toString();
+			MDC.put(IDictABT.MSGID, msgid);
+		}
+		this.set("M_MesgId", msgid);// 报文消息id
+		this.set("M_MesgPriority", "3");// 报文优先级(1:特急;2:紧急;3:普通)
+		this.set("M_Direction", "1");// 报文方向
+		this.set("M_CallMethod", "1");// 调用方式,1：同步调用;2：异步调用
+		this.set("M_Reserve", "");// 保留域
+		this.set("channelcode", IDictABT.CHANNEL_BMS);// 网转管理系统写死,管理端渠道号
+		this.set("channelserno", date + time);
+		this.set("brno", user.getUnitid());// 机构号
+		this.set("tellerno", user.getUsercode());// 柜员号
+		this.set("authteller", "");
+		this.set("authbranch", "");
+		this.set("clientIP", user.getHostip());// 客户端id
+		// this.set("device_num","");
+	}
+
+	/**
+	 * 
+	 * @param serviceid
+	 *            交易代码
+	 * @param tradeNode
+	 *            交易网点号
+	 * @param H_Teller
+	 *            交易柜员号
+	 * @param channelId
+	 *            渠道号
+	 */
+	public void setHeader(String serviceid, String tradeNode, String H_Teller,
+			String channelId) throws Exception {
+		String date = TimeFactory.getDateWithFormat("yyyyMMdd");
+		String time = TimeFactory.getDateWithFormat("hhmmssSSS");
+		this.set("M_CustomerNo", "BMS");// 消费方系统编号
+		this.set("M_PackageType", "NATP");// 报文类型
+		this.set("M_ServicerNo", "IBP");// 服务方系统编号
+		this.set("M_ServiceCode", serviceid);// 交易代码 例 B001
+		this.set("M_MesgSndDate", date);// 日期
+		this.set("M_MesgSndTime", time);// 时间
+		String msgid = MDC.get(IDictABT.MSGID);
+		if (msgid == null) {
+			msgid = UUID.randomUUID().toString();
+			MDC.put(IDictABT.MSGID, msgid);
+		}
+		this.set("M_MesgId", msgid);//
+		this.set("M_MesgPriority", "3");//
+		this.set("M_Direction", "1");//
+		this.set("M_CallMethod", "1");//
+		this.set("channelcode", channelId);// 网转管理系统写死
+
+		if (serviceid != null && serviceid.equalsIgnoreCase("B001")) {
+			tradeNode = "";
+			H_Teller = "";
+		}
+
+		long t = TimeFactory.getTime();
+		this.set("channeldate", date);
+		this.set("channeltime", time);
+		this.set("channelserno", String.valueOf(t));
+		this.set("brno", tradeNode);
+		this.set("tellerno", H_Teller);
+	}
+
+	public String validMap(Map<String, List<String>> resultMap)
+			throws Exception {
+		String rr = "";
+		if (resultMap == null) {
+			throw new AppException("错误代码:BMS020-AFA返回数据错误");
+		} else if (resultMap.get("H_ret_code") != null
+				&& resultMap.get("H_ret_code").get(0) != null
+				&& !resultMap.get("H_ret_code").get(0).equals(IDictABT.AFARESULTSTATUS_SUCC)) 
+		{
+			List<String> tt = resultMap.get("H_ret_code");
+			String errcode = tt.get(0);
+			tt = resultMap.get("H_ret_desc");
+			String errreason = tt.get(0);
+			rr = "错误代码:" + errcode + "-" + errreason;
+			//throw new AppException(rr);
+		}
+		return rr;
+	}
+
+	public void reInit() {
+		this.dataTransfer = new DataTransfer();
+		vars = new LinkedHashMap<String, byte[]>();
+		buf = ByteBuffer.allocate(4096);
+		result = new LinkedHashMap<String, List<String>>();
+		bout = new ByteArrayOutputStream();
+		dout = new DataOutputStream(bout);
+		init(0x30, "PRDTUPCHNATP", "PUB", "");
+	}
+
+}

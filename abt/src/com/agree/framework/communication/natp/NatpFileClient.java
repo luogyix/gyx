@@ -1,0 +1,614 @@
+/**
+ * NatpFileClient.java
+ * Copyright(C) 2006 Agree Tech, All rights reserved.
+ * Created on 2006-11-30 上午11:14:30 by wang
+ */
+package com.agree.framework.communication.natp;
+
+import java.io.BufferedInputStream;
+import java.io.BufferedOutputStream;
+import java.io.ByteArrayInputStream;
+import java.io.ByteArrayOutputStream;
+import java.io.DataInputStream;
+import java.io.DataOutputStream;
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.OutputStream;
+import java.net.InetAddress;
+import java.net.InetSocketAddress;
+import java.net.Socket;
+import java.net.SocketAddress;
+import java.net.UnknownHostException;
+
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
+import com.agree.framework.natp.Crc32_Agree;
+import com.agree.framework.natp.StringTool;
+
+ /**
+ * <DL><DT>
+ * NatpFile客户端.
+ * </DT><p><DD>
+ * 详细介绍
+ * </DD></DL><p>
+ * 
+ * <DL><DT><B>使用范例</B></DT><p><DD>
+ * 使用范例说明
+ * </DD></DL><p>
+ * 
+ * @author 王晓超
+ * @msn wxchc@hotmail.com
+ * @author 赞同科技
+ * @email wxchc@126.com
+ * @version 1.00, 2006-11-30 上午11:14:30
+ */
+public class NatpFileClient {
+
+	/** 日志文件句柄 */
+	private static final Logger logger = LoggerFactory.getLogger(NatpFileClient.class);
+
+	/** 协议版本号,0x02 */
+	private static final byte PROTOCOL_VERSION_BYTE = 0x02;
+
+	/** 数据版本号,0x03 */
+	private static final byte DATA_VERSION_BYTE = 0x03;
+
+	/** 上传 */
+	public static final String ACTION_UPLOAD_FILE = "upload";
+
+	/** 下载 */
+	public static final String ACTION_DOWNLOAD_FILE = "download";
+	
+	//用来标识是否是直接传递文件字节流传递，而不是传递文件名为参数。
+	private  boolean isDirectUploadBytes=false;
+	
+
+	//标识字节数组的长度
+	private long byteContentLen=0L;
+	Socket socket;
+
+	/** 主机名称，是需要上送的主机名称，不是ip地址 */
+	String hostName;
+
+	/** 本地文件名称(路径) */
+	String localFileName;
+
+	/** 远程文件名称(路径) */
+	String remoteFileName;
+
+	/** 动作，上传 or 下载 */
+	String action;
+
+	File file = null;
+
+	InputStream in;
+
+	OutputStream out;
+
+	FileInputStream fin;
+
+	FileOutputStream fout;
+	
+	private ByteArrayInputStream bis=null;
+
+	private static final String ENCODING = "GBK";
+	
+	
+
+//	private static boolean isDebug(){
+//		if (debugMode == null) {
+//			String debugModeStr = Platform.getPreferencesService().getString(DEBUGQUALIFIER, DEBUGMODE, "false", null);
+//			debugMode = new Boolean("true".equals(debugModeStr));
+//		}
+//		return debugMode.booleanValue();
+//	}
+
+	
+	/**
+	 * 构造函数
+	 * 
+	 * @param ipString
+	 *            ip地址
+	 * @param port
+	 *            端口号
+	 */
+	public NatpFileClient(String ipString, int port)throws UnknownHostException,IOException {
+		try {
+			InetAddress addr = InetAddress.getByName(ipString.trim());
+			SocketAddress sockaddr = new InetSocketAddress(addr, port);
+			// Create an unbound socket
+			socket = new Socket();
+			// This method will block no more than timeoutMs.
+			// If the timeout occurs, SocketTimeoutException is thrown.
+			int timeoutMs = 2000; // 2 seconds
+			socket.connect(sockaddr, timeoutMs);
+		} catch (UnknownHostException e) {
+			logger.error("IP地址:" + ipString + " 不可达，请重新确认",e);
+			throw e;
+		} catch (IOException e) {
+			logger.error(e.getMessage(),e);
+			throw e;
+		}
+	}
+
+	/**
+	 * @param hostName
+	 *            主机名称
+	 * @param localFileName
+	 *            本地文件路径名称
+	 * @param remoteFileName
+	 *            远端文件路径名称
+	 * @param action
+	 *            动作：上传 or 下载
+	 * @throws IOException
+	 */
+	public void init(String hostName, String localFileName,
+			String remoteFileName, String action) throws IOException {
+		this.hostName = hostName;
+		this.localFileName = localFileName;
+		this.remoteFileName = remoteFileName;
+		this.action = action;
+		in = new BufferedInputStream(this.socket.getInputStream());
+		out = new BufferedOutputStream(this.socket.getOutputStream());
+		if (this.action.equals(ACTION_UPLOAD_FILE)) {
+				this.file = new File(localFileName);
+				this.fin = new FileInputStream(file);
+		} else {
+			this.file = new File(localFileName);
+			this.fout = new FileOutputStream(file);
+		}
+		this.isDirectUploadBytes=false;
+		this.bis=null;
+		this.byteContentLen=0L;
+	}
+	
+	protected void initUpload(String hostName,String remoteFileName,String localFileName,byte[] content)throws IOException{
+		this.hostName=hostName;
+		this.localFileName=localFileName;
+		this.remoteFileName=remoteFileName;
+		this.isDirectUploadBytes=true;
+		this.bis=new ByteArrayInputStream(content);
+		this.byteContentLen=content.length;
+		this.action=NatpFileClient.ACTION_UPLOAD_FILE;
+		in = new BufferedInputStream(this.socket.getInputStream());
+		out = new BufferedOutputStream(this.socket.getOutputStream());
+		
+	}
+
+	public void destroy() {
+		try {
+			
+			this.isDirectUploadBytes=false;
+			this.byteContentLen=0L;
+			this.action=null;
+			if(out!=null){
+				 out.close();
+			}
+			if(in!=null){
+				in.close();
+			}
+			if(socket!=null){
+				socket.close();
+			}
+			if (fin != null) {
+				fin.close();
+			}
+			if (fout != null) {
+				fout.close();
+			}
+			if(bis !=null){
+				bis.close();
+			}
+
+		} catch (IOException e) {
+			logger.error(e.getMessage(),e);
+		}
+	}
+
+	/**
+	 * 生成协议请求报文数据，下载协议请求包和上传协议请求包均可调用此方法
+	 * 
+	 * @return 协议请求报文数据
+	 * @throws Exception
+	 */
+	private byte[] generateRequestData() throws Exception {
+		ByteArrayOutputStream bout = new ByteArrayOutputStream(1024);
+		DataOutputStream dos = new DataOutputStream(bout);
+		byte[] data;
+		byte[] hostByte = new byte[15];
+		byte[] fileByte = new byte[100];
+		int len = hostName.getBytes(ENCODING).length;
+		if (len > 15) {
+//			logger.warn("主机名称长度超过15 bit，对其进行截取");
+		}
+		System.arraycopy(hostName.getBytes(ENCODING), 0, hostByte, 0, len > 15 ? 15
+				: len);
+		dos.write(hostByte);
+		len = remoteFileName.getBytes(ENCODING).length;
+		if (len > 100) {
+//			logger.error("文件名称长度超过100 bit，NATP协议不予支持");
+			throw new Exception("文件名称长度超过100 bit，NATP协议不予支持");
+		}
+		System.arraycopy(remoteFileName.getBytes(ENCODING), 0, fileByte, 0, len);
+		dos.write(fileByte);
+		if (action.equals(ACTION_UPLOAD_FILE)) {
+			if(!this.isDirectUploadBytes){
+				dos.writeLong(file.length());
+			}else{
+				dos.writeLong(this.byteContentLen);
+			}
+		}
+		// 添加数据层的版本号信息
+		data = bout.toByteArray();
+		bout.reset();
+		bout.close();
+		data = addDataPackage(data);
+		// 添加协议层包头数据
+		byte[] pHead = new byte[5];
+		if (action.equals(ACTION_DOWNLOAD_FILE)) {// 下载协议请求包
+			pHead[0] = 0x00;
+		} else {
+			pHead[0] = 0x10;
+		}
+		
+		data = addProtocolPackage(pHead, data);
+		return data;
+	}
+
+	/**
+	 * 发送协议请求包
+	 * 
+	 * @throws Exception
+	 */
+	protected void sendProtocolRequestPackage() throws Exception {
+		byte[] data = generateRequestData();
+		
+		out.write(data);
+		out.flush();
+		/*
+		if (isDebug()) {
+			logger.debug("发送协议请求数据包：\n" + StringTool.toHexTable(data));
+		}
+		*/
+		
+	}
+
+	protected String recvProtocolReplyPackage() throws Exception {
+	try{
+		String ret = "";
+		DataInputStream dis = new DataInputStream(in);
+		ByteArrayOutputStream bos = new ByteArrayOutputStream(256);
+		DataOutputStream dis2 = new DataOutputStream(bos);
+		int totalLength = dis.readInt();
+		dis2.writeInt(totalLength);
+		byte[] bt = bos.toByteArray(); // bt专为日志输出而声名
+		byte[] allDatas = new byte[totalLength];
+		bt = StringTool.addBytes(bt, allDatas);
+		
+		
+		dis.readFully(allDatas);
+		/*
+		if (isDebug()) {
+			logger.debug("收到协议应答包，返回内容：\n" + StringTool.toHexTable(bt));
+		}
+		*/
+		if (Crc32_Agree.crc32_2(allDatas, 0, totalLength - 4) != getCrc(allDatas))
+			throw new IOException("crc校验不符");
+		/** 协议版本号为0x02 */
+		byte protocolVersion = allDatas[0];
+		if (protocolVersion != 0x02) {
+			throw new Exception("NATP文件传输组件 @ 版本协议号不正确,必须为2,当前值为:"
+					+ protocolVersion);
+		}
+		String retCode = new String(allDatas, 7, 4);
+		String retInfo = new String(allDatas, 11, 100);
+		ret = retCode;
+		if (allDatas[1] == 0x01) { // 下载协议应答包
+			// 取得文件长度
+			if (allDatas[118] == 0x00) { // 文件长度没有传过来
+				// 什么也不做
+			} else {
+			}
+			// afe暂不送文件长度
+		}
+		if (!retCode.equals("0000")) {
+			String hintMsg=action + "文件'" + remoteFileName + "'失败，原因：" + retInfo;
+//			if(logger.isErrorEnabled())
+//			{
+//			logger.error(action + "文件'" + remoteFileName + "'失败，原因：" + retInfo);
+//			}
+			ret = retInfo;
+			throw new Exception(hintMsg);
+		}
+
+		return ret;
+	 }catch(Exception ex){
+//		 logger.error("处理协议响应包出现异常", ex);
+		 throw ex;
+	 }
+	}
+
+	private boolean recvUpDataReplyPackage() throws Exception {
+		DataInputStream dis = new DataInputStream(in);
+		int totalLength = dis.readInt();
+		byte[] allDatas = new byte[totalLength];
+		dis.readFully(allDatas);
+		if (Crc32_Agree.crc32_2(allDatas, 0, totalLength - 4) != getCrc(allDatas))
+			throw new IOException("crc校验不符");
+		/** 协议版本号为0x02 */
+		byte protocolVersion = allDatas[0];
+		if (protocolVersion != 0x02) {
+			throw new Exception("NATP文件传输 @ 版本协议号不正确,必须为2,当前值为:"
+					+ protocolVersion);
+		}
+		if (allDatas[1] != 0x13) {
+//			logger.error("NATP上传数据应答包丢失");
+			throw new Exception("NATP上传数据应答包丢失");
+		}
+		return true;
+	}
+
+	private byte[] recvDownDataReplyPackage() throws Exception {
+		DataInputStream dis = new DataInputStream(in);
+		int totalLength = dis.readInt();
+		byte[] allDatas = new byte[totalLength];
+		dis.readFully(allDatas);
+		if (Crc32_Agree.crc32_2(allDatas, 0, totalLength - 4) != getCrc(allDatas))
+			throw new IOException("crc校验不符");
+		/** 协议版本号为0x02 */
+		byte protocolVersion = allDatas[0];
+		if (protocolVersion != 0x02) {
+//			logger.error("NATP文件传输组件 @ 版本协议号不正确,必须为2,当前值为:"
+//					+ protocolVersion);
+			throw new Exception("NATP文件传输组件 @ 版本协议号不正确,必须为2,当前值为:"
+					+ protocolVersion);
+		}
+		if (allDatas[1] != 0x03) {
+//			logger.error("NATP下载数据应答包丢失，期望得到的包类型为3");
+			throw new Exception("NATP下载数据应答包丢失，期望得到的包类型为3");
+		}
+		// 取得文件数据
+		return allDatas;
+	}
+
+	/**
+	 * 添加协议包头数据
+	 * 
+	 * @param protocolHead
+	 *            待添加的协议包头，长度为5 bit，包括 包类型(1),文件结束标志(1),密压标志(1),包序号(2)
+	 * @param data
+	 *            包数据
+	 * @return 对data包数据添加协议包头后的协议传输层数据
+	 * @throws IOException
+	 * @throws Exception
+	 */
+	private byte[] addProtocolPackage(byte[] protocolHead, byte[] data)
+			throws IOException, Exception {
+		ByteArrayOutputStream bout = new ByteArrayOutputStream(1024);
+		DataOutputStream dos = new DataOutputStream(bout);
+		dos.writeByte(PROTOCOL_VERSION_BYTE); // 协议版本号
+		if (protocolHead.length != 5) {
+			throw new Exception("NATP协议包头长度有误");
+		}
+		
+		dos.write(protocolHead);// 协议包头
+		dos.write(data);// 数据
+		byte[] bt = bout.toByteArray();
+		dos.writeInt(Crc32_Agree.crc32_2(bt, 0, bt.length));
+		bt = bout.toByteArray();
+		bout.reset();
+		dos.writeInt(bt.length);
+		dos.write(bt);
+		bt = bout.toByteArray();
+		dos.close();
+		return bt;
+	}
+
+	/**
+	 * 添加数据层的版本信息
+	 * 
+	 * @param data
+	 *            包数据中的实际数据
+	 * @return 添加版本号0x03后的包数据
+	 */
+	private byte[] addDataPackage(byte[] data) {
+		byte[] ret = new byte[data.length + 1];
+		ret[0] = DATA_VERSION_BYTE;
+		System.arraycopy(data, 0, ret, 1, data.length);
+		return ret;
+	}
+
+	private int getCrc(byte[] allDatas) throws IOException {
+		if (allDatas.length < 4)
+			throw new IOException("crc校验时数据长度太小");
+		int i1 = allDatas[allDatas.length - 4] & 0xFF;
+		int i2 = allDatas[allDatas.length - 3] & 0xFF;
+		int i3 = allDatas[allDatas.length - 2] & 0xFF;
+		int i4 = allDatas[allDatas.length - 1] & 0xFF;
+		return ((i1 << 24) + (i2 << 16) + (i3 << 8) + (i4 << 0));
+	}
+
+	/**
+	 * 发送上传数据请求包
+	 * 
+	 * @throws IOException
+	 * @throws Exception
+	 */
+	@SuppressWarnings("resource")
+	public void sendUpDataRequestPackage(short index) throws IOException,
+			Exception {
+		long len = 0;
+		int packlen = 1024 * 40 - 32;
+		if(!isDirectUploadBytes){
+//			logger.info("准备上传文件" + file.getPath());
+		}else{
+//			logger.info("准备上传文件，从内存中读取内容,文件名可能是"+this.localFileName);
+		}
+		InputStream fin=(this.isDirectUploadBytes? ((InputStream)this.bis):((InputStream)this.fin));
+		long totalTransferLength=(this.isDirectUploadBytes?this.byteContentLen:file.length());
+		while (len <totalTransferLength) {
+			int avail = fin.available();
+			byte end = 0x00;
+			byte[] read;
+			if (avail > packlen) {
+				read = new byte[packlen];
+				end = 0x01;
+			} else {
+				read = new byte[avail];
+			}
+			len += fin.read(read);
+			byte[] data = read;
+			data = addDataPackage(data);
+			byte[] head = new byte[5];
+			head[0] = 0x12; // 上传数据请求包
+			// 包序号
+			head[1] = end; // 结束标志
+			byte[] order;
+			ByteArrayOutputStream bout = new ByteArrayOutputStream(256);
+			DataOutputStream dos = new DataOutputStream(bout);
+			dos.writeShort(index);
+			index++;
+			order = bout.toByteArray();
+			System.arraycopy(order, 0, head, 3, 2);
+			dos.close();
+			bout.close();
+			data = addProtocolPackage(head, data);
+			out.write(data);
+			out.flush();
+			/*
+			if (isDebug()) {
+				logger.debug("\n" + StringTool.toHexTable(data));
+			}
+			*/
+			
+			// 接收上传数据响应包
+			if (end == 0x01) {
+				recvUpDataReplyPackage();
+			}
+		}
+//		if (logger.isInfoEnabled()) {
+//			if(!this.isDirectUploadBytes){
+//				logger
+//						.info("上传文件成功:" + file.getPath() + ",共" + file.length()
+//								+ "数据\n");
+//			}else{
+//				logger.info("上传成功" + this.localFileName+" ,共"+ this.byteContentLen+"字节数据\n");
+//			}
+//		}
+	}
+
+	public boolean sendDownDataRequestPackage(short index) throws Exception {
+
+		byte[] data = new byte[0];
+		data = addDataPackage(data);
+		byte[] head = new byte[5];
+		head[0] = 0x02; // 下载数据请求包
+		// 包序号
+		byte[] order;
+		ByteArrayOutputStream bout = new ByteArrayOutputStream(256);
+		DataOutputStream dos = new DataOutputStream(bout);
+		dos.writeShort(index);
+		order = bout.toByteArray();
+		System.arraycopy(order, 0, head, 3, 2);// 包序号
+		dos.close();
+		bout.close();
+		data = addProtocolPackage(head, data);
+		out.write(data);
+		out.flush();
+		
+//		if (isDebug()) {
+//			if (index == 1) {
+//				logger.debug("发送下载数据请求包，发送内容：\n" + StringTool.toHexTable(data));
+//			} else {
+//				logger.debug("\n" + StringTool.toHexTable(data));
+//			}
+//
+//		}
+		
+		// 接收下载数据响应包
+		byte[] bt = recvDownDataReplyPackage();
+		
+//		if (isDebug()) {
+//			if (index == 1) {
+//				logger.debug("接收下载数据响应包，接收内容：\n" + StringTool.toHexTable(bt));
+//			} else {
+//				logger.debug("\n" + StringTool.toHexTable(bt));
+//			}
+//		}
+		
+		fout.write(bt, 7, bt.length - 11);
+		fout.flush();
+		if (bt[2] == 0x01) {
+			return true;
+		}
+		return false;
+	}
+
+	public void run() throws Exception {
+		
+		sendProtocolRequestPackage();
+		recvProtocolReplyPackage();
+		if (action.equals(ACTION_DOWNLOAD_FILE)) {
+//			logger.info("准备下载文件"+file.getPath());
+			short index = 1;
+			while (sendDownDataRequestPackage(index++)) {
+			}
+//			logger.info("成功下载文件" + file.getPath() + ",共" + file.length()
+//					+ "数据\n");
+		} else {
+			sendUpDataRequestPackage((short) 1);
+		}
+	}
+
+	public String toString() {
+		StringBuffer sb = new StringBuffer();
+		sb.append("NATP文件传输客户端 @ IP:");
+		sb.append(socket.toString());
+		sb.append("，上送主机名称：");
+		sb.append(hostName);
+		sb.append("，本地路径：");
+		sb.append(localFileName);
+		sb.append("，远端路径：");
+		sb.append(remoteFileName);
+		sb.append("，动作：");
+		sb.append(action);
+		return sb.toString();
+	}
+
+	/**
+	 * @param args
+	 * @throws UnsupportedEncodingException
+	 * @throws Exception
+	 */
+//	public static void main(String[] args) throws Exception {
+//		/** 读取日志配置 */
+//		PropertyConfigurator.configureAndWatch("./config/log4j.ini");
+//		/** 读取配置文件 */
+//		Properties p = new Properties();
+//		File f = new File("./config/client.property");
+//		FileInputStream fis = new FileInputStream(f);
+//		p.load(fis);
+//		String ipString = p.getProperty("ip");
+//		int port = Integer.parseInt(p.getProperty("port"));
+//		String hostName = p.getProperty("hostName");
+//		String localFile = p.getProperty("localFile");
+//		String remoteFile = p.getProperty("remoteFile");
+//		String action = new String(p.getProperty("action").getBytes(
+//				"ISO-8859-1"), "gb2312");
+//		fis.close();
+//		p.clear();
+//		/** 开始调用NatpFileClient类* */
+//		NatpFileClient client = new NatpFileClient(ipString, port);
+//		try {
+//			client.init(hostName, localFile, remoteFile, action);
+//			client.run();
+//			client.destroy();
+//		} catch (IOException e) {
+//		}
+//	}
+
+}

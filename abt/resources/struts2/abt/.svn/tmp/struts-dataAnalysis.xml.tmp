@@ -1,0 +1,153 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!DOCTYPE struts PUBLIC 
+	"-//Apache Software Foundation//DTD Struts Configuration 2.0//EN"
+	"http://struts.apache.org/dtds/struts-2.0.dtd">
+
+<struts>
+	<package name="dataAnalysis" extends="BasePackage">
+	    <!-- 填单机关机时间配置  -->
+		<action name="formFill_*" class="formFillAction" method="{1}">
+			<interceptor-ref name="SystemConsoleInterceptorStack"></interceptor-ref>
+			<result name="success">/webpages/abt/devmanager/formFill.jsp</result>
+		</action>
+		<!-- 排队号历史流水分析 -->
+		<action name="queueNum_*" class="queueNumFlowLineAction" method="{1}">
+			<interceptor-ref name="SystemConsoleInterceptorStack"></interceptor-ref>
+			<result name="success">/webpages/abt/dataAnalysis/queueNum.jsp</result>
+		</action>
+		
+		<!-- 窗口服务状态监控 -->
+		<action name="winServiceState_*" class="winServiceStateAction" method="{1}">
+			<interceptor-ref name="SystemConsoleInterceptorStack"></interceptor-ref>
+			<result name="success">/webpages/abt/dataAnalysis/winservicestateInfo.jsp</result>
+		</action>
+		
+		<!-- 队列实时监控 -->
+		<action name="queueRealTime_*" class="queueRealTimeMonitorAction" method="{1}">
+			<interceptor-ref name="SystemConsoleInterceptorStack"></interceptor-ref>
+			<result name="success">/webpages/abt/dataAnalysis/queueRealTimeMonitorInfo.jsp</result>
+		</action>
+		
+		<!-- 用户等待时间分析 -->
+		<action name="waitingTime_*" class="WaitingTimeAction" method="{1}">
+			<interceptor-ref name="SystemConsoleInterceptorStack"></interceptor-ref>
+			<result name="success">/webpages/abt/dataAnalysis/waitingTime.jsp</result>
+		</action>
+		<!-- 用户等待时间分析(增加实际客户类型) -->
+		<action name="btWaitingTime_*" class="BtWaitingTimeAction" method="{1}">
+			<interceptor-ref name="SystemConsoleInterceptorStack"></interceptor-ref>
+			<result name="success">/webpages/abt/dataAnalysis/waitingTime1.jsp</result>
+		</action>
+		<!-- 柜员办理效率分析 -->
+		<action name="tellerEfficiency_*" class="TellerEfficiencyAction" method="{1}">
+			<interceptor-ref name="SystemConsoleInterceptorStack"></interceptor-ref>
+			<result name="success">/webpages/abt/dataAnalysis/tellerEfficiency.jsp</result>
+		</action>
+		<!-- 柜员办理效率分析(增加业务类别统计)-->
+		<action name="bTellerEfficiency_*" class="BtTellerEfficiencyAction" method="{1}">
+			<interceptor-ref name="SystemConsoleInterceptorStack"></interceptor-ref>
+			<result name="success">/webpages/abt/dataAnalysis/tellerEfficiency1.jsp</result>
+		</action>
+		
+		<!-- 客户评价分析 -->
+		<action name="clientAssess_*" class="ClientAssessAction" method="{1}">
+			<interceptor-ref name="SystemConsoleInterceptorStack"></interceptor-ref>
+			<result name="success">/webpages/abt/dataAnalysis/clientAssess.jsp</result>
+		</action>
+		
+		<!-- 客户评价分析 -->
+		<action name="clientAssessV_*" class="ClientAssessVAction" method="{1}">
+			<interceptor-ref name="SystemConsoleInterceptorStack"></interceptor-ref>
+			<result name="success">/webpages/abt/dataAnalysis/clientAssessV.jsp</result>
+		</action>
+		
+		<!-- 时段客户流量统计 -->
+		<action name="customerFlow_*" class="CustomerFlowAction" method="{1}">
+			<interceptor-ref name="SystemConsoleInterceptorStack"></interceptor-ref>
+			<result name="success">/webpages/abt/dataAnalysis/customerFlow.jsp</result>
+		</action>
+		
+		<!-- 业务类别统计 -->
+		<action name="dobusType_*" class="DobusTypeAction" method="{1}">
+			<interceptor-ref name="SystemConsoleInterceptorStack"></interceptor-ref>
+			<result name="success">/webpages/abt/dataAnalysis/dobusType.jsp</result>
+		</action>
+				
+		<!-- 零售客户等待时间统计 -->
+		<action name="retailcustomerwaittime_*" class="retailCustomerWaitingTimeAction" method="{1}">
+			<interceptor-ref name="SystemConsoleInterceptorStack"></interceptor-ref>
+			<result name="success">/webpages/abt/dataAnalysis/retailCustomerWaitingTime.jsp</result>
+		</action>
+				
+		<!-- 零售客户等待时间统计afa -->
+		<action name="analyseWaitingTime_*" class="analyseWaitingTimeAction" method="{1}">
+			<interceptor-ref name="SystemConsoleInterceptorStack"></interceptor-ref>
+			<result name="success">/webpages/abt/dataAnalysis/analyseWaitingTime.jsp</result>
+		</action>
+				
+		<!-- 零售客户时段客流量统计 -->
+		<action name="analysebranchflow_*" class="analyseBranchFlowAction" method="{1}">
+			<interceptor-ref name="SystemConsoleInterceptorStack"></interceptor-ref>
+			<result name="success">/webpages/abt/dataAnalysis/analyseBranchFlow.jsp</result>
+		</action>
+				
+		<!-- 排队号流水监控 -->
+		<action name="queueNumMonitor_*" class="queueNumMonitorAction" method="{1}">
+			<interceptor-ref name="SystemConsoleInterceptorStack"></interceptor-ref>
+			<result name="success">/webpages/abt/dataAnalysis/queueNumMonitor.jsp</result>
+		</action>
+		<!-- 动态排队号流水监控 -->
+		<action name="dynamicRulesNumMonitor_*" class="dynamicRulesNumMonitorAction" method="{1}">
+			<interceptor-ref name="SystemConsoleInterceptorStack"></interceptor-ref>
+			<result name="success">/webpages/abt/dataAnalysis/dynamicRulesNumMonitor.jsp</result>
+		</action>
+		<!-- 预约流水查询 -->
+		<action name="reservFlow_*" class="reservFlowAction" method="{1}">
+			<interceptor-ref name="SystemConsoleInterceptorStack"></interceptor-ref>
+			<result name="success">/webpages/abt/dataAnalysis/reservFlow.jsp</result>
+		</action>
+		<!-- 消息流水号查询 -->
+		<action name="pushMegFlow_*" class="pushMegFlowAction" method="{1}">
+			<interceptor-ref name="SystemConsoleInterceptorStack"></interceptor-ref>
+			<result name="success">/webpages/abt/dataAnalysis/pushMegFlowList.jsp</result>
+		</action>
+		<!-- 预约历史查询 -->
+		<action name="reservHis_*" class="reservHisAction" method="{1}">
+			<interceptor-ref name="SystemConsoleInterceptorStack"></interceptor-ref>
+			<result name="success">/webpages/abt/dataAnalysis/reservHis.jsp</result>
+		</action>
+		<!-- 机构评价统计 -->
+<!--		<action name="branchAssess_*" class="BranchAssessAction" method="{1}">-->
+<!--			<interceptor-ref name="SystemConsoleInterceptorStack"></interceptor-ref>-->
+<!--			<result name="success">/webpages/abt/dataAnalysis/branchAssess.jsp</result>-->
+<!--		</action>-->
+		<!-- 机构办理效率统计 -->
+<!--		<action name="branchEfficiency_*" class="BranchEfficiencyAction" method="{1}">-->
+<!--			<interceptor-ref name="SystemConsoleInterceptorStack"></interceptor-ref>-->
+<!--			<result name="success">/webpages/abt/dataAnalysis/branchEfficiency.jsp</result>-->
+<!--		</action>-->
+		<!-- 机构排名统计 -->
+<!--		<action name="branchOrder_*" class="BranchOrderBean" method="{1}">-->
+<!--			<interceptor-ref name="SystemConsoleInterceptorStack"></interceptor-ref>-->
+<!--			<result name="success">/webpages/abt/dataAnalysis/branchOrder.jsp</result>-->
+<!--		</action>-->
+		<!-- 自助设备凭证管理 -->
+		<action name="voucherManager_*" method="{1}" class="voucherManagerAction">
+			<interceptor-ref name="SystemConsoleInterceptorStack"></interceptor-ref>
+			<result name="success">/webpages/abt/dataAnalysis/voucherManager.jsp</result>
+		</action>
+		<!--吞卡交易明细统计-->
+		<action name="cardMachineNum_*" method="{1}" class="cardMachineNumAction">
+			<interceptor-ref name="SystemConsoleInterceptorStack"></interceptor-ref>
+			<result name="success">/webpages/abt/dataAnalysis/CardMachineNum.jsp</result>
+		</action>
+		<!--填单业务量统计-->
+		<action name="pfsPortfolioTrade_*" method="{1}" class="pfsPortfolioTradeAction">
+			<interceptor-ref name="SystemConsoleInterceptorStack"></interceptor-ref>
+			<result name="success">/webpages/abt/dataAnalysis/pfsPortfolioTrade.jsp</result>
+		</action>
+		
+	</package>
+</struts>
+

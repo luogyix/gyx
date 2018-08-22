@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+"http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+
+<hibernate-mapping>
+    <class name="com.agree.abt.model.dataAnalysis.BtBusVoucherInfo" table="BT_BUS_VOUCHERINFO" >
+    <cache usage="read-write"/>	
+    	 <id name="vouchercode" type="java.lang.String">
+    		<column name="VOUCHERCODE" length="20" />
+    	</id>
+    	<property name="vouchertype" type="java.lang.String">
+			<column name="VOUCHERTYPE" length="8" />
+        </property>
+        <property name="manufacturertype" type="java.lang.String">
+			<column name="MANUFACTURERTYPE" length="256" />
+        </property>
+         <property name="voucherpicture" type="java.lang.String">
+			<column name="VOUCHERPICTURE" length="256" />
+        </property>        
+        <property name="vouchercodename" type="java.lang.String">
+			<column name="VOUCHERCODENAME" length="256" />
+        </property> 
+        <property name="voucherstatus" type="java.lang.String">
+			<column name="VOUCHERSTATUS" length="8" />
+        </property>
+   		 <property name="picturemd5" type="java.lang.String">
+			<column name="PICTUREMD5" length="256" />
+        </property>
+    	 <property name="voucherpicturepath" type="java.lang.String">
+			<column name="VOUCHERPICTUREPATH" length="256" />
+        </property>
+    </class>
+</hibernate-mapping>
+  

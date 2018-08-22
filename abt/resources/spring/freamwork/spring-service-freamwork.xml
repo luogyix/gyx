@@ -1,0 +1,51 @@
+﻿<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-2.0.xsd">
+	<!-- 登陆服务 -->
+	<bean id="LogonService" class="com.agree.framework.web.service.administration.LogonService">
+		<property name="sqlDao_h">
+			<ref bean="habernateDao"/>
+		</property>
+	</bean>
+	<!-- 日志服务 -->
+	<bean id="LogService" class="com.agree.framework.web.service.administration.LogService">
+		<property name="sqlDao_h">
+			<ref bean="habernateDao"/>
+		</property>
+	</bean>
+	<!-- 登陆服务 -->
+	<bean id="AdministrationService" class="com.agree.framework.web.service.administration.AdministrationService">
+		<property name="sqlDao_h">
+			<ref bean="habernateDao"/>
+		</property>
+	</bean>
+	
+	<!-- 字典 -->
+	<bean id="DictinfoService" class="com.agree.framework.web.service.administration.DictinfoService">
+		<property name="sqlDao_h">
+			<ref bean="habernateDao"/>
+		</property>
+	</bean>
+	<!-- 部门管理 -->
+	<bean id="UnitinfoService" class="com.agree.framework.web.service.administration.UnitinfoService">
+		<property name="sqlDao_h">
+			<ref bean="habernateDao"/>
+		</property>
+		<property name="administrationService">
+			<ref bean="AdministrationService" />
+		</property>
+	</bean>
+	<!--  报文服务类-->
+	<bean id="MsgService" class="com.agree.framework.web.service.administration.MsgService">
+		<property name="sqlDao_h">
+			<ref bean="habernateDao"/>
+		</property>
+	</bean>
+	<!--  通知服务类-->
+	<bean id="SysNoticeService" class="com.agree.framework.web.service.administration.SysNoticeService">
+		<property name="sqlDao_h">
+			<ref bean="habernateDao"/>
+		</property>
+	</bean>
+</beans>

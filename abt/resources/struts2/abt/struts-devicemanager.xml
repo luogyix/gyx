@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!DOCTYPE struts PUBLIC 
+	"-//Apache Software Foundation//DTD Struts Configuration 2.0//EN"
+	"http://struts.apache.org/dtds/struts-2.0.dtd">
+
+<struts>
+	<package name="devicemanager" extends="BasePackage">
+		<!-- 填单机菜单配置 -->
+		<action name="formMenu_*" class="formMenuAction" method="{1}">
+			<interceptor-ref name="SystemConsoleInterceptorStack"></interceptor-ref>
+			<result name="success">/webpages/abt/devmanager/formMenu.jsp</result>
+		</action>
+		<!-- 机具外设状态 -->
+		<action name="machineDevice_*" class="machineDeviceAction" method="{1}">
+			<interceptor-ref name="SystemConsoleInterceptorStack"></interceptor-ref>
+			<result name="success">/webpages/abt/devmanager/machinedeviceinfo.jsp</result>
+		</action>
+		<!-- 机具外设状态 -->
+		<action name="machineMonitoring_*" class="machineMonitoringAction" method="{1}">
+			<interceptor-ref name="SystemConsoleInterceptorStack"></interceptor-ref>
+			<result name="success">/webpages/abt/devmanager/machineMonitoring.jsp</result>
+		</action>
+		<!-- 自助流水查询 -->
+		<action name="machineNotes_*" class="machineNotesAction" method="{1}">
+			<interceptor-ref name="SystemConsoleInterceptorStack"></interceptor-ref>
+			<result name="success">/webpages/abt/devmanager/MachineNotes.jsp</result>
+		</action>
+	</package>
+</struts>

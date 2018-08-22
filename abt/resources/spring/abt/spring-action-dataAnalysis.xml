@@ -1,0 +1,189 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-2.0.xsd">
+
+	
+    <!-- 填单机关机时间配置  -->
+    <bean id="formFillAction" class="com.agree.abt.action.devmanager.FormFillAction" scope="prototype">
+		<property name="cona">
+			<ref bean="natpBean" />
+		</property>
+	</bean>
+	<!-- 排队号历史流水分析 -->
+	<bean id="queueNumFlowLineAction" class="com.agree.abt.action.dataAnalysis.QueueNumFlowLineAction" scope="prototype">
+		<property name="cona">
+			<ref bean="natpBean" />
+		</property>
+	</bean>
+	
+	<!-- 窗口服务状态监控 -->
+	<bean id="winServiceStateAction" class="com.agree.abt.action.dataAnalysis.WinServiceStateAction" scope="prototype">
+		<property name="cona">
+			<ref bean="natpBean" />
+		</property>
+	</bean>
+	
+	<!-- 队列实时监控 -->
+	<bean id="queueRealTimeMonitorAction" class="com.agree.abt.action.dataAnalysis.QueueRealTimeMonitorAction" scope="prototype">
+		<property name="cona">
+			<ref bean="natpBean" />
+		</property>
+		<property name="service">
+			<ref bean="qmQueueService" />
+		</property>
+	</bean>
+	<!-- 排队流水serice -->
+	<bean id="qmQueueService" class="com.agree.abt.service.dataAnalysis.impl.QmQueueServiceImpl" scope="prototype">
+		<property name="sqlDao_h">
+			<ref bean="habernateDao" />
+		</property>
+	</bean>
+	<!-- 排队号流水监控 -->
+	<bean id="queueNumMonitorAction" class="com.agree.abt.action.dataAnalysis.QueueNumMonitorAction" scope="prototype">
+		<property name="cona">
+			<ref bean="natpBean" />
+		</property>
+	</bean>
+	<!-- 动态排队号流水监控 -->
+	<bean id="dynamicRulesNumMonitorAction" class="com.agree.abt.action.dataAnalysis.DynamicRulesNumMonitorAction" scope="prototype">
+		<property name="cona">
+			<ref bean="natpBean" />
+		</property>
+	</bean>
+	<!-- 用户等待时间分析action -->
+	<bean id="WaitingTimeAction" class="com.agree.abt.action.dataAnalysis.WaitingTimeAction" scope="prototype">
+		<property name="cona">
+			<ref bean="natpBean" />
+		</property>
+		<property name="waitingTimeService">
+			<ref bean="waitingTimeService"/>
+		</property>
+	</bean>
+	<!-- 用户等待时间分析(增加实际客户类型)action -->
+	<bean id="BtWaitingTimeAction" class="com.agree.abt.action.dataAnalysis.BtWaitingTimeAction" scope="prototype">
+		<property name="cona">
+			<ref bean="natpBean" />
+		</property>
+	</bean>
+	<!--  用户等待时间分析service-->
+	<bean id="waitingTimeService" class="com.agree.framework.web.service.administration.WaitingTimeService" scope="prototype">
+		<property name="sqlDao_h">
+			<ref bean="habernateDao"/>
+		</property>
+	</bean>
+	
+	<!-- 柜员办理效率分析 -->
+	<bean id="TellerEfficiencyAction" class="com.agree.abt.action.dataAnalysis.TellerEfficiencyAction" scope="prototype">
+		<property name="cona">
+			<ref bean="natpBean" />
+		</property>
+	</bean>
+	<!-- 柜员办理效率分析(增加业务类别统计) -->
+	<bean id="BtTellerEfficiencyAction" class="com.agree.abt.action.dataAnalysis.BtTellerEfficiencyAction" scope="prototype">
+		<property name="cona">
+			<ref bean="natpBean" />
+		</property>
+	</bean>
+	<!-- 客户评价分析 -->
+	<bean id="ClientAssessAction" class="com.agree.abt.action.dataAnalysis.ClientAssessAction" scope="prototype">
+		<property name="cona">
+			<ref bean="natpBean" />
+		</property>
+	</bean>
+	<bean id="ClientAssessVAction" class="com.agree.abt.action.dataAnalysis.ClientAssessVAction" scope="prototype">
+		<property name="cona">
+			<ref bean="natpBean" />
+		</property>
+	</bean>
+	
+	<!-- 时段客户流量统计-->
+	<bean id="CustomerFlowAction" class="com.agree.abt.action.dataAnalysis.CustomerFlowAction" scope="prototype">
+		<property name="cona">
+			<ref bean="natpBean" />
+		</property>
+	</bean>
+	
+	<!-- 客户办理业务类别统计 -->
+	<bean id="DobusTypeAction" class="com.agree.abt.action.dataAnalysis.DobusTypeAction" scope="prototype">
+		<property name="cona">
+			<ref bean="natpBean" />
+		</property>
+	</bean>
+	
+	<!-- 零售客户等待时间统计 -->
+	<bean id="retailCustomerWaitingTimeAction" class="com.agree.abt.action.dataAnalysis.RetailCustomerWaitingTimeAction" scope="prototype">
+		<property name="retailCustomerWaitingTimeService">
+			<ref bean="retailCustomerWaitingTimeService"/>
+		</property>
+	</bean>
+	<bean id="retailCustomerWaitingTimeService" class="com.agree.abt.service.dataAnalysis.impl.RetailCustomerWaitingTimeService" scope="prototype">
+		<property name="sqlDao_h">
+			<ref bean="habernateDao"/>
+		</property>
+	</bean>
+	<!-- 零售客户等待时间统计AFA -->
+	<bean id="analyseWaitingTimeAction" class="com.agree.abt.action.dataAnalysis.AnalyseWaitingTimeAction" scope="prototype">
+		<property name="cona">
+			<ref bean="natpBean" />
+		</property>
+	</bean>
+	
+	<!-- 零售客户时段客流量统计 -->
+	<bean id="analyseBranchFlowAction" class="com.agree.abt.action.dataAnalysis.AnalyseBranchFlowAction" scope="prototype">
+		<property name="cona">
+			<ref bean="natpBean" />
+		</property>
+	</bean>
+	
+	<!-- 消息流水号配置 -->
+	<bean name="pushMegFlowAction" class="com.agree.abt.action.dataAnalysis.PushMegFlowAction" scope="prototype">
+		<property name="pushMsgFlowService">
+			<ref bean="PushMsgFlowService"/>
+		</property>
+	</bean>
+	<!-- 填单机菜单配置 -->
+	<bean id="formMenuAction" class="com.agree.abt.action.devmanager.FormMenuAction" scope="prototype">
+		<property name="cona">
+			<ref bean="natpBean" />
+		</property>
+	</bean>
+	
+	<!-- 自助设备凭证管理 -->
+	<bean id="voucherManagerService" class="com.agree.abt.service.dataAnalysis.impl.VoucherManagerServiceImpl" scope="prototype">
+		<property name="sqlDao_h">
+			<ref bean="habernateDao"/>
+		</property>
+	</bean>
+	<bean id="voucherManagerAction" class="com.agree.abt.action.dataAnalysis.VoucherManagerAction" scope="prototype">
+		<property name="voucherManagerService">
+			<ref bean="voucherManagerService"/>
+		</property>
+	</bean>
+	
+	<!--吞卡明细交易流水-->
+	<bean id="eatCardTradeService" class="com.agree.abt.service.dataAnalysis.impl.EatCardTradeServiceImpl" scope="prototype">
+		<property name="sqlDao_h">
+			<ref bean="habernateDao"/>		
+		</property>
+	</bean>
+	<bean id="eatCardTradeAction" class="com.agree.abt.action.dataAnalysis.EatCardTradeAction" scope="prototype">
+		<property name="eatCardTradeService">
+			<ref bean="eatCardTradeService"/>
+		</property>
+	</bean>
+
+	<!-- 自助交易流水报表统计 -->
+	<bean id="cardMachineNumAction" class="com.agree.abt.action.dataAnalysis.CardMachineNumAction" scope="prototype">
+		<property name="cona">
+			<ref bean="natpBean" />
+		</property>
+	</bean>
+	
+	<!--填单业务量统计-->												
+	<bean id="pfsPortfolioTradeAction" class="com.agree.abt.action.dataAnalysis.PfsPortfolioTradeAction" scope="prototype">
+		<property name="cona">
+			<ref bean="natpBean"/>
+		</property>
+	</bean>
+</beans>

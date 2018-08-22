@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<configuration>
+	<!--<property name="LOG_DIR" value="D:/abt/logs" />-->
+	<property name="LOG_DIR" value="/imslog/abt/" />
+	<property name="LOG_FILE_NAME" value="abt" />
+	<property name="logFileNamePattern" value="${LOG_FILE_NAME}_%d{yyyy-MM-dd}_%i" />
+	<property name="fileLayoutPattern"
+		value="%d{yyyyMMdd_HH:mm:ss.SSS}[%p-%logger{30}-%X{msgid}] %msg%n" />
+	<property name="consoleLayoutPattern" value="%d{yyyyMMdd HH:mm:ss.SSS}[%p-%logger{30}-%X{msgid}] %msg%n" />
+
+	<contextName>osgiApp</contextName>
+ 
+	<appender name="CONSOLE" class="ch.qos.logback.core.ConsoleAppender">
+		<layout name="StandardFormat" class="ch.qos.logback.classic.PatternLayout">
+			<pattern>${consoleLayoutPattern}</pattern>
+		</layout>
+	</appender>
+	
+	<appender name="SIFT" class="ch.qos.logback.classic.sift.SiftingAppender">
+		<discriminator>
+			<Key>branch</Key>
+			<DefaultValue>abt</DefaultValue>
+		</discriminator>
+		<sift>
+			<appender name="FILE-${branch}"	class="ch.qos.logback.core.rolling.RollingFileAppender">
+				<prudent>true</prudent>
+				<append>true</append>
+				<rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
+					<fileNamePattern>${LOG_DIR}/%d{yyyy-MM-dd}/${branch}_%i.log
+					</fileNamePattern>
+					<timeBasedFileNamingAndTriggeringPolicy
+						class="ch.qos.logback.core.rolling.SizeAndTimeBasedFNATP">
+						<maxFileSize>10MB</maxFileSize>
+					</timeBasedFileNamingAndTriggeringPolicy>
+					<maxHistory>7</maxHistory><!-- days -->
+				</rollingPolicy>
+				<layout class="ch.qos.logback.classic.PatternLayout">
+					<Pattern>%d{yyyyMMdd_HH:mm:ss.SSS}[%p-%logger{30}-%X{msgid}] %msg%n</Pattern>
+				</layout>
+			</appender>
+		</sift>
+	</appender>
+	 
+	<logger name="org.springframework"	level="INFO" additivity="false">
+		<appender-ref ref="SIFT" />
+	</logger>
+	<logger name="org.hibernate"	level="INFO" additivity="false">
+		<appender-ref ref="SIFT" />
+	</logger>
+	<logger name="com.opensymphony.xwork2"	level="INFO" additivity="false">
+		<appender-ref ref="SIFT" />
+	</logger>
+	<logger name="org.apache"	level="INFO" additivity="false">
+		<appender-ref ref="SIFT" />
+	</logger>
+	<logger name="net.sf.ehcache"	level="INFO" additivity="false">
+		<appender-ref ref="SIFT" />
+	</logger>
+	<root level="DEBUG">
+		<appender-ref ref="SIFT" />
+	</root>
+	
+</configuration>

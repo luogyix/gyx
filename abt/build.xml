@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="GB2312"?>
+<project name="abt" basedir="./src" default="deploy">
+	<property name="dir.src" value="." />
+	<property name="dir.lib" value="../lib" />
+	<property name="dir.web" value="../WebRoot" />
+	<property name="dir.resources" value="../resources" />
+	<path id="libs">
+		<fileset dir="${dir.lib}">
+			<include name="**/*.jar" />
+		</fileset>
+	</path>
+	<target name="clean">
+		<delete dir="${dir.web}/WEB-INF/classes" />
+		<delete dir="${dir.web}/WEB-INF/lib" />
+	</target>
+	<target name="init">
+		<mkdir dir="${dir.web}/WEB-INF/classes" />
+		<mkdir dir="${dir.web}/WEB-INF/lib" />
+	</target>
+	<target name="compile" depends="init">
+		<javac encoding="UTF-8" destdir="${dir.web}/WEB-INF/classes"
+			failonerror="true" debuglevel="lines,vars,source" debug="true"
+			includeantruntime="true">
+			<src path="${dir.src}" />
+			<classpath refid="libs" />
+		</javac>
+	</target>
+
+	<target name="deploy" depends="compile">
+		<copy todir="${dir.web}/WEB-INF/classes/resources/">
+			<fileset file="${dir.resources}/**" />
+		</copy>
+		<copy todir="${dir.web}/WEB-INF/lib/">
+			<fileset file="${dir.lib}/**" />
+		</copy>
+		<copy todir="${dir.web}/WEB-INF/classes/">
+			<fileset file="${dir.src}/*.*" />
+		</copy>
+	</target>
+
+	<target name="makewar">
+		<delete file="${dir.web}/abt.war" />
+		<war warfile="${dir.web}/abt.war" webxml="${dir.web}/WEB-INF/web.xml">
+			<fileset dir="${dir.web}">
+				<include name="**/*.*"/>
+				<exclude name="WEB-INF/classes/**"/>
+				<exclude name="WEB-INF/lib/**"/>
+			</fileset>
+			<lib dir="${dir.web}/WEB-INF/lib">
+				<include name="**" />
+			</lib>
+			<classes dir="${dir.web}/WEB-INF/classes">
+				<include name="**"/>
+			</classes>
+		</war>
+	</target>
+</project>

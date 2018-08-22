@@ -1,0 +1,362 @@
+package com.agree.abt.service.confmanager.impl;
+
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileOutputStream;
+import java.io.OutputStream;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Iterator;
+import java.util.List;
+import java.util.Map;
+import java.util.Set;
+
+import net.sf.json.JSONArray;
+import net.sf.json.JSONObject;
+
+import org.apache.struts2.ServletActionContext;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.web.context.ContextLoader;
+
+import com.agree.abt.service.confmanager.IProductService;
+import com.agree.framework.natp.ABTComunicateNatp;
+import com.agree.framework.struts2.webserver.ApplicationConstants;
+import com.agree.framework.web.form.administration.User;
+import com.agree.util.DateUtil;
+import com.agree.util.FileUtil;
+@SuppressWarnings({ "unchecked", "rawtypes" })
+public class ProductServiceImpl implements IProductService {
+	
+	private byte[] indexPage;
+	private byte[] pdf;
+	private static final Logger logger=LoggerFactory.getLogger(ProductServiceImpl.class);//日志
+	public byte[] getIndexPage() {
+		return indexPage;
+	}
+
+	public void setIndexPage(byte[] indexPage) {
+		this.indexPage = indexPage;
+	}
+
+	public byte[] getPdf() {
+		return pdf;
+	}
+
+	public void setPdf(byte[] pdf) {
+		this.pdf = pdf;
+	}
+	private ABTComunicateNatp cona;
+
+	public ABTComunicateNatp getCona() {
+		return cona;
+	}
+
+	public void setCona(ABTComunicateNatp cona) {
+		this.cona = cona;
+	}
+
+	public String addProduct(String json)
+			throws Exception {
+		User user = (User) ServletActionContext.getRequest().getSession()
+				.getAttribute(ApplicationConstants.LOGONUSER);// 返回登录用户信息
+		
+		JSONObject jsonObj = JSONObject.fromObject(json);
+		 
+		
+		cona.setBMSHeader("ibp.bms.b124.01", user);
+		cona.set("funcCode", "1");
+		//循环取出json对象的数据
+		Iterator keys = jsonObj.keys();
+		while (keys.hasNext()) {
+			String key = keys.next().toString();
+			if(("PDFNAME".equals(key)) && !("".equals(jsonObj.get("DETAILSPIC3").toString()))){	//重命名的放到PDFNAME里面，源文件名放到DETAILSPIC3里面
+				cona.set(key, user.getUnitid()+jsonObj.getString("PRODUCTID")+jsonObj.getString("LABLEID")+".png");
+			}else{
+				cona.set(key, jsonObj.getString(key));
+			}
+		}
+		cona.set("CREATUSER",user.getUsercode());
+		cona.set("CRTDATETIME",DateUtil.getCurrentDateByFormat("yyyyMMdd"));
+		cona.set("ALTDATETIME",DateUtil.getCurrentDateByFormat("yyyyMMdd"));
+		//华润需要上传图片，不需再把pdf转换成数据直接存储，数据库图片路径即可
+//		String sss= new BASE64Encoder().encode(pdf);
+//		cona.set("PDFMESSAGE",sss);
+//		String index= new BASE64Encoder().encode(indexPage);
+//		cona.set("PDFVIEW",index);
+		cona.set("EXT4","abt\\WebRoot\\products\\"+jsonObj.get("PRODUCTID"));
+		HashMap map = (HashMap) cona.exchange();
+		return cona.validMap(map);
+	}
+
+	public String deleteProduct(String json) throws Exception {
+		User user = (User) ServletActionContext.getRequest().getSession()
+				.getAttribute(ApplicationConstants.LOGONUSER);// 返回登录用户信息
+		JSONArray jsonArray = JSONArray.fromObject(json);
+		StringBuffer buffer = new StringBuffer();
+		for (int k = 0; k < jsonArray.size(); k++) {
+			JSONObject objt = jsonArray.getJSONObject(k);
+			//NatpDatas natpDatas = NatpDatas.createInstance();
+			//natpDatas.initMessageHeader("ibp.bms.b124.01", user.getBranch(), user
+			//		.getUsercode(), "03");
+			 
+			
+			cona.setBMSHeader("ibp.bms.b124.01", user);
+			cona.set("funcCode", "4");
+			cona.set("BRANCH", user.getUnitid());
+			cona.set(objt);
+			//natpDatas.saveKeyValueMessage("funcCode", "4");
+			//natpDatas.saveKeyValueMessage(objt);
+			HashMap map = (HashMap) cona.exchange();
+			
+			if(map.get("H_ret_code").toString().equals("[000000]")){
+				String basePath2 = ApplicationConstants.getBasePath();
+				String lastForm = objt.get("PDFNAME").toString();
+				String[] picNames = objt.get("DETAILSPIC2").toString().split(",");
+				for(String str:picNames){  
+		            if(str!=null && str.length()!=0){  
+		            	for(int i = 0; i < 5; i++){//文件上传最多传五个所以每次删除都删除五个，不管文件是否是五个
+							String filepath = "products//"+picNames[0].substring(0, picNames[0].length()-5)+i+".png";
+							FileUtil.deleteFile(basePath2+filepath);
+						}
+						
+		            }  
+		        }  
+				FileUtil.deleteFile(basePath2+"products//"+lastForm); 
+			}
+			//LinkedHashMap map = (LinkedHashMap) commClientHandler.sendAndRecive(natpDatas);
+			String info = cona.validMap(map);
+			if (info != null && info.trim().length() != 0) {
+				buffer.append(info);
+				buffer.append(",");
+			}
+		}
+
+		StringBuffer info = new StringBuffer("没有成功删除以下产品：");
+		if (buffer.toString().length() > 0) {
+			info.append(buffer.toString());
+			return info.toString();
+		} else {
+			return "";
+		}
+	}
+
+	public void editProduct(String json) throws Exception{
+		User user = (User) ServletActionContext.getRequest().getSession()
+				.getAttribute(ApplicationConstants.LOGONUSER);// 返回登录用户信息
+		//NatpDatas natpDatas = NatpDatas.createInstance();
+		JSONObject jsonObj = JSONObject.fromObject(json);
+		//String pdfName=jsonObj.getString("PDFNAME");
+		
+		//natpDatas.initMessageHeader("ibp.bms.b124.01", user.getBranch(), user
+		//		.getUsercode(), "03");
+		 
+		
+		cona.setBMSHeader("ibp.bms.b124.01", user);
+		
+		cona.set("funcCode", "3");
+		//natpDatas.saveKeyValueMessage("funcCode", "3");
+		//cona.set(jsonObj);
+		//natpDatas.saveKeyValueMessage(jsonObj);
+		/*
+		if(pdfName!=null&&pdfName.trim().length()>0){
+			cona.set("PDFMESSAGE", this.pdf);
+			cona.set("PDFVIEW", this.indexPage);
+		}
+		*/
+//		if(pdfName!=null&&pdfName.trim().length()>0){
+//			natpDatas.saveKeyValueMessage("PDFMESSAGE", this.pdf);
+//			natpDatas.saveKeyValueMessage("PDFVIEW", this.indexPage);
+//		}
+		//循环取出json对象的数据
+		Iterator keys = jsonObj.keys();
+		while (keys.hasNext()) {
+			String key = keys.next().toString();
+			logger.info("要修改的图片："+jsonObj.toString());
+			if(("PDFNAME".equals(key)) && !("".equals(jsonObj.get("DETAILSPIC3").toString()))){
+				//String lastForm = jsonObj.get("PDFNAME").toString().substring(jsonObj.get("PDFNAME").toString().lastIndexOf("."),jsonObj.get("PDFNAME").toString().length());
+				cona.set(key, user.getUnitid()+jsonObj.getString("PRODUCTID")+jsonObj.getString("LABLEID")+".png");
+			}else{
+				cona.set(key, jsonObj.getString(key));
+			}
+		}
+//		Iterator keys = jsonObj.keys();
+//		while (keys.hasNext()) {
+//			String key = keys.next().toString();
+//			natpDatas.saveKeyValueMessage(key, jsonObj.getString(key));
+//
+//		}
+		cona.set("ALTDATETIME",DateUtil.getCurrentDateByFormat("yyyyMMdd"));
+		//natpDatas.saveKeyValueMessage("ALTDATETIME", TimeFactory.getDateWithFormat("yyyyMMdd"));
+		cona.exchange();
+	}
+
+	public List<Map> getProducts(String jsonObject) throws Exception {
+		JSONObject jsonObj = JSONObject.fromObject(jsonObject);
+		User user = (User) ServletActionContext.getRequest().getSession().getAttribute(ApplicationConstants.LOGONUSER);// 返回登录用户信息
+		//NatpDatas natpDatas = NatpDatas.createInstance();
+		 
+		
+		cona.setBMSHeader("ibp.bms.b124.01", user);
+		//natpDatas.initMessageHeader("ibp.bms.b124.01", user.getBranch(), user.getUsercode(), "03");
+		cona.set("funcCode", "2");
+		//natpDatas.saveKeyValueMessage("funcCode", "2");
+		cona.set("BRANCH", user.getUnitid());
+		//natpDatas.saveKeyValueMessage("BRANCH", user.getBranch());
+		cona.set(jsonObj);
+		//natpDatas.saveKeyValueMessage(jsonObj);
+		//判断afa的返回结果,是否成功
+		Map<String,List<String>> map = cona.exchange();
+		String loopNum = (String) map.get("loopNum").get(0);
+		int num = Integer.parseInt(loopNum);
+		List<Map> list = new ArrayList<Map>();
+		for (int i = 0; i < num; i++) {
+			Map<String, String> hld = new HashMap<String, String>();
+			Set keyset = map.keySet();
+			Iterator<String> it = keyset.iterator();
+			while (it.hasNext()) {
+				String key = it.next();
+				List<String> tmep = map.get(key);
+				if (tmep.size() < num) {
+					continue;
+				}
+				hld.put(key, tmep.get(i));
+			}
+			list.add(hld);
+		}
+		return list;
+	}
+
+	public synchronized List<Map> getProductClass(String branch) throws Exception {
+        if(branch == null){
+        	return null;
+        }
+		User user = (User) ServletActionContext.getRequest().getSession().getAttribute(ApplicationConstants.LOGONUSER);// 返回登录用户信息
+		 
+		ABTComunicateNatp cona1 = new ABTComunicateNatp();
+		cona1.setBMSHeader("ibp.bms.b135_2.01", user);
+		cona1.set("funcCode", "2");
+		cona1.set("BRANCH", branch);
+		
+		//判断afa的返回结果,是否成功
+		Map<String,List<String>> map = cona1.exchange();
+		String loopNum = (String) map.get("infosize").get(0);
+		int num = Integer.parseInt(loopNum);
+		List<Map> list = new ArrayList<Map>();
+		for (int i = 0; i < num; i++) {
+			Map<String, String> hld = new HashMap<String, String>();
+			Set keyset = map.keySet();
+			Iterator<String> it = keyset.iterator();
+			while (it.hasNext()) {
+				String key = it.next();
+				List<String> tmep = (List<String>) map.get(key);
+				if (tmep.size() < num) {
+					continue;
+				}
+				hld.put(key, tmep.get(i));
+			}
+			list.add(hld);
+		}
+		return list;
+	}
+	
+	public String addProductClass(String json)throws Exception {
+		User user = (User) ServletActionContext.getRequest().getSession()
+				.getAttribute(ApplicationConstants.LOGONUSER);// 返回登录用户信息
+		
+		JSONObject jsonObj = JSONObject.fromObject(json);
+		 
+		
+		cona.setBMSHeader("ibp.bms.b135_1.01", user);
+		cona.set("funcCode", "1");
+		//循环取出json对象的数据
+		Iterator keys = jsonObj.keys();
+		while (keys.hasNext()) {
+			String key = keys.next().toString();
+			cona.set(key, jsonObj.getString(key));
+		}
+		cona.exchange();
+		String info = "添加成功";
+		return info;
+	}
+	
+	public String editProductClass(String json)throws Exception {
+		User user = (User) ServletActionContext.getRequest().getSession()
+				.getAttribute(ApplicationConstants.LOGONUSER);// 返回登录用户信息
+		JSONObject jsonObj = JSONObject.fromObject(json);
+		
+		 
+		
+		cona.setBMSHeader("ibp.bms.b124.01", user);
+		cona.set("funcCode", "3");
+		Iterator keys = jsonObj.keys();
+		while (keys.hasNext()) {
+			String key = keys.next().toString();
+			cona.set(key, jsonObj.getString(key));
+		}
+		cona.set("ALTDATETIME",DateUtil.getCurrentDateByFormat("yyyyMMdd"));
+		HashMap map = (HashMap) cona.exchange();
+		String info = cona.validMap(map);
+		return info;
+	}
+	
+	public String deleteProductClass(String json) throws Exception {
+		User user = (User) ServletActionContext.getRequest().getSession()
+				.getAttribute(ApplicationConstants.LOGONUSER);// 返回登录用户信息
+		JSONObject jsonObj = JSONObject.fromObject(json);
+		 
+		
+		cona.setBMSHeader("ibp.bms.b135_4.01", user);
+		cona.set("lableid", jsonObj.getString("lableid"));
+		//判断afa的返回结果,是否成功
+		cona.exchange();
+		return "";
+	}
+	public String upLoadFile(String fileName, File upLoadFile) throws Exception {
+		//byte[] buffer = null;
+		try {
+			FileInputStream stream = new FileInputStream(upLoadFile);
+			File outFile=null;
+			String path = ContextLoader.getCurrentWebApplicationContext().getServletContext().getRealPath("/");
+			
+			String filePath = path + File.separator + "products"+ File.separator + fileName;
+			outFile=new File(filePath);
+			File parent=outFile.getParentFile();
+			if(!parent.exists()){
+				parent.mkdirs();
+			}
+			OutputStream out=new FileOutputStream(outFile);
+			byte[] temp=new byte[1024];
+			int length=0;
+			while((length=stream.read(temp))>0){
+				out.write(temp, 0, length);
+			}
+
+			stream.close();
+			out.close();
+			//this.convertPdf(fileName, upLoadFile);
+			/*
+			stream = new FileInputStream(outFile);
+			ByteArrayOutputStream bos = new ByteArrayOutputStream(1000);
+			byte[] b = new byte[1000];
+			int n;
+			while ((n = stream.read(b)) != -1) {
+				bos.write(b, 0, n);
+				bos.flush();
+			}
+			buffer = bos.toByteArray();
+			stream.close();
+			bos.close();
+			*/
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+       /*
+		this.pdf = new byte[buffer.length];
+		System.arraycopy(buffer, 0, pdf, 0, buffer.length);
+		*/
+		return null;
+	}
+	
+	
+}

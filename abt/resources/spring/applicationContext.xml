@@ -1,0 +1,225 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+ xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+ xmlns:aop="http://www.springframework.org/schema/aop"
+ xmlns:tx="http://www.springframework.org/schema/tx"
+ xmlns:context="http://www.springframework.org/schema/context"
+ xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-3.2.xsd
+           http://www.springframework.org/schema/aop http://www.springframework.org/schema/aop/spring-aop-3.2.xsd
+           http://www.springframework.org/schema/tx http://www.springframework.org/schema/tx/spring-tx-3.2.xsd
+           http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-3.2.xsd">
+
+    <!-- 该配置文件进行基本的Spring和Hibernate的集成配置。与业务相关的配置将放在其它的Spring配置文件中。  -->
+
+	<bean id="propertyConfigurer" class="org.springframework.beans.factory.config.PropertyPlaceholderConfigurerConvertPassword">
+		<property name="locations">
+			<list>
+				<value>classpath*:conf.properties</value>
+			</list>
+		</property>
+	</bean>
+	
+	<!-- 该 BeanPostProcessor 将自动起作用，对标注 @Autowired 的 Bean 进行自动注入 --> 
+	<bean class="org.springframework.beans.factory.annotation.AutowiredAnnotationBeanPostProcessor"/>
+	<!-- 大文件(clob. blob)处理,用于MySQL、DB2、MS SQL Server、Oracle 10g等 -->
+	<bean id="lobHandler" class="org.springframework.jdbc.support.lob.DefaultLobHandler" lazy-init="true" />
+	
+	<!-- 大文件(clob. blob)处理,用于Oracle9i -->
+<!--	<bean id="nativeJdbcExtractor" lazy-init="true" class="org.springframework.jdbc.support.nativejdbc.SimpleNativeJdbcExtractor"/>-->
+<!--	<bean id="lobHandler" lazy-init="true" class="org.springframework.jdbc.support.lob.OracleLobHandler">-->
+<!--		<property name="nativeJdbcExtractor">-->
+<!--			<ref bean="nativeJdbcExtractor" />-->
+<!--		</property>-->
+<!--	</bean>-->
+	<!-- 自动搜索路径 -->
+	<context:component-scan base-package="com.agree" /> 
+	
+<!--	<bean id="datasource" class="org.springframework.jndi.JndiObjectFactoryBean">-->
+<!--		<property name="jndiName" value="${jndi.name}"/>-->
+<!--		<property name="jndiEnvironment">-->
+<!--			<props>-->
+<!--				<prop key="java.naming.provider.url">${jndi.java.naming.provider.url}</prop>-->
+<!--				<prop key="java.naming.factory.initial">weblogic.jndi.WLInitialContextFactory</prop>-->
+<!--			</props>-->
+<!--		</property>-->
+<!--	</bean>-->
+	
+  	<bean id="datasource" class="com.mchange.v2.c3p0.ComboPooledDataSource" destroy-method="close">
+		<property name="driverClass" value="${jdbc.driverClassName}" />
+		<property name="jdbcUrl" value="${jdbc.url}" />
+		<property name="user" value="${jdbc.username}"></property>
+  		<property name="password" value="${jdbc.password}"></property>
+  		<property name="minPoolSize"><value>3</value></property>
+  		<property name="maxPoolSize"><value>20</value></property>	
+  		<property name="maxIdleTime"><value>60</value></property> 
+  		<property name="acquireIncrement"><value>30</value></property>
+  		<property name="maxStatements"><value>0</value></property>
+ 		<property name="initialPoolSize"><value>3</value></property>
+  		<property name="idleConnectionTestPeriod"><value>60</value></property>
+  		<property name="testConnectionOnCheckin"><value>false</value></property> 
+  		<property name="acquireRetryAttempts"><value>30</value></property>
+		<property name="checkoutTimeout"><value>0</value></property> 
+  		<property name="breakAfterAcquireFailure"><value>false</value></property>
+ 		<property name="testConnectionOnCheckout"><value>false</value></property>
+	</bean>
+	<!-- HIERNANATE配置 -->
+	<bean id="sessionFactory" class="org.springframework.orm.hibernate3.LocalSessionFactoryBean">
+		<property name="dataSource" ref="datasource"/>
+		<property name="lobHandler" ref="lobHandler"/>
+		<property name="mappingLocations">
+			<list>
+			    <value>classpath*:resources/hibernate/abt_pfs/*.hbm.xml</value>
+			    <value>classpath*:resources/hibernate/abt/*.hbm.xml</value>
+				<value>classpath*:resources/hibernate/freamwork/*.hbm.xml</value>
+				<value>classpath*:resources/hibernate/abt_dev/*.hbm.xml</value>
+			</list>
+		</property>
+		<!-- <property name="mappingDirectoryLocations">
+			<list>
+   				<value>classpath:resources/hibernate/abt</value>
+				<value>classpath:resources/hibernate/freamwork</value>
+				<value>classpath:resources/hibernate/abt_pfs</value>
+				<value>classpath:resources/hibernate/abt_dev</value>
+			</list>
+		</property> -->
+		<property name="hibernateProperties">
+			<props>
+				<prop key="hibernate.dialect">${hibernate.dialect}</prop>
+				<prop key="hibernate.show_sql">false</prop>
+				<prop key="hibernate.generate_statistics">true</prop>
+				<prop key="hibernate.connection.release_mode">auto</prop>                      
+				<prop key="hibernate.autoReconnect">true</prop>
+				<prop key="hibernate.cglib.use_reflection_optimizer">true</prop>
+				<!--prop key="hibernate.current_session_context_class">thread</prop>  -->
+				<prop key="hibernate.query.factory_class">org.hibernate.hql.ast.ASTQueryTranslatorFactory</prop>
+				<!--使用二级缓存  -->
+				<prop key="hibernate.cache.use_query_cache">true</prop>
+				<prop key="hibernate.cache.provider_class">org.hibernate.cache.EhCacheProvider</prop>
+			</props>
+		</property> 
+    </bean>
+	
+    <bean id="habernateDao" class="com.agree.framework.dao.core.HibernateGenericDao">
+		<property name="sessionFactory">
+			<ref local="sessionFactory" />
+		</property>
+	</bean>
+	
+	<!-- AOP记录Action方法后日志 -->
+	<bean id="aspect" class="com.agree.framework.aop.AspectAdvice">
+		<property name="logService">
+			<ref bean="LogService"/>
+		</property>
+	</bean>
+	<aop:config proxy-target-class="true">  
+		<aop:pointcut id="adminAction" expression="execution(* com.agree.framework.web.action.administration.*.*(..)) and !execution(* com.agree.framework.web.action.welcome.F5CheckAction.check(..)) and !execution(* com.agree.framework.web.action.welcome.TokenAction.checktoken(..))"/>
+		<aop:pointcut id="abtAction" expression="execution(* com.agree.abt.action.*.*.*(..))"/>
+		<aop:aspect ref="aspect">
+			<aop:after pointcut-ref="adminAction" method="afterMethod"/> 
+		</aop:aspect>
+		<aop:aspect ref="aspect">
+			<aop:before pointcut-ref="adminAction" method="beforeMethod"/> 
+		</aop:aspect>
+		<aop:aspect ref="aspect">
+			<aop:after pointcut-ref="abtAction" method="afterMethod"/>
+		</aop:aspect>
+		<aop:aspect ref="aspect">
+			<aop:before pointcut-ref="abtAction" method="beforeMethod"/>
+		</aop:aspect>
+		
+	</aop:config>
+   
+	<!-- 配置数据库的事务管理器-->
+    <bean id="transactionManager" class="org.springframework.orm.hibernate3.HibernateTransactionManager"
+        abstract="false" lazy-init="default" autowire="default">
+        <property name="sessionFactory">
+            <ref bean="sessionFactory" />
+        </property>
+    </bean>
+    <tx:advice id="txAdvice" transaction-manager="transactionManager">
+    	<tx:attributes>
+        <tx:method name="*" rollback-for="Exception" read-only="false"/>
+        </tx:attributes>
+    </tx:advice>
+    <tx:annotation-driven transaction-manager="transactionManager"/>
+
+    <aop:config>
+		<aop:pointcut id="abtServiceMethod" expression="execution(* com.agree.abt.service.*.impl.*.*(..))" />
+		<aop:pointcut id="freamServiceMethod" expression="execution(* com.agree.framework.web.service.administration.*.*(..))" />
+		<aop:pointcut id="jasperServiceMethod" expression="execution(* com.agree.framework.jasper.ReportService.*(..))" />
+		<aop:pointcut id="startMethod" expression="execution(* com.agree.framework.struts2.webserver.StartupObject.*(..))" />  
+		<aop:pointcut id="btPfsUpdatepckageMethod" expression="execution(* com.agree.abt.service.pfs.*.*(..))" />
+
+		<aop:advisor advice-ref="txAdvice" pointcut-ref="abtServiceMethod" /> 
+		<aop:advisor advice-ref="txAdvice" pointcut-ref="freamServiceMethod" /> 
+		<aop:advisor advice-ref="txAdvice" pointcut-ref="jasperServiceMethod" /> 
+		<aop:advisor advice-ref="txAdvice" pointcut-ref="startMethod" />
+		<aop:advisor advice-ref="txAdvice" pointcut-ref="btPfsUpdatepckageMethod" />
+    </aop:config>
+	<!-- spring线程池 -->
+	<bean id="taskExecutor" class="org.springframework.scheduling.concurrent.ThreadPoolTaskExecutor">  
+		<property name="corePoolSize" value="3" /> <!-- 核心线程数 -->
+		<property name="maxPoolSize" value="10" /> <!-- 最大线程数 -->
+		<property name="waitForTasksToCompleteOnShutdown" value="true" />
+		<property name="queueCapacity" value="1000" />	<!-- 队列最大长度 >=mainExecutor.maxSize -->
+		<property name="keepAliveSeconds" value="300" /> <!-- 线程池维护线程所允许的空闲时间 -->
+	</bean>
+	
+	<!-- socket通讯服务端 -->
+    <bean id="SocketServer" class="com.agree.framework.communication.socket.SocketServer">
+     	<!-- 端口 -->
+		<property name="port" value="${afa.communication.port}"/>
+		<!-- 线程 -->
+		<property name="pools">
+			<value>5</value>
+		</property>
+		<!-- 最大线程 -->
+		<property name="maxConn">
+			<value>20</value>
+		</property>
+	</bean>
+	<!-- 手持通讯服务端 -->
+    <!-- <bean id="MessServer" class="com.agree.framework.communication.socket.MessServer">
+     	端口
+		<property name="port" value="${mobile.communication.port}"/>
+		线程
+		<property name="pools">
+			<value>5</value>
+		</property>
+		最大线程
+		<property name="maxConn">
+			<value>20</value>
+		</property>
+	</bean>  -->
+	<bean id="natpBean" class="com.agree.framework.natp.ABTComunicateNatp" scope="prototype" />
+	<!-- Natp集群配置 -->
+	<bean id="natpplgin" class="com.agree.framework.communication.natp.NatpPlugin">
+		<property name="natpcfg" value="${afa.natp.cfg}"/>
+	</bean>
+	
+ 	<!-- Startup Object Bean -->
+	<bean id="SysStartupService" class="com.agree.framework.struts2.webserver.StartupObject">
+		<property name="sqlDao_h">
+			<ref bean="habernateDao"/>
+		</property>
+		<property name="socket">
+			<ref bean="SocketServer"/>
+		</property>
+		<!-- <property name="messSocket">
+			<ref bean="MessServer"/>
+		</property> -->
+		<property name="cona">
+			<ref bean="natpBean" />
+		</property>
+	</bean>
+	
+	<!-- http_afa通讯模块 -->
+	<bean id="httpSentRev" class="com.agree.framework.communication.http.HttpSentRev" scope="prototype" >
+		<property name="jsonConf" value="${afa.http.cfg}"/>
+	</bean>
+	
+	<!-- 网关服务 -->
+	<bean id="workHandlerService" class="com.agree.ts.service.WorkHandlerService" scope="prototype">
+		<property name="httpSentRev" ref="httpSentRev"/>
+	</bean>
+</beans>

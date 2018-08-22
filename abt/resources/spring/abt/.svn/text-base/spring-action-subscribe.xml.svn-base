@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-2.0.xsd">
+	
+<!--	 用户等待时间分析action -->
+<!--	<bean id="WaitingTimeAction" class="com.agree.abt.action.dataAnalysis.WaitingTimeAction">-->
+<!--		<property name="cona">-->
+<!--			<ref bean="natpBean" />-->
+<!--		</property>-->
+<!--		<property name="waitingTimeService">-->
+<!--			<ref bean="waitingTimeService"/>-->
+<!--		</property>-->
+<!--	</bean>-->
+<!--	  用户等待时间分析service-->
+<!--	<bean id="waitingTimeService" class="com.agree.framework.web.service.administration.WaitingTimeService">-->
+<!--		<property name="sqlDao_h">-->
+<!--			<ref bean="habernateDao"/>-->
+<!--		</property>-->
+<!--	</bean>-->
+	<!--预约类-->
+	<bean id="subscribeAction" class="com.agree.abt.action.subscribe.SubscribeAction" scope="prototype">
+		<property name="cona">
+			<ref bean="natpBean" />
+		</property>
+	</bean>
+	<!-- 预约流水查询 -->
+	<bean id="reservFlowAction" class="com.agree.abt.action.dataAnalysis.ReservFlowAction" scope="prototype">
+		<property name="cona">
+			<ref bean="natpBean" />
+		</property>
+	</bean>
+	<!-- 预约历史查询 -->
+	<bean id="reservHisAction" class="com.agree.abt.action.dataAnalysis.ReservHisAction" scope="prototype">
+		<property name="cona">
+			<ref bean="natpBean" />
+		</property>
+	</bean>
+</beans>

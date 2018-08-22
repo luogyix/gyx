@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+"http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+<hibernate-mapping>
+	<class name="com.agree.abt.model.dataAnalysis.PushMsgFlow" table="BT_SYS_PUSHMSGFLOW">
+		<id name="msgId" type="java.lang.String">
+			<column name="MSGID" length="48">
+				<comment>消息流水id</comment>
+			</column>
+		</id>
+		<property name="branch" type="java.lang.String">
+			<column name="BRANCH" length="36">
+				<comment>网点号</comment>
+			</column>
+		</property>
+		<property name="pdNo" type="java.lang.String">
+			<column name="PDNO" length="36">
+				<comment>设备号</comment>
+			</column>
+		</property>
+		<property name="msgDate" type="java.lang.String">
+			<column name="MSGDATE" length="48">
+				<comment>日期</comment>
+			</column>
+		</property>
+		<property name="msgTime" type="java.lang.String">
+			<column name="MSGTIME" length="48">
+				<comment>时间</comment>
+			</column>
+		</property>
+		<property name="msgType" type="java.lang.String">
+			<column name="MSGTYPE" length="40">
+				<comment>消息类型</comment>
+			</column>
+		</property>
+		<property name="deviceType" type="java.lang.String">
+			<column name="DEVICETYPE" length="10">
+				<comment>设备类型</comment>
+			</column>
+		</property>
+		<property name="msgContent" type="java.lang.String">
+			<column name="MSGCONTENT" length="4000">
+				<comment>消息内容</comment>
+			</column>
+		</property>
+		<property name="isNew" type="java.lang.String">
+			<column name="ISNEW" length="2">
+				<comment>是否是新消息 0-否 1-是</comment>
+			</column>
+		</property>
+		 <many-to-one name="unit" class="com.agree.framework.web.form.administration.Unit" column="branch" unique="true" lazy="false"  
+        update="false"     insert="false"/>
+	</class>
+</hibernate-mapping>

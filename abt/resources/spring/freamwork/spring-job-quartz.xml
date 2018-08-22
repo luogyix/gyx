@@ -1,0 +1,78 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE beans PUBLIC "-//SPRING//DTD BEAN//EN"
+    "http://www.springframework.org/dtd/spring-beans.dtd">
+<beans>
+	<bean id="scheduler" class="org.springframework.scheduling.quartz.SchedulerFactoryBean">
+		<property name="triggers">
+			<list>
+			     <ref local="clearHisLogDataTrigger" /><!-- 清除垃圾数据，每月一次 -->
+			     <ref local="regInterfaceTrigger" /><!-- 设备接入注册,每日一次 -->
+<!--			     <ref local="reportJobTrigger" /> 跑存储过程出报表，每天一次 -->
+			</list>
+		</property>
+	</bean>
+	<!-- 清除超过30天的日志 -->
+	<bean id="clearHisLogDataTrigger" class="org.springframework.scheduling.quartz.CronTriggerBean">
+		<property name="jobDetail">
+			<ref bean="clearJob" />
+		</property>
+		<property name="cronExpression">
+			<!-- 每月1号4点 清除原表数据备份到t_BMSM_mnguseroprlog -->
+			<!-- 秒 分 小时 天 月 周 年  --> 
+			<value>0 0 4 1 * ? *</value> 
+		</property>
+	</bean>
+	<bean id="clearJob" class="org.springframework.scheduling.quartz.MethodInvokingJobDetailFactoryBean">
+		<property name="targetObject">
+			<ref bean="clearHisLogServer"/>
+		</property>       
+		<property name="targetMethod">
+			<value>clearHisLogData</value>
+		</property>
+	</bean>
+	<bean id="clearHisLogServer" class="com.agree.framework.web.service.administration.ClearHisLogServer">
+		<property name="sqlDao_h">
+			<ref bean="habernateDao"/>
+		</property>
+	</bean>	
+	
+	<!-- 每日注册 -->
+	<bean id="regInterfaceTrigger" class="org.springframework.scheduling.quartz.CronTriggerBean">
+		<property name="jobDetail" ref="regInterface"/>
+		<!-- 每月1号4点 清除原表数据备份到t_BMSM_mnguseroprlog -->
+			<!-- 秒 分 小时 天 月 周 年  --> 
+		<property name="cronExpression" value="0 0-20/5 3 * * ? *"/>
+	</bean>
+	<bean id="regInterface" class="org.springframework.scheduling.quartz.MethodInvokingJobDetailFactoryBean">
+		<property name="targetObject" ref="webOidTriggerServer"/>
+		<property name="targetMethod" value="runTrigger4FlushWebOid"/>
+	</bean>
+	<bean id="webOidTriggerServer" class="com.agree.abt.service.confmanager.impl.WebOidTriggerServiceImpl">
+		<property name="initService" ref="SysStartupService"/>
+	</bean>	
+	
+	<!-- 定时执行存储过程 -->
+<!--	<bean id="reportJobTrigger" class="org.springframework.scheduling.quartz.CronTriggerBean">-->
+<!--		<property name="jobDetail">-->
+<!--			<ref bean="reportJob" />-->
+<!--		</property>-->
+<!--		<property name="cronExpression">-->
+				<!-- 每天3点执行 -->
+				<!-- 秒 分 小时 天 月 周 年  --> 
+<!--			<value>0 0 3 * * ? *</value> -->
+<!--		</property>-->
+<!--	</bean>-->
+<!--	<bean id="reportJob" class="org.springframework.scheduling.quartz.MethodInvokingJobDetailFactoryBean">-->
+<!--		<property name="targetObject">-->
+<!--		 	<ref bean="reportDayServer"/>-->
+<!--		</property>       -->
+<!--		<property name="targetMethod">-->
+<!--			<value>runProcedure</value>-->
+<!--		</property>-->
+<!--	</bean>-->
+<!--	<bean id="reportDayServer" class="com.agree.framework.web.service.base.ReportDayService">-->
+<!--		<property name="sqlDao_h">-->
+<!--			<ref bean="habernateDao"/>-->
+<!--		</property>-->
+<!--	</bean>-->
+</beans>
