@@ -4,9 +4,10 @@
     <groupId>com.gyx</groupId>
     <artifactId>gyx-manager</artifactId>
     <version>0.0.1-SNAPSHOT</version>
-    <relativePath>E:/Development/eclipse-mars2-workspace/gyx-manager</relativePath>
   </parent>
+  <groupId>com.gyx</groupId>
   <artifactId>gyx-manager-web</artifactId>
+  <version>0.0.1-SNAPSHOT</version>
   <packaging>war</packaging>
   <!-- 依赖的jar包 -->
   <dependencies>

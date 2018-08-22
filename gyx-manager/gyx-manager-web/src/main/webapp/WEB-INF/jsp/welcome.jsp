@@ -122,6 +122,7 @@
 		</table>
 		<input id="l_button" class="loginButton" type="button" value="登陆" onclick="logon()" style="cursor: pointer">
 		<input id="z_button" class="loginButton" type="button" value="注册" style="cursor: pointer">
-	</div><!-- 聚合工程是否与子工程同步 -->
+		<a href="www.baidu.com">点击访问百度</a>
+	</div>
 </body>
 </html>

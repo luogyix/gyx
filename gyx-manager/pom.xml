@@ -34,9 +34,9 @@
 	</plugins>
   </build>
   <modules>
-  	<module>gyx-manager-dao</module>
-  	<module>gyx-manager-service</module>
-  	<module>gyx-manager-web</module>
-  	<module>gyx-manager-pojo</module>
+  <module>gyx-manager-dao</module>
+  <module>gyx-manager-service</module>
+  <module>gyx-manager-web</module>
+  <module>gyx-manager-pojo</module>
   </modules>
 </project>

@@ -5,9 +5,10 @@
 		<groupId>com.gyx</groupId>
 		<artifactId>gyx-manager</artifactId>
 		<version>0.0.1-SNAPSHOT</version>
-		<relativePath>E:/Development/eclipse-mars2-workspace/gyx-manager</relativePath>
 	</parent>
-	<artifactId>gyx-manager-dao</artifactId>
+	<groupId>com.gyx</groupId>
+    <artifactId>gyx-manager-dao</artifactId>
+    <version>0.0.1-SNAPSHOT</version>
 	<!-- 添加工程依赖 -->
 	<dependencies>
 		<!-- Mybatis -->
