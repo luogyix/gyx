@@ -1,17 +1,21 @@
 package cn.gyx.io;
 
+
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStreamReader;
+import java.util.zip.ZipEntry;
+import java.util.zip.ZipInputStream;
 
 import org.junit.Test;
 
 public class ReadMethod {
 	
-	@SuppressWarnings({"resource"})
+	String separator = File.separator;
+	
 	@Test
 	public void readTest() throws IOException{
 		String separator = File.separator;
@@ -57,5 +61,20 @@ public class ReadMethod {
 		}
 		
 		fis.close();
+	}
+	
+	@Test
+	public void zipInputTest() throws IOException{
+		File zipFile = new File("C:"+separator+"Users"+separator+"root"+separator+"Desktop"+separator+"柜面样式修改.zip");
+		if(!zipFile.exists()){
+			throw new FileNotFoundException("文件不存在");
+		}
+		ZipInputStream zipInput = new ZipInputStream(new FileInputStream(zipFile));
+		@SuppressWarnings("unused")
+		ZipEntry entry;
+		while ((entry = zipInput.getNextEntry()) != null) {
+			zipInput.closeEntry();
+		}
+		zipInput.close();
 	}
 }

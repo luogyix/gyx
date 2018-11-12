@@ -1,0 +1,93 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="sql.mapper.OrderDetailMapper" >
+  <resultMap id="BaseResultMap" type="cn.itcast.model.OrderDetail" >
+    <id column="DETAIL_ID" property="detailId" jdbcType="INTEGER" />
+    <result column="ORDER_ID" property="orderId" jdbcType="INTEGER" />
+    <result column="ITEM_NAME" property="itemName" jdbcType="VARCHAR" />
+    <result column="ITEM_COUNT" property="itemCount" jdbcType="INTEGER" />
+    <result column="PRICE" property="price" jdbcType="REAL" />
+  </resultMap>
+  <sql id="Base_Column_List" >
+    DETAIL_ID, ORDER_ID, ITEM_NAME, ITEM_COUNT, PRICE
+  </sql>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
+    select 
+    <include refid="Base_Column_List" />
+    from order_detail
+    where DETAIL_ID = #{detailId,jdbcType=INTEGER}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer" >
+    delete from order_detail
+    where DETAIL_ID = #{detailId,jdbcType=INTEGER}
+  </delete>
+  <insert id="insert" parameterType="cn.itcast.model.OrderDetail" >
+    insert into order_detail (DETAIL_ID, ORDER_ID, ITEM_NAME, 
+      ITEM_COUNT, PRICE)
+    values (#{detailId,jdbcType=INTEGER}, #{orderId,jdbcType=INTEGER}, #{itemName,jdbcType=VARCHAR}, 
+      #{itemCount,jdbcType=INTEGER}, #{price,jdbcType=REAL})
+  </insert>
+  <insert id="insertSelective" parameterType="cn.itcast.model.OrderDetail" >
+    insert into order_detail
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="detailId != null" >
+        DETAIL_ID,
+      </if>
+      <if test="orderId != null" >
+        ORDER_ID,
+      </if>
+      <if test="itemName != null" >
+        ITEM_NAME,
+      </if>
+      <if test="itemCount != null" >
+        ITEM_COUNT,
+      </if>
+      <if test="price != null" >
+        PRICE,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="detailId != null" >
+        #{detailId,jdbcType=INTEGER},
+      </if>
+      <if test="orderId != null" >
+        #{orderId,jdbcType=INTEGER},
+      </if>
+      <if test="itemName != null" >
+        #{itemName,jdbcType=VARCHAR},
+      </if>
+      <if test="itemCount != null" >
+        #{itemCount,jdbcType=INTEGER},
+      </if>
+      <if test="price != null" >
+        #{price,jdbcType=REAL},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="cn.itcast.model.OrderDetail" >
+    update order_detail
+    <set >
+      <if test="orderId != null" >
+        ORDER_ID = #{orderId,jdbcType=INTEGER},
+      </if>
+      <if test="itemName != null" >
+        ITEM_NAME = #{itemName,jdbcType=VARCHAR},
+      </if>
+      <if test="itemCount != null" >
+        ITEM_COUNT = #{itemCount,jdbcType=INTEGER},
+      </if>
+      <if test="price != null" >
+        PRICE = #{price,jdbcType=REAL},
+      </if>
+    </set>
+    where DETAIL_ID = #{detailId,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="cn.itcast.model.OrderDetail" >
+    update order_detail
+    set ORDER_ID = #{orderId,jdbcType=INTEGER},
+      ITEM_NAME = #{itemName,jdbcType=VARCHAR},
+      ITEM_COUNT = #{itemCount,jdbcType=INTEGER},
+      PRICE = #{price,jdbcType=REAL}
+    where DETAIL_ID = #{detailId,jdbcType=INTEGER}
+  </update>
+</mapper>

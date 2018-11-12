@@ -1,0 +1,229 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<!-- namespace：唯一标识一个映射文件 -->
+<mapper namespace="cn.itcast.Person">
+
+	<!-- 
+	resultMap:用于数据库的表的字段和实体类中的属性名字做映射的
+	type：所要映射的实体类
+	id：resultMap的唯一标识
+	
+	 -->
+	<resultMap type="person" id="BaseResultMap">
+		<!-- column:库表的字段名
+			property：实体类里面的字段名
+		 -->
+		<id column="person_id" property="personId"/>
+		<result column="name" property="name"/>
+		<result column="gender" property="gender"/>
+		<result column="person_addr" property="personAddr"/>
+		<result column="birthday" property="birthday"/>
+	</resultMap>
+	
+	<resultMap type="person" id="selectPersonAndOrderRM" extends="BaseResultMap">
+		<!-- collection处理关联查询的一对多
+			property：一的一端实体类中集合的属性名字
+			ofType：集合中的每个实体的数据类型
+		 -->
+		<collection property="orderList" ofType="orders">
+			<id column="ORDER_ID" property="orderId" jdbcType="INTEGER" />
+		    <result column="PERSON_ID" property="personId" jdbcType="INTEGER" />
+		    <result column="ORDER_SUM" property="orderSum" jdbcType="REAL" />
+		    <result column="ORDER_TIME" property="orderTime" jdbcType="TIMESTAMP" />
+		    <result column="ORDER_ADDR" property="orderAddr" jdbcType="VARCHAR" />
+		</collection>
+	</resultMap>
+	
+	<!-- 用于提取出公共的sql的一部分（sql片段） -->
+	<sql id="columns">
+		PERSON_ID, NAME, GENDER, PERSON_ADDR, BIRTHDAY
+	</sql>
+	
+	<!-- 
+	id:sql语句的唯一标识
+	parameterType：传入参数的数据类型
+	resultType：返回结果的数据类型
+	#{}：接收参数的语法，采用预编译的方式,PreparedStatement ,如果传递的是一个参数的话 #{}的内容任意
+	
+	select * from test_person where id = ?预编译
+	${}:Statement select * from test_person where id = 2非预编译
+	 -->
+	<select id="selectPersonById" parameterType="int" resultType="person">
+		select * from person where person_id = #{id}
+	</select>
+	<!-- resultMap：适合查询库表里面所对应的实体对象结果
+		resultType:适合使用非自定义类型的查询
+	 -->
+	<select id="selectPersonByIdWithRM" parameterType="int" resultMap="BaseResultMap">
+		select <include refid="columns"/> from person where person_id = #{isssssssd}
+	</select>
+	<!-- 所有的sql都不要加";" -->
+	<select id="selectPersonCount" resultType="java.lang.Long">
+		select count(*) from person
+	</select>
+	<select id="selectPersonByIdWithMap" parameterType="int" resultType="java.util.Map">
+		select * from person where person_id = #{id}
+	</select>
+	
+	<!-- 查询集合的时候resultMap：指定的是集合中每个实体的数据类型 -->
+	<select id="selectPersonAll" resultMap="BaseResultMap">
+		select * from person
+	</select>
+	<!-- 
+		map.put("gender",1)
+		map.put("name","刘能")
+		多个参数的查询一般情况适用map来存参数，在#{}的内容要使用map的key
+	 -->
+	<select id="selectPersonByParam" parameterType="java.util.Map" resultMap="BaseResultMap">
+		select * from person t where t.GENDER = #{gender} and t.NAME =#{name}
+	</select>
+	
+	<!-- 
+		ParamCondition condition  = new ParamCondition();
+		condition.setName("刘能");
+		condition.setGender(1);
+	 -->
+	<select id="selectPersonByParamCondition" parameterType="cn.itcast.model.ParamCondition" resultMap="BaseResultMap">
+		select * from person t where t.GENDER = #{gender} and t.NAME =#{name}
+	</select>
+	
+	<!-- parameterType:需要使用map或者业务bean来传递参数 -->
+	<select id="selectPersonByLike" parameterType="java.util.Map" resultMap="BaseResultMap">
+		select * from person t where t.name like '%${name}%'
+	</select>
+	
+	<!-- ================================库表变更=========================================== -->
+
+	<insert id="insert" parameterType="person">
+	
+		<!-- 
+		keyProperty:实体类中主键的属性
+		order:生成主键和插入数据的顺序mysql AFTER, 在oracle是BEFORE
+		resultType：实体类中主键的数据类型
+		mysql:select LAST_INSERT_ID()：生成主键的sql
+		oracle:select XXX.nextval from dual
+		 -->
+		<selectKey keyProperty="personId" order="AFTER" resultType="int">
+			select LAST_INSERT_ID()
+		</selectKey>
+		insert into person  (person_id, name, gender, person_addr, birthday)
+		values(#{personId}, #{name}, #{gender}, #{personAddr}, #{birthday})
+	</insert>
+	
+	<update id="update" parameterType="person">
+		update person p set p.name = #{name},
+		p.gender = #{gender},
+		p.person_addr = #{personAddr},
+		p.birthday = #{birthday}
+		where p.person_id = #{personId}
+	</update>
+	<!-- mysql中删除sql不能使用别名 -->
+	<delete id="delete" parameterType="int">
+		DELETE from person  where person_id = #{personId}
+	</delete>
+	
+	
+	<!-- ====================动态sql======================== -->
+	<!-- 动态条件组合查询，<where>可以智能处理第一个and -->
+	<select id="selectPersonByDynamicCondition" parameterType="map" resultMap="BaseResultMap">
+		select * from person p 
+			<where>
+				<if test="name != null">
+					p.name like '%${name}%'
+				</if>
+				<if test="gender != null">
+					and p.gender = #{gender}
+				</if>
+				<if test="personAddr != null">
+					and p.person_addr like '%${personAddr}%'
+				</if>
+				<if test="birthday != null">
+					<![CDATA[
+					and p.birthday < #{birthday}
+					]]>
+				</if>
+			</where>
+	</select>
+	
+	<!-- 动态修改：<set>可以处理最后一个逗号， 建议使用 -->
+	<update id="dynamicUpdate" parameterType="person">
+		update person p 
+		<set>
+			<if test="name != null">
+				p.name = #{name},
+			</if>
+			<if test="gender != null">
+				p.gender = #{gender},
+			</if>
+			<if test="personAddr != null">
+				p.person_addr = #{personAddr},
+			</if>
+			<if test="birthday != null">
+				p.birthday = #{birthday},
+			</if>
+		</set>
+		where p.person_id = #{personId}
+	</update>
+	
+	<!-- 
+		(7, 8, 9)
+		Integer [] ids = {7,8,9} 
+		map.put("myIds", ids);
+		collection:内容是map中的集合的key，不需要parameterType
+		item：集合中的每一项
+		open:拼接结果是以某种字符开始
+		close:拼接结果是以某种字符结束
+		separator:拼接结果是以某种字符做分隔
+		index：当前遍历的索引
+		
+	-->
+	<select id="selectPersonByIn" resultMap="BaseResultMap">
+		select * from person p where p.person_id in
+		<foreach collection="myIds" item="myId" open="(" close=")" separator="," index="myIndex">
+			#{myId}
+		</foreach>
+	</select>
+	
+	<delete id="deleteBatch">
+		delete from person where person_id in 
+		<foreach collection="myIds" item="myId" open="(" close=")" separator="," index="myIndex">
+			#{myId}
+		</foreach>
+	</delete>
+	
+	<!-- 
+	insert into person  (person_id, name, gender, person_addr, birthday)
+		values(#{personId}, #{name}, #{gender}, #{personAddr}, #{birthday}),
+		(#{personId}, #{name}, #{gender}, #{personAddr}, #{birthday}),
+		(#{personId}, #{name}, #{gender}, #{personAddr}, #{birthday}),
+		(#{personId}, #{name}, #{gender}, #{personAddr}, #{birthday}),
+		(#{personId}, #{name}, #{gender}, #{personAddr}, #{birthday})
+		
+		
+		List<Person> pList = new ArrayList<Person>();
+		map.put("pList", pList);
+	 -->
+	
+	<insert id="insertBatch">
+		<selectKey keyProperty="personId" order="AFTER" resultType="int">
+			select LAST_INSERT_ID()
+		</selectKey>
+		insert into person  (person_id, name, gender, person_addr, birthday)
+		values
+		<foreach collection="pList" item="person" separator=",">
+			(#{person.personId}, #{person.name}, #{person.gender}, #{person.personAddr}, #{person.birthday})
+		</foreach>
+	</insert>
+	
+	
+	<!-- ============================关联查询================================ -->
+	
+	<!-- 一对多 -->
+	<select id="selectPersonAndOrder" parameterType="int" resultMap="selectPersonAndOrderRM">
+		select * from person p , orders o where 
+		p.PERSON_ID = o.PERSON_ID and p.PERSON_ID = #{personId}
+	</select>
+	
+</mapper>

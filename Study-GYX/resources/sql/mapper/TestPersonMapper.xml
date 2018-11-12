@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<!-- namespace：唯一标识一个映射文件 -->
+<mapper namespace="cn.itcast.TestPerson">
+
+	<!-- 
+	id:sql语句的唯一标识
+	parameterType：传入参数的数据类型
+	resultType：返回结果的数据类型
+	#{}：接收参数的语法，采用预编译的方式,PreparedStatement ,如果传递的是一个参数的话 #{}的内容任意
+	
+	select * from test_person where id = ?预编译
+	${}:Statement select * from test_person where id = 2非预编译
+	 -->
+	<select id="selectTestPersonById" parameterType="java.lang.Integer" resultType="cn.itcast.model.TestPerson">
+		select * from test_person where id = #{id}
+	</select>
+	
+</mapper>

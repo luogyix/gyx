@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE configuration
+PUBLIC "-//mybatis.org//DTD Config 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-config.dtd">
+<configuration>
+
+	<!-- 别名的定义
+		非自定义别名：jdk给我们提供的包下的类都有别名，规则：就是类名（不分大小写），基本数据类型和包装类相互转换
+	 -->
+	<typeAliases>
+		<!-- 
+			type:所要被定义别名的对象
+			alias：别名的内容
+		 -->
+	</typeAliases>
+	<!-- default用于指定某一个数据库环境，可用于数据库环境切换 -->
+	<environments default="development">
+		<environment id="development">
+			<transactionManager type="JDBC" />
+			<dataSource type="POOLED">
+				<property name="driver" value="oracle.jdbc.OracleDriver" />
+				<property name="url" value="jdbc:oracle:thin:@3.1.11.7:1521/orcl11g" />
+				<property name="username" value="iqms" />
+				<property name="password" value="iqms" />
+			</dataSource>
+		</environment>
+		
+		<!-- <environment id="product">
+			<transactionManager type="JDBC" />
+			<dataSource type="POOLED">
+				<property name="driver" value="${driver}" />
+				<property name="url" value="${url}" />
+				<property name="username" value="${username}" />
+				<property name="password" value="${password}" />
+			</dataSource>
+		</environment> -->
+	</environments>
+	<!-- 集中管理映射文件 -->
+	<mappers>
+		<mapper resource="sql/mapper/BranchGroupRLTMapper.xml"/>
+	</mappers>
+</configuration>
