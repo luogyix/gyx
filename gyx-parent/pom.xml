@@ -331,4 +331,8 @@
   <!-- <modules>
     <module>gyx.manager</module>
   </modules> -->
+  <modules>
+  	<module>gyx.manager</module>
+  	<module>gyx-manager</module>
+  </modules>
 </project>
