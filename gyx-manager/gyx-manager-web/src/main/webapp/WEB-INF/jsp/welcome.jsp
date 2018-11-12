@@ -99,30 +99,39 @@
 </script>
 </head>
 <body>
-	<div class="logon">
-		<table id="table">
-			<tr>
-				<td id="userNameTile"  class="inputTitle" style="color:BlanchedAlmond">
-					用户名:
-				</td>
-				<td>
-					<input id="user_name" class="loginInput" type="text" name="user_name" onBlur="(document.getElementById('user_password').value='')">
-				</td>
-			</tr>
-			<tr height=20/>
-			<tr>
-				<td class="inputTitle" style="color:BlanchedAlmond">
-					密码:
-				</td>
-				<td>
-					<input id="user_password" class="loginInput" type="password" name="user_password">
-				</td>
-			</tr>
-			<tr height=20/>
-		</table>
-		<input id="l_button" class="loginButton" type="button" value="登陆" onclick="logon()" style="cursor: pointer">
-		<input id="z_button" class="loginButton" type="button" value="注册" style="cursor: pointer">
-		<a href="www.baidu.com">点击访问百度</a>
+	
+	<div class="Network">
+	
+	</div>
+	<div class="wrapper">
+		<div style="height: 400px"></div>
+		<div >
+			<div class="logon">
+				<table id="table">
+					<tr>
+						<td id="userNameTile"  class="inputTitle" style="color:BlanchedAlmond">
+							用户名:
+						</td>
+						<td>
+							<input id="user_name" class="loginInput" type="text" name="user_name" onBlur="(document.getElementById('user_password').value='')">
+						</td>
+					</tr>
+					<tr height=20/>
+					<tr>
+						<td class="inputTitle" style="color:BlanchedAlmond">
+							密码:
+						</td>
+						<td>
+							<input id="user_password" class="loginInput" type="password" name="user_password">
+						</td>
+					</tr>
+					<tr height=20/>
+				</table>
+				<input id="l_button" class="loginButton" type="button" value="登陆" onclick="logon()" style="cursor: pointer">
+				<input id="z_button" class="loginButton" type="button" value="直接进入" style="cursor: pointer">
+			</div>
+		</div>
+		
 	</div>
 </body>
 </html>
